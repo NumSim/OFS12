@@ -63,7 +63,7 @@ bool setup(sData* data)
 
   /* MORE COMPLEX CASE !! DONT USE !!*/
   float Eover2PI = 1;
-  float u_inf = 1;
+  float u_inf =1;
   float v_inf = 0;
   float x =0;
   float y = 0;

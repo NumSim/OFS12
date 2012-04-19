@@ -1,8 +1,8 @@
-dimI			2000
-dimJ			2000
+dimI			50
+dimJ			50
 
-deltaXi			0.0005
-deltaEta		0.0005
+deltaXi			0.02
+deltaEta		0.02
 
 maxIter			100000
 residuum		1.0E-3

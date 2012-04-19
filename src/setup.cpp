@@ -42,7 +42,7 @@ bool setup(sData* data)
   ///////////////////
   for(int i=0; i<data->dimI; i++) {
       for(int j=0; j<data->dimJ; j++) {
-          data->x[i][j] = xof(data->xi[i][j]);
+          data->x[i][j] = xof(data->xi[i][j],data->eta[i][j]);
           data->y[i][j] = yof(data->xi[i][j],data->eta[i][j]);
       }
   }
@@ -62,11 +62,12 @@ bool setup(sData* data)
   //////////////////////////////////
 
   /* MORE COMPLEX CASE !! DONT USE !!*/
-  float Eover2PI = 1;
-  float u_inf =1;
-  float v_inf = 0;
+ /* float Eover2PI = 1;
   float x =0;
-  float y = 0;
+  float y = 0; */
+  float u_inf =0;
+  float v_inf = 1;
+
 
 
   for(int i=0; i<data->dimI; i++) {

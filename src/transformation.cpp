@@ -12,18 +12,18 @@
 
 
 
-double xiof(double x){
-  double dummy=0;
-  return ((x-xleftof(x,dummy))/(xrightof(x,dummy)-xleftof(x,dummy)));
+double xiof(double x,double y){
+
+  return ((x-xleftof(x,y))/(xrightof(x,y)-xleftof(x,y)));
 
 }
 double etaof(double x, double y){
   return ((y-ybottomof(x,y))/(ytopof(x,y)-ybottomof(x,y)));
 
 }
-double xof(double xi){
-  double dummy=0;
-  return (xi*(xrightof(xi,dummy)-xleftof(xi,dummy))+xleftof(xi,dummy));
+double xof(double xi,double eta){
+
+  return (xi*(xrightof(xi,eta)-xleftof(xi,eta))+xleftof(xi,eta));
 }
 double yof(double xi, double eta){
   return (eta*(ytopof(xi,eta)-ybottomof(xi,eta))+ybottomof(xi,eta));
@@ -36,10 +36,10 @@ double xrightof(double xi, double eta){
   return 1;
 }
 double ytopof(double xi, double eta){
-  return 4+cos(xi);
+  return 1+xi;//4+cos(xi);
 }
 double ybottomof(double xi, double eta){
-  return -sin(xi);
+  return xi;//-sin(xi);
 }
 
 
@@ -55,8 +55,8 @@ void dxi(sData* data, double** dxidx, double** dxidy){
       for (int j =1; j<data->dimJ-1;j++){
           x = data->x[i][j];
           y = data->y[i][j];
-          dxidx[i][j] = (xiof(x+dx)-xiof(x-dx)) /twicedx;
-          dxidy[i][j] = (xiof(y+dy)-xiof(y-dy)) /twicedy;
+          dxidx[i][j] = (xiof(x+dx,y)-xiof(x-dx,y)) /twicedx;
+          dxidy[i][j] = (xiof(x,y+dy)-xiof(x,y-dy)) /twicedy;
       }
   }
 
@@ -91,8 +91,8 @@ void ddxi(sData* data, double** ddxidx, double** ddxidy){
       for (int j =1; j<data->dimJ-1;j++){
           x = data->x[i][j];
           y = data->y[i][j];
-          ddxidx[i][j] = (xiof(x+dx)-2*xiof(x)+xiof(x-dx)) /dx2;
-          ddxidy[i][j] = (xiof(y+dy)-2*xiof(y)+xiof(y-dy)) /dy2;
+          ddxidx[i][j] = (xiof(x+dx,y)-2*xiof(x,y)+xiof(x-dx,y)) /dx2;
+          ddxidy[i][j] = (xiof(x,y+dy)-2*xiof(x,y)+xiof(x,y-dy)) /dy2;
       }
   }
 

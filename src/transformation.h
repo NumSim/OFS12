@@ -19,9 +19,9 @@ double ybottomof(double xi, double eta);
 
 
 // transformation between coordinate system
-double xiof(double x );
+double xiof(double x ,double y);
 double etaof(double x, double y);
-double xof( double xi);
+double xof( double xi,double eta);
 double yof( double eta, double xi);
 
 // dxi deta ddxi ddeta as void compute the gradient for  the complete domain

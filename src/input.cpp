@@ -53,11 +53,7 @@ bool input(const char* cfgFilePath, sData* data, int &errLine)
           if(sscanf(line,"%15s %d",token,&data->dimI)   != 2){ errLine = lineNo; return false; };
       } else if(!strcmp(token,"dimJ")) {
           if(sscanf(line,"%15s %d",token,&data->dimJ)   != 2){ errLine = lineNo; return false; };
-      } else if(!strcmp(token,"deltaXi")) {
-          if(sscanf(line,"%15s %lf",token,&data->deltaXi)       != 2){ errLine = lineNo; return false; };
-      } else if(!strcmp(token,"deltaEta")) {
-          if(sscanf(line,"%15s %lf",token,&data->deltaEta)      != 2){ errLine = lineNo; return false; };
-      } else if(!strcmp(token,"maxIter")) {
+      }  else if(!strcmp(token,"maxIter")) {
           if(sscanf(line,"%15s %d",token,&data->maxIter)        != 2){ errLine = lineNo; return false; };
       } else if(!strcmp(token,"residuum")) {
           if(sscanf(line,"%15s %lf",token,&data->residuum)!= 2){ errLine = lineNo; return false; };
@@ -73,7 +69,8 @@ bool input(const char* cfgFilePath, sData* data, int &errLine)
       }
   }
   cfgFile.close();
-
+  data->deltaEta = 1.0/(data->dimJ+1);
+  data->deltaXi = 1.0/(data->dimI+1);
   data->x               = allocGrid1Mem(data, MAXDOUBLE);
   data->y               = allocGrid1Mem(data, MAXDOUBLE);
   data->s1      = allocGrid1Mem(data, MAXDOUBLE);

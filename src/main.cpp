@@ -27,7 +27,7 @@
 #include "output.h"
 
 //------------------------------------------------------
-int main(int argc, char* argv[])
+int main(void)
 {
   sData* data = new sData;
   char* cfgFilePath;
@@ -42,6 +42,7 @@ int main(int argc, char* argv[])
       getchar();
       return 1;
   }
+
 
   // setup data (boundaries, initial data, etc.)
   if(!setup(data)) {

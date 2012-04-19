@@ -33,13 +33,13 @@ double xleftof(double xi, double eta){
   return 0;
 }
 double xrightof(double xi, double eta){
-  return 1;
+  return 10.;//+10*eta;//+sin(5*eta);//+5*eta+sin(10*eta);;//+cos(eta);
 }
 double ytopof(double xi, double eta){
-  return 1+xi;//4+cos(xi);
+  return 5.0+xi-5.0*sin(xi);//4+cos(xi);
 }
 double ybottomof(double xi, double eta){
-  return xi;//-sin(xi);
+  return -xi*xi/5000.0+0.1*sin(5.0*xi);//-sin(xi);
 }
 
 
@@ -47,14 +47,18 @@ double ybottomof(double xi, double eta){
 void dxi(sData* data, double** dxidx, double** dxidy){
   double dx = data->finiteDiffDx;
   double dy = data->finiteDiffDy;
-  double twicedx = 2*dx;
-  double twicedy = 2*dy;
+  double twicedx = 2.*dx;
+  double twicedy = 2.*dy;
   double x;
   double y;
+  double xi;
+  double eta;
   for (int i=1; i<data->dimI-1;i++){
       for (int j =1; j<data->dimJ-1;j++){
           x = data->x[i][j];
           y = data->y[i][j];
+          xi = data->xi[i][j];
+          eta = data->eta[i][j];
           dxidx[i][j] = (xiof(x+dx,y)-xiof(x-dx,y)) /twicedx;
           dxidy[i][j] = (xiof(x,y+dy)-xiof(x,y-dy)) /twicedy;
       }
@@ -65,14 +69,18 @@ void dxi(sData* data, double** dxidx, double** dxidy){
 void deta(sData* data, double** detadx, double** detady){
   double dx = data->finiteDiffDx;
   double dy = data->finiteDiffDy;
-  double twicedx = 2*dx;
-  double twicedy = 2*dy;
+  double twicedx = 2.*dx;
+  double twicedy = 2.*dy;
   double x;
   double y;
+  double xi;
+  double eta;
   for (int i=1; i<data->dimI-1;i++){
       for (int j =1; j<data->dimJ-1;j++){
           x = data->x[i][j];
           y = data->y[i][j];
+          xi = data->xi[i][j];
+          eta = data->eta[i][j];
           detadx[i][j] = (etaof(x+dx,y)-etaof(x-dx,y)) /twicedx;
           detady[i][j] = (etaof(x,y+dy)-etaof(x,y-dy)) /twicedy;
       }
@@ -87,10 +95,14 @@ void ddxi(sData* data, double** ddxidx, double** ddxidy){
   double dy2 = dy*dy;
   double x;
   double y;
+  double xi;
+  double eta;
   for (int i=1; i<data->dimI-1;i++){
       for (int j =1; j<data->dimJ-1;j++){
           x = data->x[i][j];
           y = data->y[i][j];
+          xi = data->xi[i][j];
+          eta = data->eta[i][j];
           ddxidx[i][j] = (xiof(x+dx,y)-2*xiof(x,y)+xiof(x-dx,y)) /dx2;
           ddxidy[i][j] = (xiof(x,y+dy)-2*xiof(x,y)+xiof(x,y-dy)) /dy2;
       }
@@ -105,10 +117,14 @@ void ddeta(sData* data, double** ddetadx, double** ddetady){
   double dy2 = dy*dy;
   double x;
   double y;
+  double xi;
+  double eta;
   for (int i=1; i<data->dimI-1;i++){
       for (int j =1; j<data->dimJ-1;j++){
           x = data->x[i][j];
           y = data->y[i][j];
+          xi = data->xi[i][j];
+          eta = data->eta[i][j];
           ddetadx[i][j] = (etaof(x+dx,y)-2*etaof(x,y)+etaof(x-dx,y)) /dx2;
           ddetady[i][j] = (etaof(x,y+dy)-2*etaof(x,y)+etaof(x,y-dy)) /dy2;
       }

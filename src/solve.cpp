@@ -56,24 +56,24 @@ bool gaussseidelMorphed(sData* data, double** s)
 
   // allocate memory for derivatives
   double ***alpha = new double**[N+2];
-  double **temp1 = new double*[N+2];
-  double **temp2 = new double*[N+2];
-  double **temp3 = new double*[N+2];
-  double **temp4 = new double*[N+2];
-  double **temp5 = new double*[N+2];
-  double **temp6 = new double*[N+2];
-  double **temp7 = new double*[N+2];
-  double **temp8 = new double*[N+2];
+  double **dxiDx = new double*[N+2];
+  double **dxiDy = new double*[N+2];
+  double **detaDx = new double*[N+2];
+  double **detaDy = new double*[N+2];
+  double **ddxiDDx = new double*[N+2];
+  double **ddxiDDy = new double*[N+2];
+  double **ddetaDDx = new double*[N+2];
+  double **ddetaDDy = new double*[N+2];
 
   for (int i=0;i<N+2;i++){
-      temp1[i] = new double[M+2];
-      temp2[i] = new double[M+2];
-      temp3[i] = new double[M+2];
-      temp4[i] = new double[M+2];
-      temp5[i] = new double[M+2];
-      temp6[i] = new double[M+2];
-      temp7[i] = new double[M+2];
-      temp8[i] = new double[M+2];
+      dxiDx[i] = new double[M+2];
+      dxiDy[i] = new double[M+2];
+      detaDx[i] = new double[M+2];
+      detaDy[i] = new double[M+2];
+      ddxiDDx[i] = new double[M+2];
+      ddxiDDy[i] = new double[M+2];
+      ddetaDDx[i] = new double[M+2];
+      ddetaDDy[i] = new double[M+2];
       alpha[i] = new double* [M+2];
   }
   for (int i=0;i<N+2;i++){
@@ -83,42 +83,47 @@ bool gaussseidelMorphed(sData* data, double** s)
   }
 
   // write derivatives
-  dxi(data,temp1,temp2);
-  deta(data,temp3,temp4);
-  ddxi(data,temp5,temp6);
-  ddeta(data,temp7,temp8);
-
+  dxi(data,dxiDx,dxiDy);
+  deta(data,detaDx,detaDy);
+  ddxi(data,ddxiDDx,ddxiDDy);
+  ddeta(data,ddetaDDx,ddetaDDy);
+  double dxi, dxi2, deta,deta2;
+  dxi = data->deltaXi;
+  deta = data->deltaEta;
+  dxi2 = dxi*dxi;
+  deta2= deta*deta;
   // calculate alpha
   for (int i=1;i<data->dimI-1;i++){
       for(int j=1;j<data->dimJ-1;j++){
-          alpha[i][j][0] = temp1[i][j]*temp1[i][j]+temp2[i][j]*temp2[i][j];     //alpha1
-          alpha[i][j][1] = temp3[i][j]*temp3[i][j]+temp4[i][j]*temp4[i][j];     //alpha2
-          alpha[i][j][2] = 2*(temp1[i][j]*temp3[i][j]+temp2[i][j]*temp4[i][j]); //alpha3
-          alpha[i][j][3] = temp5[i][j]+temp6[i][j];                             //alpha4
-          alpha[i][j][4] = temp7[i][j]+temp8[i][j];                             //alpha5
+          alpha[i][j][0] = (dxiDx[i][j]*dxiDx[i][j]+dxiDy[i][j]*dxiDy[i][j] )/dxi2;     //alpha1
+          alpha[i][j][1] = (detaDx[i][j]*detaDx[i][j]+detaDy[i][j]*detaDy[i][j] )/deta2;     //alpha2
+          alpha[i][j][2] = 2.*(dxiDx[i][j]*detaDx[i][j]+dxiDy[i][j]*detaDy[i][j])/deta/dxi; //alpha3
+          alpha[i][j][3] = (ddxiDDx[i][j]+ddxiDDy[i][j])/dxi;                             //alpha4
+          alpha[i][j][4] = (ddetaDDx[i][j]+ddetaDDy[i][j])/deta;                             //alpha5
       }
   }
 
   // free memory
   for (int i=0;i<N+2;i++){
-      delete[] temp1[i];
-      delete[] temp2[i];
-      delete[] temp3[i];
-      delete[] temp4[i];
-      delete[] temp5[i];
-      delete[] temp6[i];
-      delete[] temp7[i];
-      delete[] temp8[i];
+      delete[] dxiDx[i];
+      delete[] dxiDy[i];
+      delete[] detaDx[i];
+      delete[] detaDy[i];
+      delete[] ddxiDDx[i];
+      delete[] ddxiDDy[i];
+      delete[] ddetaDDx[i];
+      delete[] ddetaDDy[i];
   }
-  delete[] temp1;
-  delete[] temp2;
-  delete[] temp3;
-  delete[] temp4;
-  delete[] temp5;
-  delete[] temp6;
-  delete[] temp7;
-  delete[] temp8;
+  delete[] dxiDx;
+  delete[] dxiDy;
+  delete[] detaDx;
+  delete[] detaDy;
+  delete[] ddxiDDx;
+  delete[] ddxiDDy;
+  delete[] ddetaDDx;
+  delete[] ddetaDDy;
 
+  error = 0;
   while(curIter<data->maxIter) {
       /*std::cout << "\r\tGauss-Seidel: Iteration " << */++curIter;
       error =0;
@@ -132,15 +137,15 @@ bool gaussseidelMorphed(sData* data, double** s)
               a4 = alpha[i][j][3];
               a5 = alpha[i][j][4];
 
-              tmp =    s[i+1][j+1]   * (a3/4.f)
-                     + s[i+1][j]     * (a1+a4/2.f)
-                     + s[i+1][j-1]   * (-a3/4.f)
-                     + s[i][j+1]     * (a2+a5/2.f)
-                     + s[i][j-1]     * (a2-a5/2.f)
-                     + s[i-1][j+1]   * (-a3/4.f)
-                     + s[i-1][j]     * (a1-a4/2.f)
-                     + s[i-1][j-1]   * (a3/4.f);
-              tmp /=(2*(a1+a2));
+              tmp =    s[i+1][j+1]   * (a3/4.0)
+                     + s[i+1][j]     * (a1+a4/2.0)
+                     + s[i+1][j-1]   * (-a3/4.0)
+                     + s[i][j+1]     * (a2+a5/2.0)
+                     + s[i][j-1]     * (a2-a5/2.0)
+                     + s[i-1][j+1]   * (-a3/4.0)
+                     + s[i-1][j]     * (a1-a4/2.0)
+                     + s[i-1][j-1]   * (a3/4.0);
+              tmp /=(2.0*(a1+a2));
 
               error += fAbs(tmp-s[i][j]);
               s[i][j] = tmp;

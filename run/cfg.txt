@@ -1,11 +1,11 @@
+
 dimI			50
 dimJ			50
 
-deltaXi			0.02
-deltaEta		0.02
 
-maxIter			100000
-residuum		1.0E-3
+
+maxIter			50000
+residuum		1.0E-5
 overrelax		1.0
 finiteDiffDx 	1.0E-4
 finiteDiffDy 	1.0E-4

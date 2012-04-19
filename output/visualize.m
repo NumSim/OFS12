@@ -1,30 +1,45 @@
 function  visualize
-close all
+   % close all
 
 
     
 Z=load('../output/scalar.dat');
 X=load('../output/phyGrid.meshX');
 Y=load('../output/phyGrid.meshY');
-numberOfPoints = 5;
-Sz = ceil(length(Z)/numberOfPoints);
-Sx = ceil(length(Z)/numberOfPoints);
-Sy = ceil(length(Z)/numberOfPoints);
-Z = Z(1:Sz:length(Z),1:Sz:length(Z));
-X = X(1:Sx:length(X),1:Sx:length(X));
-Y = Y(1:Sy:length(Y),1:Sy:length(Y));
+
+%numberOfPoints = 100;
+% Sz = ceil(length(Z)/numberOfPoints);
+% Sx = ceil(length(X)/numberOfPoints);
+% Sy = ceil(length(Y)/numberOfPoints);
+% [ZX,ZY] = size(Z);
+% [XX,XY] = size(X);
+% [YX,YY] = size(Y);
+% Z = Z(1:Sz:ZX,1:Sz:ZY);
+% X = X(1:Sx:XX,1:Sx:XY);
+% Y = Y(1:Sy:YX,1:Sy:YY);
 whos
+
 [U,V] = gradient(Z);
-% figure(1)
+ figure
 % mesh(U)
 % figure(2)
 % mesh(V)
 % figure(3)
 mesh(X,Y,Z)
-figure(4)
-quiver(X,Y,U,V);
-figure(5)
-quiver(U,V);
+xlabel('x');
+ylabel('y');
+zlabel('z');
+hold on
+
+contourf(X,Y,Z,10)
+xlabel('x');
+ylabel('y');
+zlabel('z');
+
+% figure(4)
+% quiver(X,Y,U,V);
+% figure(5)
+% quiver(U,V);
 %figure(5)
 %streamline(X,Y,U,V,[1,2,3,4],[1,0,-1,2])
 % 

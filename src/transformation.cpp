@@ -36,11 +36,24 @@ double xrightof(double xi, double eta){
   return 1;//+10*eta;//+sin(5*eta);//+5*eta+sin(10*eta);;//+cos(eta);
 }
 double ytopof(double xi, double eta){
-  return 5+xi-5.0*sin(xi);//4+cos(xi);
+  return 10-sin(xi);//50+xi-5.0*sin(xi);//4+cos(xi);
 }
 double ybottomof(double xi, double eta){
-  return -atan(100*(xi-0.5));
+  return -atan(10*(xi-0.5));
   //return (xi<5 ? 0 : -1);//-xi*xi/50.0+0.1*sin(5.0*xi);//-sin(xi);
+}
+
+double ybottomDxof(double x, double y){
+  double dx =1e-4;
+  return (ybottomof(x+dx,y)-ybottomof(x-dx,y))/2/dx;
+
+
+}
+
+double ytopDxof(double x, double y){
+  double dx =1e-4;
+  return (ytopof(x+dx,y)-ytopof(x-dx,y))/2/dx;
+
 }
 
 

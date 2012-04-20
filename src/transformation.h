@@ -24,6 +24,10 @@ double etaof(double x, double y);
 double xof( double xi,double eta);
 double yof( double eta, double xi);
 
+// derivative of the boundaries
+double ybottomDxof(double x, double y);
+double ytopDxof(double x, double y);
+
 // dxi deta ddxi ddeta as void compute the gradient for  the complete domain
 void dxi(sData* data, double** dxidx, double** dxidy);
 void deta(sData* data, double** detadx, double** detady);

@@ -1,6 +1,6 @@
 
-dimI			200
-dimJ			200
+dimI			100
+dimJ			100
 
 
 

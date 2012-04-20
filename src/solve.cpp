@@ -103,6 +103,29 @@ bool gaussseidelMorphed(sData* data, double** s)
       }
   }
 
+  // calculate beta for onesided diff on boundaries
+  double **betax = new double*[2];
+  double **betay = new double*[2];
+  double **dhDx = new double*[2];
+  for (int i=0;i<2;i++){
+      betax[i] = new double[N+2];
+      betay[i] = new double[N+2];
+      dhDx[i] = new double[N+2];
+  }
+
+  // beta[0][*] = bottom ,beta[1][*] = top
+  for (int i=1;i<data->dimI-1;i++){
+      betay[0][i] = dxiDy[i][1]/2/data->deltaXi+detaDy[i][1]/2/data->deltaEta;
+      betay[1][i] = dxiDy[i][data->dimJ-2]/2/data->deltaXi+detaDy[i][data->dimJ-2]/2/data->deltaEta;
+
+      betax[0][i] = dxiDx[i][1]/2/data->deltaXi+detaDx[i][1]/2/data->deltaEta;
+      betax[1][i] = dxiDx[i][data->dimJ-2]/2/data->deltaXi+detaDx[i][data->dimJ-2]/2/data->deltaEta;
+
+      dhDx[0][i] = ybottomDxof(data->x[i][0],data->y[i][0]);
+      dhDx[1][i] = ytopDxof(data->x[i][data->dimJ-1],data->y[i][data->dimJ-1]);
+  }
+
+
   // free memory
   for (int i=0;i<N+2;i++){
       delete[] dxiDx[i];
@@ -123,13 +146,39 @@ bool gaussseidelMorphed(sData* data, double** s)
   delete[] ddetaDDx;
   delete[] ddetaDDy;
 
+
+
   error = 0;
   while(curIter<data->maxIter) {
       /*std::cout << "\r\tGauss-Seidel: Iteration " << */++curIter;
       error =0;
       for(int i = 1; i < data->dimI-1; i++)
         {
-          for(int j = 1 ; j < data->dimJ-1; j++)
+          // lower boundary
+          double beta1,beta2,beta3,beta4,beta5,beta6;
+
+          // upper boundary
+
+          beta1 = -betay[1][i];
+          beta2 = 4*betay[1][i];
+          beta3 = -3*betay[1][i];
+          beta4 = -betax[1][i];
+          beta5 = 4*betax[1][i];
+          beta6 = -3*betax[1][i];
+
+          s[i][data->dimJ-2] = (-(beta1-dhDx[1][i]*beta4)*s[i][data->dimJ-2-2] -(beta2-dhDx[1][i])*s[i][data->dimJ-2-1])/(beta3-dhDx[1][i]*beta6);
+          // lower
+          beta1 = -betay[0][i];
+          beta2 = 4*betay[0][i];
+          beta3 = -3*betay[0][i];
+          beta4 = -betax[0][i];
+          beta5 = 4*betax[0][i];
+          beta6 = -3*betax[0][i];
+
+          s[i][1] = (-(beta1-dhDx[0][i]*beta4)*s[i][3] -(beta2-dhDx[0][i])*s[i][2])/(beta3-dhDx[0][i]*beta6);
+
+
+          for(int j = 1+1 ; j < data->dimJ-1-1; j++)
             {
               a1 = alpha[i][j][0];
               a2 = alpha[i][j][1];
@@ -138,24 +187,26 @@ bool gaussseidelMorphed(sData* data, double** s)
               a5 = alpha[i][j][4];
 
               tmp =    s[i+1][j+1]   * (a3/4.0)
-                     + s[i+1][j]     * (a1+a4/2.0)
-                     + s[i+1][j-1]   * (-a3/4.0)
-                     + s[i][j+1]     * (a2+a5/2.0)
-                     + s[i][j-1]     * (a2-a5/2.0)
-                     + s[i-1][j+1]   * (-a3/4.0)
-                     + s[i-1][j]     * (a1-a4/2.0)
-                     + s[i-1][j-1]   * (a3/4.0);
+                         + s[i+1][j]     * (a1+a4/2.0)
+                         + s[i+1][j-1]   * (-a3/4.0)
+                         + s[i][j+1]     * (a2+a5/2.0)
+                         + s[i][j-1]     * (a2-a5/2.0)
+                         + s[i-1][j+1]   * (-a3/4.0)
+                         + s[i-1][j]     * (a1-a4/2.0)
+                         + s[i-1][j-1]   * (a3/4.0);
               tmp /=(2.0*(a1+a2));
 
               error += fAbs(tmp-s[i][j]);
               s[i][j] = tmp;
             }
+
+
         }
 
       if(error < data->residuum){
           data->error =error;
           data->neededIter = curIter;
-        return true;
+          return true;
       }
   }
   data->error =error;

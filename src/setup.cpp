@@ -53,8 +53,8 @@ bool setup(sData* data)
   // SETUP INITIAL SCALAR VALUES //
   /////////////////////////////////
   // set whole field 's1' to start value
-  for(int i=0; i<data->dimI; i++) {
-      for(int j=0; j<data->dimJ; j++) {
+  for(int i=1; i<data->dimI-1; i++) {
+      for(int j=1; j<data->dimJ-1; j++) {
           data->s1[i][j] = 13.37;
       }
   }
@@ -67,8 +67,8 @@ bool setup(sData* data)
   /* float Eover2PI = 1;
   float x =0;
   float y = 0; */
-  float u_inf =1.;
-  float v_inf =2.;
+  float u_inf =0;
+  float v_inf =0.;
 
 
 
@@ -78,9 +78,9 @@ bool setup(sData* data)
       /* MORE COMPLEX CASE !! DONT USE !!*/
       //x = data->x[i][0] - 1.1f;
       //y = 0 - 0.5f;
-      data->s1[i][0] = u_inf*data->x[i][0]+v_inf*data->y[i][0];//u_inf*data->x[i][0] + Eover2PI * log((x*x+y*y))/2;
+      data->s1[i][0] = 0;//u_inf*(10-data->x[i][0])+v_inf*data->y[i][0];//u_inf*data->x[i][0] + Eover2PI * log((x*x+y*y))/2;
       //x = data->x[i][data->dimJ-1]- 1.1f;
-      data->s1[i][data->dimJ-1]= u_inf*data->x[i][data->dimJ-1] +v_inf*data->y[i][data->dimJ-1];//+ Eover2PI * log((x*x+y*y))/2;
+      data->s1[i][data->dimJ-1]=0;// u_inf*(10-data->x[i][data->dimJ-1]) +v_inf*data->y[i][data->dimJ-1];//+ Eover2PI * log((x*x+y*y))/2;
 
   }
   for(int j=0; j<data->dimJ; j++) {
@@ -89,10 +89,10 @@ bool setup(sData* data)
       /* MORE COMPLEX CASE !! DONT USE !!*/
       //x = 0- 1.1f;
       //y = data->y[0][j] - 0.5f;
-      data->s1[0][j] = u_inf*data->x[0][j]+v_inf*data->y[0][j]; //u_inf*0 + Eover2PI * log((x*x+y*y))/2;
+      data->s1[0][j] = 100;//u_inf*(10-data->x[0][j])+v_inf*data->y[0][j]; //u_inf*0 + Eover2PI * log((x*x+y*y))/2;
       //x = 0-1.1f;
       //y = data->y[data->dimI-1][j]- 0.5f;
-      data->s1[data->dimI-1][j]= u_inf*data->x[data->dimI-1][j]+v_inf*data->y[data->dimI-1][j];//u_inf*1.f +Eover2PI * log((pow(0.1,2)+y*y))/2;
+      data->s1[data->dimI-1][j]=-100;// u_inf*(10-data->x[data->dimI-1][j])+v_inf*data->y[data->dimI-1][j];//u_inf*1.f +Eover2PI * log((pow(0.1,2)+y*y))/2;
 
   }
   std::cout << "Success!\n";

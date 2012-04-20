@@ -33,13 +33,14 @@ double xleftof(double xi, double eta){
   return 0;
 }
 double xrightof(double xi, double eta){
-  return 10.;//+10*eta;//+sin(5*eta);//+5*eta+sin(10*eta);;//+cos(eta);
+  return 1;//+10*eta;//+sin(5*eta);//+5*eta+sin(10*eta);;//+cos(eta);
 }
 double ytopof(double xi, double eta){
-  return 5.0+xi-5.0*sin(xi);//4+cos(xi);
+  return 5+xi-5.0*sin(xi);//4+cos(xi);
 }
 double ybottomof(double xi, double eta){
-  return -xi*xi/5000.0+0.1*sin(5.0*xi);//-sin(xi);
+  return -atan(100*(xi-0.5));
+  //return (xi<5 ? 0 : -1);//-xi*xi/50.0+0.1*sin(5.0*xi);//-sin(xi);
 }
 
 

@@ -21,6 +21,7 @@
 #include <iostream>
 #include "setup.h"
 #include "data.h"
+#include "solve.h"
 #include "transformation.h"
 
 //------------------------------------------------------
@@ -47,6 +48,7 @@ bool setup(sData* data)
       }
   }
 
+
   /////////////////////////////////
   // SETUP INITIAL SCALAR VALUES //
   /////////////////////////////////
@@ -62,7 +64,7 @@ bool setup(sData* data)
   //////////////////////////////////
 
   /* MORE COMPLEX CASE !! DONT USE !!*/
- /* float Eover2PI = 1;
+  /* float Eover2PI = 1;
   float x =0;
   float y = 0; */
   float u_inf =1.;

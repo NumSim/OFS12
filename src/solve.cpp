@@ -48,11 +48,17 @@ bool solve(sData* data)
 bool gaussseidelMorphed(sData* data, double** s)
 {
   int curIter=0;
+  int N=data->dimI-2;
+  int M=data->dimJ-2;
   double error;
   float tmp;
   double a1,a2,a3,a4,a5;
-  int N=data->dimI-2;
-  int M=data->dimJ-2;
+  double dxi1, dxi2, deta1,deta2;
+  dxi1 = data->deltaXi;
+  deta1 = data->deltaEta;
+  dxi2 = dxi1*dxi1;
+  deta2= deta1*deta1;
+
 
   // allocate memory for derivatives
   double ***alpha = new double**[N+2];
@@ -64,6 +70,9 @@ bool gaussseidelMorphed(sData* data, double** s)
   double **ddxiDDy = new double*[N+2];
   double **ddetaDDx = new double*[N+2];
   double **ddetaDDy = new double*[N+2];
+  // for wall
+  double **beta = new double*[N+2];
+  double **dhDx = new double*[N+2];
 
   for (int i=0;i<N+2;i++){
       dxiDx[i] = new double[M+2];
@@ -75,76 +84,51 @@ bool gaussseidelMorphed(sData* data, double** s)
       ddetaDDx[i] = new double[M+2];
       ddetaDDy[i] = new double[M+2];
       alpha[i] = new double* [M+2];
+      beta[i] = new double[2];
+      dhDx[i] = new double[2];
   }
   for (int i=0;i<N+2;i++){
       for(int j=0;j<M+2;j++){
           alpha[i][j] = new double[5];
       }
   }
-  double Dx = data->finiteDiffDx;
-  double Dy = data->finiteDiffDy;
-  // todo: ups die werden ja sowieso alle hier drunter berechnet
-  // kann man also wegmachen und performance bekommen!
-  for (int i=0;i<N+2;i++){
-      dxiDx[0][i]  = (xiof(data->x[i][0]+Dx,data->y[i][0])-xiof(data->x[i][0]-Dx,data->y[i][0]))/(2*Dx);
-      dxiDx[1][i]  = (xiof(data->x[i][data->dimJ-1]+Dx,data->y[i][data->dimJ-1])-xiof(data->x[i][data->dimJ-1]-Dx,data->y[i][data->dimJ-1]))/(2*Dx);
-      dxiDy[0][i]  = (xiof(data->x[i][0],data->y[i][0]+Dy)-xiof(data->x[i][0],data->y[i][0]-Dy))/(2*Dy);
-      dxiDy[1][i]  = (xiof(data->x[i][data->dimJ-1],data->y[i][data->dimJ-1]+Dy)-xiof(data->x[i][data->dimJ-1],data->y[i][data->dimJ-1]-Dy))/(2*Dy);
-      detaDx[0][i]  = (etaof(data->x[i][0]+Dx,data->y[i][0])-etaof(data->x[i][0]-Dx,data->y[i][0]))/(2*Dy);
-      detaDx[1][i]  = (etaof(data->x[i][data->dimJ-1]+Dx,data->y[i][data->dimJ-1])-etaof(data->x[i][data->dimJ-1]-Dx,data->y[i][data->dimJ-1]))/(2*Dx);
-      detaDy[0][i]  = (etaof(data->x[i][0],data->y[i][0]+Dy)-etaof(data->x[i][0],data->y[i][0]-Dy))/(2*Dy);
-      detaDy[1][i]  = (etaof(data->x[i][data->dimJ-1],data->y[i][data->dimJ-1]+Dy)-etaof(data->x[i][data->dimJ-1],data->y[i][data->dimJ-1]-Dy))/(2*Dy);
 
-  }
 
-  // write derivatives
+
+  // Calculate derivatives
   dxi(data,dxiDx,dxiDy);
   deta(data,detaDx,detaDy);
   ddxi(data,ddxiDDx,ddxiDDy);
   ddeta(data,ddetaDDx,ddetaDDy);
-  double dxi, dxi2, deta,deta2;
-  dxi = data->deltaXi;
-  deta = data->deltaEta;
-  dxi2 = dxi*dxi;
-  deta2= deta*deta;
-  // calculate alpha
+  for (int i=0;i<N+2;i++){
+      dhDx[i][0] = (ybottomof(data->x[i][0]+data->finiteDiffDx,data->y[i][0]) -ybottomof(data->x[i][0]-data->finiteDiffDx,data->y[i][0])      )/(2*data->finiteDiffDx);
+      dhDx[i][1] = (ytopof(data->x[i][data->dimJ-1]+data->finiteDiffDx,data->y[i][data->dimJ-1]) -ytopof(data->x[i][data->dimJ-1]-data->finiteDiffDx,data->y[i][data->dimJ-1])      )/(2*data->finiteDiffDx);
+  }
+
+
+
+  // Calculate alpha for inside
   for (int i=1;i<data->dimI-1;i++){
       for(int j=1;j<data->dimJ-1;j++){
-          alpha[i][j][0] = (dxiDx[i][j]*dxiDx[i][j]+dxiDy[i][j]*dxiDy[i][j] )/dxi2;     //alpha1
-          alpha[i][j][1] = (detaDx[i][j]*detaDx[i][j]+detaDy[i][j]*detaDy[i][j] )/deta2;     //alpha2
-          alpha[i][j][2] = 2.*(dxiDx[i][j]*detaDx[i][j]+dxiDy[i][j]*detaDy[i][j])/deta/dxi; //alpha3
-          alpha[i][j][3] = (ddxiDDx[i][j]+ddxiDDy[i][j])/dxi;                             //alpha4
-          alpha[i][j][4] = (ddetaDDx[i][j]+ddetaDDy[i][j])/deta;                             //alpha5
+          alpha[i][j][0] = (dxiDx[i][j]*dxiDx[i][j]+dxiDy[i][j]*dxiDy[i][j] )/dxi2;
+          alpha[i][j][1] = (detaDx[i][j]*detaDx[i][j]+detaDy[i][j]*detaDy[i][j] )/deta2;
+          alpha[i][j][2] = 2.*(dxiDx[i][j]*detaDx[i][j]+dxiDy[i][j]*detaDy[i][j])/deta1/dxi1;
+          alpha[i][j][3] = (ddxiDDx[i][j]+ddxiDDy[i][j])/dxi1;
+          alpha[i][j][4] = (ddetaDDx[i][j]+ddetaDDy[i][j])/deta1;
       }
   }
 
-  // calculate beta for onesided diff on boundaries
-  double **etaStar = new double*[2];
-  double **xiStar = new double*[2];
-  double **dhDx = new double*[2];
-  for (int i=0;i<2;i++){
-      etaStar[i] = new double[N+2];
-      xiStar[i] = new double[N+2];
-      dhDx[i] = new double[N+2];
-  }
-
+  // Calculate beta for wall
   for (int i=1;i<data->dimI-1;i++){
-      std::cout <<dxiDy[i][0] << " " << dxiDx[i][0]<<std::endl;
-      xiStar[0][i] = (dxiDy[0][i]-dxiDx[0][i])/data->deltaXi;
-      xiStar[1][i] = (dxiDy[1][i]-dxiDx[1][i])/data->deltaXi;
 
-      etaStar[0][i] = (detaDy[0][i]-detaDx[0][i])/data->deltaEta;
-      etaStar[1][i] = (detaDy[1][i]-detaDx[1][i])/data->deltaEta;
+      beta[i][0] = (   dhDx[i][0]*dxiDx[i][0] - dxiDy[i][0]   )
+                              / (   dhDx[i][0]*detaDx[i][0]-detaDy[i][0]     )
+                              * deta1/dxi1;
+      beta[i][1] = (   dhDx[i][1]*dxiDx[i][data->dimJ-1] - dxiDy[i][data->dimJ-1]   )
+                              / (   dhDx[i][1]*detaDx[i][data->dimJ-1]-detaDy[i][data->dimJ-1]     )
+                              * deta1/dxi1;
 
-      dhDx[0][i] = ybottomDxof(data->x[0][i],data->y[0][i]);
-      dhDx[1][i] = ytopDxof(data->x[data->dimJ-1][i],data->y[data->dimJ-1][i]);
-
-      std::cout << "i= " << i<<std::endl;
-      std::cout << " xistar = " << xiStar[0][i] << " "<<xiStar[1][i] << std::endl;
-      std::cout << " etastar = " << etaStar[0][i]<< " " <<etaStar[1][i] << std::endl;
-      std::cout << " dh = " << dhDx[0][i]<< "  " <<dhDx[1][i] << std::endl;
   }
-
 
   // free memory
   for (int i=0;i<N+2;i++){
@@ -156,6 +140,7 @@ bool gaussseidelMorphed(sData* data, double** s)
       delete[] ddxiDDy[i];
       delete[] ddetaDDx[i];
       delete[] ddetaDDy[i];
+      delete[] dhDx[i];
   }
   delete[] dxiDx;
   delete[] dxiDy;
@@ -165,6 +150,7 @@ bool gaussseidelMorphed(sData* data, double** s)
   delete[] ddxiDDy;
   delete[] ddetaDDx;
   delete[] ddetaDDy;
+  delete[] dhDx;
 
 
 
@@ -174,31 +160,58 @@ bool gaussseidelMorphed(sData* data, double** s)
       error =0;
       for(int i = 1; i < data->dimI-1; i++)
         {
-          s[i][0] = (xiStar[0][i]/etaStar[0][i]*(s[i+1][0]-s[i-1][0])+(4*s[i][1]-s[i][2]))*dhDx[0][i]/3;
+          if ((i%2)==0 ){ // upwards
+              s[i][0] = (   beta[i][0]*(s[i+1][0]-s[i-1][0]) - s[i][2] + 4*s[i][1]     )/3;
+              for(int j = 1 ; j < data->dimJ-1; j++)
+                {
+                  a1 = alpha[i][j][0];
+                  a2 = alpha[i][j][1];
+                  a3 = alpha[i][j][2];
+                  a4 = alpha[i][j][3];
+                  a5 = alpha[i][j][4];
 
-          s[i][data->dimJ-1] = (xiStar[1][i]/etaStar[1][i]*(s[i+1][data->dimJ-1]-s[i-1][data->dimJ-1])+(4*s[i][data->dimJ-1-1]-s[i][data->dimJ-1-2]))*dhDx[1][i]/3;
+                  tmp =        s[i+1][j+1]   * (a3/4.0)
+                                                         + s[i+1][j]     * (a1+a4/2.0)
+                                                         + s[i+1][j-1]   * (-a3/4.0)
+                                                         + s[i][j+1]     * (a2+a5/2.0)
+                                                         + s[i][j-1]     * (a2-a5/2.0)
+                                                         + s[i-1][j+1]   * (-a3/4.0)
+                                                         + s[i-1][j]     * (a1-a4/2.0)
+                                                         + s[i-1][j-1]   * (a3/4.0);
+                  tmp /=(2.0*(a1+a2));
+                  error += fAbs(tmp-s[i][j]);
+                  s[i][j] = tmp;
+                }
+              s[i][data->dimJ-1] = (   - beta[i][1]*(s[i+1][data->dimJ-1]-s[i-1][data->dimJ-1]) - s[i][data->dimJ-1-2] + 4*s[i][data->dimJ-1-1] )/3;
+          }
+          else{ //downwards
+              s[i][data->dimJ-1] = (   - beta[i][1]*(s[i+1][data->dimJ-1]-s[i-1][data->dimJ-1]) - s[i][data->dimJ-1-2] + 4*s[i][data->dimJ-1-1] )/3;
+              for(int j = data->dimJ-2 ; j >0; j--)
+                {
+                  a1 = alpha[i][j][0];
+                  a2 = alpha[i][j][1];
+                  a3 = alpha[i][j][2];
+                  a4 = alpha[i][j][3];
+                  a5 = alpha[i][j][4];
 
-          for(int j = 1 ; j < data->dimJ-1; j++)
-            {
-              a1 = alpha[i][j][0];
-              a2 = alpha[i][j][1];
-              a3 = alpha[i][j][2];
-              a4 = alpha[i][j][3];
-              a5 = alpha[i][j][4];
+                  tmp =        s[i+1][j+1]   * (a3/4.0)
+                                                         + s[i+1][j]     * (a1+a4/2.0)
+                                                         + s[i+1][j-1]   * (-a3/4.0)
+                                                         + s[i][j+1]     * (a2+a5/2.0)
+                                                         + s[i][j-1]     * (a2-a5/2.0)
+                                                         + s[i-1][j+1]   * (-a3/4.0)
+                                                         + s[i-1][j]     * (a1-a4/2.0)
+                                                         + s[i-1][j-1]   * (a3/4.0);
+                  tmp /=(2.0*(a1+a2));
+                  error += fAbs(tmp-s[i][j]);
+                  s[i][j] = tmp;
+                }
+              s[i][0] = (   beta[i][0]*(s[i+1][0]-s[i-1][0]) - s[i][2] + 4*s[i][1]     )/3;
+          }
 
-              tmp =        s[i+1][j+1]   * (a3/4.0)
-                                     + s[i+1][j]     * (a1+a4/2.0)
-                                     + s[i+1][j-1]   * (-a3/4.0)
-                                     + s[i][j+1]     * (a2+a5/2.0)
-                                     + s[i][j-1]     * (a2-a5/2.0)
-                                     + s[i-1][j+1]   * (-a3/4.0)
-                                     + s[i-1][j]     * (a1-a4/2.0)
-                                     + s[i-1][j-1]   * (a3/4.0);
-              tmp /=(2.0*(a1+a2));
 
-              error += fAbs(tmp-s[i][j]);
-              s[i][j] = tmp;
-            }
+
+
         }
       if(error < data->residuum){
           data->error =error;

@@ -1,10 +1,7 @@
+dimI			50
+dimJ			50
 
-dimI			100
-dimJ			100
-
-
-
-maxIter			50000
+maxIter			10000
 residuum		1.0E-5
 overrelax		1.0
 finiteDiffDx 	1.0E-5

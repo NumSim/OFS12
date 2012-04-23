@@ -36,8 +36,8 @@ bool solve(sData* data)
 
   if(!gaussseidelMorphed(data,data->s1)){ return false; }
   //if(!gaussseidel(data,data->s1)){ return false; }
-  //if(!jacobi(data, data->s1))	{ return false; }
-  //if(!thomas(data,data->s1))r	{ return false; }
+  //if(!jacobi(data, data->s1)) { return false; }
+  //if(!thomas(data,data->s1))r { return false; }
   std::cout << "Success!\n";
   return true;
 }
@@ -81,6 +81,21 @@ bool gaussseidelMorphed(sData* data, double** s)
           alpha[i][j] = new double[5];
       }
   }
+  double Dx = data->finiteDiffDx;
+  double Dy = data->finiteDiffDy;
+  // todo: ups die werden ja sowieso alle hier drunter berechnet
+  // kann man also wegmachen und performance bekommen!
+  for (int i=0;i<N+2;i++){
+      dxiDx[0][i]  = (xiof(data->x[i][0]+Dx,data->y[i][0])-xiof(data->x[i][0]-Dx,data->y[i][0]))/(2*Dx);
+      dxiDx[1][i]  = (xiof(data->x[i][data->dimJ-1]+Dx,data->y[i][data->dimJ-1])-xiof(data->x[i][data->dimJ-1]-Dx,data->y[i][data->dimJ-1]))/(2*Dx);
+      dxiDy[0][i]  = (xiof(data->x[i][0],data->y[i][0]+Dy)-xiof(data->x[i][0],data->y[i][0]-Dy))/(2*Dy);
+      dxiDy[1][i]  = (xiof(data->x[i][data->dimJ-1],data->y[i][data->dimJ-1]+Dy)-xiof(data->x[i][data->dimJ-1],data->y[i][data->dimJ-1]-Dy))/(2*Dy);
+      detaDx[0][i]  = (etaof(data->x[i][0]+Dx,data->y[i][0])-etaof(data->x[i][0]-Dx,data->y[i][0]))/(2*Dy);
+      detaDx[1][i]  = (etaof(data->x[i][data->dimJ-1]+Dx,data->y[i][data->dimJ-1])-etaof(data->x[i][data->dimJ-1]-Dx,data->y[i][data->dimJ-1]))/(2*Dx);
+      detaDy[0][i]  = (etaof(data->x[i][0],data->y[i][0]+Dy)-etaof(data->x[i][0],data->y[i][0]-Dy))/(2*Dy);
+      detaDy[1][i]  = (etaof(data->x[i][data->dimJ-1],data->y[i][data->dimJ-1]+Dy)-etaof(data->x[i][data->dimJ-1],data->y[i][data->dimJ-1]-Dy))/(2*Dy);
+
+  }
 
   // write derivatives
   dxi(data,dxiDx,dxiDy);
@@ -113,17 +128,21 @@ bool gaussseidelMorphed(sData* data, double** s)
       dhDx[i] = new double[N+2];
   }
 
-  // beta[0][*] = bottom ,beta[1][*] = top
   for (int i=1;i<data->dimI-1;i++){
-      xiStar[0][i] = (dxiDy[i][0]-dxiDx[i][0])/data->deltaXi;
-      xiStar[1][i] = (dxiDy[i][data->dimJ-1]-dxiDx[i][data->dimJ-1])/data->deltaXi;
+      std::cout <<dxiDy[i][0] << " " << dxiDx[i][0]<<std::endl;
+      xiStar[0][i] = (dxiDy[0][i]-dxiDx[0][i])/data->deltaXi;
+      xiStar[1][i] = (dxiDy[1][i]-dxiDx[1][i])/data->deltaXi;
 
-      etaStar[0][i] = (detaDy[i][0]-detaDx[i][0])/data->deltaEta;
-      etaStar[1][i] = (detaDy[i][data->dimJ-1]-detaDx[i][data->dimJ-1])/data->deltaEta;
+      etaStar[0][i] = (detaDy[0][i]-detaDx[0][i])/data->deltaEta;
+      etaStar[1][i] = (detaDy[1][i]-detaDx[1][i])/data->deltaEta;
 
-      dhDx[0][i] = ybottomDxof(data->x[i][0],data->y[i][0]);
-      dhDx[1][i] = ytopDxof(data->x[i][data->dimJ-1],data->y[i][data->dimJ-1]);
+      dhDx[0][i] = ybottomDxof(data->x[0][i],data->y[0][i]);
+      dhDx[1][i] = ytopDxof(data->x[data->dimJ-1][i],data->y[data->dimJ-1][i]);
 
+      std::cout << "i= " << i<<std::endl;
+      std::cout << " xistar = " << xiStar[0][i] << " "<<xiStar[1][i] << std::endl;
+      std::cout << " etastar = " << etaStar[0][i]<< " " <<etaStar[1][i] << std::endl;
+      std::cout << " dh = " << dhDx[0][i]<< "  " <<dhDx[1][i] << std::endl;
   }
 
 
@@ -155,9 +174,9 @@ bool gaussseidelMorphed(sData* data, double** s)
       error =0;
       for(int i = 1; i < data->dimI-1; i++)
         {
-          s[i][0] = (xiStar[0][i]/etaStar[0][i]*(s[i+1][0]-s[i-1][0])+(4*s[i][1]-s[i][2]))*dhDx[i][0]/3;
+          s[i][0] = (xiStar[0][i]/etaStar[0][i]*(s[i+1][0]-s[i-1][0])+(4*s[i][1]-s[i][2]))*dhDx[0][i]/3;
 
-          s[i][data->dimJ-1] = (xiStar[1][i]/etaStar[1][i]*(s[i+1][data->dimJ-1]-s[i-1][data->dimJ-1])+(4*s[i][data->dimJ-1-1]-s[i][data->dimJ-1-2]))*dhDx[i][1]/3;
+          s[i][data->dimJ-1] = (xiStar[1][i]/etaStar[1][i]*(s[i+1][data->dimJ-1]-s[i-1][data->dimJ-1])+(4*s[i][data->dimJ-1-1]-s[i][data->dimJ-1-2]))*dhDx[1][i]/3;
 
           for(int j = 1 ; j < data->dimJ-1; j++)
             {
@@ -168,25 +187,19 @@ bool gaussseidelMorphed(sData* data, double** s)
               a5 = alpha[i][j][4];
 
               tmp =        s[i+1][j+1]   * (a3/4.0)
-                         + s[i+1][j]     * (a1+a4/2.0)
-                         + s[i+1][j-1]   * (-a3/4.0)
-                         + s[i][j+1]     * (a2+a5/2.0)
-                         + s[i][j-1]     * (a2-a5/2.0)
-                         + s[i-1][j+1]   * (-a3/4.0)
-                         + s[i-1][j]     * (a1-a4/2.0)
-                         + s[i-1][j-1]   * (a3/4.0);
+                                     + s[i+1][j]     * (a1+a4/2.0)
+                                     + s[i+1][j-1]   * (-a3/4.0)
+                                     + s[i][j+1]     * (a2+a5/2.0)
+                                     + s[i][j-1]     * (a2-a5/2.0)
+                                     + s[i-1][j+1]   * (-a3/4.0)
+                                     + s[i-1][j]     * (a1-a4/2.0)
+                                     + s[i-1][j-1]   * (a3/4.0);
               tmp /=(2.0*(a1+a2));
 
               error += fAbs(tmp-s[i][j]);
               s[i][j] = tmp;
             }
-          // lower boundary
-
-
-
         }
-
-
       if(error < data->residuum){
           data->error =error;
           data->neededIter = curIter;
@@ -291,6 +304,3 @@ bool jacobi(sData* data, double** s)
 }
 
 //------------------------------------------------------
-
-
-

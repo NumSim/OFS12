@@ -34,10 +34,7 @@ bool solve(sData* data)
 {
   std::cout << "\nSolve:\t------->\t";
 
-  if(!gaussseidelMorphed(data,data->s1)){ return false; }
-  //if(!gaussseidel(data,data->s1)){ return false; }
-  //if(!jacobi(data, data->s1)) { return false; }
-  //if(!thomas(data,data->s1))r { return false; }
+  if(!gaussseidel(data,data->s1)){ return false; }
   std::cout << "Success!\n";
   return true;
 }
@@ -45,7 +42,7 @@ bool solve(sData* data)
 //------------------------------------------------------
 
 
-bool gaussseidelMorphed(sData* data, double** s)
+bool gaussseidel(sData* data, double** s)
 {
 
   int N,M;
@@ -220,96 +217,3 @@ bool gaussseidelMorphed(sData* data, double** s)
   return true;
 }
 
-
-bool gaussseidel(sData* data, double** s)
-{
-  int curIter=0;
-
-  float error ;
-  float tmp;
-
-  while(curIter<data->maxIter) {
-      std::cout << "\r\tGauss-Seidel: Iteration " << ++curIter;
-      error = 0;
-      for(int i = 1; i < data->dimI-1; i++)
-        {
-          for(int j = 1 ; j < data->dimJ-1; j++)
-            {
-              //Iterate over all values except border values
-              tmp =(s[i-1][j]+s[i+1][j]+s[i][j+1]+s[i][j-1])/4.0;
-              error += fAbs(tmp-s[i][j]);
-
-              s[i][j] = tmp;
-
-            }
-
-        }
-
-
-      if(error < data->residuum)
-        return true;
-
-  }
-  return true;
-}
-
-
-bool jacobi(sData* data, double** s)
-{
-  int curIter=0;
-  double** tmp_ptr;
-
-  double** s_old = s;
-  double** s_new = allocGrid1Mem(data,MAXDOUBLE);
-  double error;
-  double temp;
-
-  for (int i= 0; i<data->dimI;i++){
-      s_new[i][0] = s_old[i][0];
-      s_new[i][data->dimJ-1]=s_old[i][data->dimJ-1];
-  }
-  for (int i=0;i<data->dimJ;i++){
-      s_new[0][i] = s_old[0][i];
-      s_new[data->dimI-1][i]=s_old[data->dimI-1][i];
-  }
-
-  while(curIter<data->maxIter ) {
-      std::cout << "\r\tJakobi: Iteration " << ++curIter;
-      error = 0;
-
-      for (int i=1;i< data->dimI-1;i++){
-
-          for (int j=1;j<data->dimJ-1;j++){
-              temp = (s_old[i-1][j] +s_old[i+1][j] + s_old[i][j-1]+s_old[i][j+1])/4.0;
-              error += fAbs( temp- s_old[i][j]);
-              s_new[i][j] = temp;
-          }
-      }
-
-      tmp_ptr = s_old;
-      s_old = s_new;
-      s_new  = tmp_ptr;
-
-      if (error < data->residuum) return true;
-
-  }
-
-  // sync data-fields if nessessary
-  if(s!=s_old) {
-      for(int i=0; i<data->dimI; i++) {
-          for(int j=0; j<data->dimJ; j++) {
-              s_new[i][j] = s_old[i][j];
-          }
-      }
-      tmp_ptr = s_old;
-      s_old = s_new;
-      s_new = tmp_ptr;
-  }
-
-  // free temp. memory (make sure you are not freeing memory s points to!)
-  freeGrid1Mem(data,s_new);
-
-  return true;
-}
-
-//------------------------------------------------------

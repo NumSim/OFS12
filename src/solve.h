@@ -24,10 +24,7 @@
 
 float fAbs(float x);
 bool solve(sData* data);
-bool jacobi(sData* data, double** s);
-bool gaussseidelMorphed(sData* data, double** s);
 bool gaussseidel(sData* data, double** s);
-bool thomas(sData* data, double** s);
 float myAbs(float x);
 
 #endif

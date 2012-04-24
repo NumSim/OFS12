@@ -7,8 +7,8 @@ hold off
 Z=load('../output/phi.dat');
 U=load('../output/u.dat');
 V=load('../output/v.dat');
-X=load('../output/phyGrid.meshX');
-Y=load('../output/phyGrid.meshY');
+X=load('../output/grid.x.dat');
+Y=load('../output/grid.y.dat');
 
 numberOfPoints = 10;
 Sz = ceil(length(Z)/numberOfPoints);
@@ -25,15 +25,11 @@ Sy = ceil(length(Y)/numberOfPoints);
 Z = Z(1:Sz:ZX,1:Sz:ZY);
 X = X(1:Sx:XX,1:Sx:XY);
 Y = Y(1:Sy:YX,1:Sy:YY);
-U = U(1:Su:UX,1:Su:VY);
+U = U(1:Su:UX,1:Su:UY);
 V = V(1:Sv:VX,1:Sv:VY);
 
 
 figure(1)
-Z(1,:)
-Z(:,1)
-Z(:,end)
-max(max(Z))
 mesh(X,Y,Z)
 xlabel('x');
 ylabel('y');

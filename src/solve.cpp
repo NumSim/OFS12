@@ -220,7 +220,7 @@ bool gaussseidel(sData* data, double** s)
 
 bool postprocessing(sData* data)
 {
-  std::cout << "\Postprocessing:\t------->\t";
+  std::cout << "Postprocessing:\t------->\t";
 
 
 

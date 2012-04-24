@@ -31,7 +31,7 @@ bool output(sData* data)
 
   showScalar(data, "phi.dat", data->s1);
 
-  if( !saveGrid(data, "output/phyGrid") ) { return false; }
+  if( !saveGrid(data, "output/grid") ) { return false; }
   if( !saveScalar(data, "output/phi.dat",data->s1) ){ return false; }
   if( !saveScalar(data, "output/u.dat",data->u) ){ return false; }
   if( !saveScalar(data, "output/v.dat",data->v) ){ return false; }
@@ -106,8 +106,8 @@ bool saveGrid(const sData* data, const char* gridName)
   char fileNameX[80], fileNameY[80];
 
   // save node-positions
-  sprintf(fileNameX,"%s.meshX",gridName);
-  sprintf(fileNameY,"%s.meshY",gridName);
+  sprintf(fileNameX,"%s.x.dat",gridName);
+  sprintf(fileNameY,"%s.y.dat",gridName);
   std::ofstream meshXFile(fileNameX);
   std::ofstream meshYFile(fileNameY);
   if(!meshXFile) { return false;	}

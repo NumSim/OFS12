@@ -30,7 +30,16 @@ bool setup(sData* data)
   std::cout << "\nSetup:\t------->\t";
 
   ///////////////////
-  // SETUP Xi Eta-GRID //
+  // SETUP U V     //
+  ///////////////////
+  for(int i=0; i<data->dimI; i++) {
+      for(int j=0; j<data->dimJ; j++) {
+          data->u[i][j] = 0;
+          data->v[i][j] = 0;
+      }
+  }
+  ///////////////////
+  // SETUP Xi Eta  //
   ///////////////////
   for(int i=0; i<data->dimI; i++) {
       for(int j=0; j<data->dimJ; j++) {
@@ -39,7 +48,7 @@ bool setup(sData* data)
       }
   }
   ///////////////////
-  // SETUP X Y-GRID //
+  // SETUP X Y     //
   ///////////////////
   for(int i=0; i<data->dimI; i++) {
       for(int j=0; j<data->dimJ; j++) {

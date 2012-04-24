@@ -217,3 +217,45 @@ bool gaussseidel(sData* data, double** s)
   return true;
 }
 
+
+bool postprocessing(sData* data)
+{
+  std::cout << "\Postprocessing:\t------->\t";
+
+
+
+  int N,M;
+  N=data->dimI;
+  M=data->dimJ;
+  double **dxiDx = new double*[N];
+  double **dxiDy = new double*[N];
+  double **detaDx = new double*[N];
+  double **detaDy = new double*[N];
+  double dphiDxi;
+  double dphiDeta;
+
+  for (int i=0;i<N;i++){
+      dxiDx[i] = new double[M];
+      dxiDy[i] = new double[M];
+      detaDx[i] = new double[M];
+      detaDy[i] = new double[M];
+
+  }
+  // Calculate derivatives
+  dxi(data,dxiDx,dxiDy);
+  deta(data,detaDx,detaDy);
+  for (int i=1;i<N-1;i++){
+      for (int j=1;j<M-1;j++)
+        {
+          dphiDxi = (data->s1[i+1][j]-data->s1[i-1][j])/(2*data->deltaXi);
+          dphiDeta = (data->s1[i][j+1]-data->s1[i][j-1])/(2*data->deltaEta);
+          data->u[i][j] = dphiDxi*dxiDx[i][j] + dphiDeta*detaDx[i][j];
+          data->v[i][j] = dphiDxi*dxiDy[i][j] + dphiDeta*detaDy[i][j];
+
+
+        }
+  }
+
+  std::cout << "Success!\n";
+  return true;
+}

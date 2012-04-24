@@ -57,6 +57,11 @@ int main(void)
       getchar();
       return 1;
   }
+  if(!postprocessing(data)){
+      std::cout << "Error while postprocessing...exiting";
+      getchar();
+      return 1;
+  }
 
   // output data
   if(!output(data)) {

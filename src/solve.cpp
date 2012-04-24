@@ -120,14 +120,8 @@ bool gaussseidelMorphed(sData* data, double** s)
 
   // Calculate beta for wall
   for (int i=1;i<data->dimI-1;i++){
-
-      beta[i][0] = (   dhDx[i][0]*dxiDx[i][0] - dxiDy[i][0]   )
-                              / (   dhDx[i][0]*detaDx[i][0]-detaDy[i][0]     )
-                              * deta1/dxi1;
-      beta[i][1] = (   dhDx[i][1]*dxiDx[i][data->dimJ-1] - dxiDy[i][data->dimJ-1]   )
-                              / (   dhDx[i][1]*detaDx[i][data->dimJ-1]-detaDy[i][data->dimJ-1]     )
-                              * deta1/dxi1;
-
+      beta[i][0] = (dhDx[i][0]*dxiDx[i][0]-dxiDy[i][0])/(dhDx[i][0]*detaDx[i][0]-detaDy[i][0])* deta1/dxi1;
+      beta[i][1] = (dhDx[i][1]*dxiDx[i][data->dimJ-1]-dxiDy[i][data->dimJ-1)/(dhDx[i][1]*detaDx[i][data->dimJ-1]-detaDy[i][data->dimJ-1])* deta1/dxi1;
   }
 
   // free memory
@@ -156,7 +150,7 @@ bool gaussseidelMorphed(sData* data, double** s)
 
   error = 0;
   while(curIter<data->maxIter) {
-      std::cout << "\r\tGauss-Seidel: Iteration " << ++curIter;
+      std::cout << "\r\tGauss-Seidel: Iteration " << ++curIter << ", Residual= " << error;
       error =0;
       for(int i = 1; i < data->dimI-1; i++)
         {

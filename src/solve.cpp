@@ -147,7 +147,10 @@ bool gaussseidelMorphed(sData* data, double** s)
   error = 0;
 
   while(curIter<data->maxIter) {
-      std::cout << "\r\tGauss-Seidel: Iteration " << ++curIter << ", Residual= " << error;
+      ++curIter;
+      if (curIter%1000==0){
+          std::cout << "\r\tGauss-Seidel: Iteration " << curIter << ", Residual= " << error;
+      }
       error =0;
       for(int i = 1; i < data->dimI-1; i++)
         {
@@ -205,11 +208,13 @@ bool gaussseidelMorphed(sData* data, double** s)
 
         }
       if(error < data->residuum){
+          std::cout << "\r\tFinal Gauss-Seidel: Iteration " << curIter << ", Residual= " << error;
           data->error =error;
           data->neededIter = curIter;
           return true;
       }
   }
+  std::cout << "\r\tFinal Gauss-Seidel: Iteration " << curIter << ", Residual= " << error;
   data->error =error;
   data->neededIter = curIter;
   return true;

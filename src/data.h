@@ -50,6 +50,8 @@ struct sData {
   double** eta;         // node position in eta - eta[i][j]
 
   double** s1;          // scalar value on node[i][j]
+  double** u;
+  double** v;
 
 
   // solver settings

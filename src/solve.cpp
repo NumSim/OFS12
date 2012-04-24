@@ -47,69 +47,64 @@ bool solve(sData* data)
 
 bool gaussseidelMorphed(sData* data, double** s)
 {
-  int curIter=0;
-  int N=data->dimI-2;
-  int M=data->dimJ-2;
-  double error;
-  float tmp;
-  double a1,a2,a3,a4,a5;
-  double dxi1, dxi2, deta1,deta2;
+
+  int N,M;
+  N=data->dimI;
+  M=data->dimJ;
+  double dxi1, dxi2, deta1,deta2,fdx;
   dxi1 = data->deltaXi;
   deta1 = data->deltaEta;
+  fdx = data->finiteDiffDx;
   dxi2 = dxi1*dxi1;
   deta2= deta1*deta1;
 
+  // allocate memory for derivatives & coeff
+  double ***alpha = new double**[N];
+  double **beta = new double*[N];
+  double **dxiDx = new double*[N];
+  double **dxiDy = new double*[N];
+  double **detaDx = new double*[N];
+  double **detaDy = new double*[N];
+  double **ddxiDDx = new double*[N];
+  double **ddxiDDy = new double*[N];
+  double **ddetaDDx = new double*[N];
+  double **ddetaDDy = new double*[N];
+  double **dhDx = new double*[N];
 
-  // allocate memory for derivatives
-  double ***alpha = new double**[N+2];
-  double **dxiDx = new double*[N+2];
-  double **dxiDy = new double*[N+2];
-  double **detaDx = new double*[N+2];
-  double **detaDy = new double*[N+2];
-  double **ddxiDDx = new double*[N+2];
-  double **ddxiDDy = new double*[N+2];
-  double **ddetaDDx = new double*[N+2];
-  double **ddetaDDy = new double*[N+2];
-  // for wall
-  double **beta = new double*[N+2];
-  double **dhDx = new double*[N+2];
-
-  for (int i=0;i<N+2;i++){
-      dxiDx[i] = new double[M+2];
-      dxiDy[i] = new double[M+2];
-      detaDx[i] = new double[M+2];
-      detaDy[i] = new double[M+2];
-      ddxiDDx[i] = new double[M+2];
-      ddxiDDy[i] = new double[M+2];
-      ddetaDDx[i] = new double[M+2];
-      ddetaDDy[i] = new double[M+2];
-      alpha[i] = new double* [M+2];
+  for (int i=0;i<N;i++){
+      dxiDx[i] = new double[M];
+      dxiDy[i] = new double[M];
+      detaDx[i] = new double[M];
+      detaDy[i] = new double[M];
+      ddxiDDx[i] = new double[M];
+      ddxiDDy[i] = new double[M];
+      ddetaDDx[i] = new double[M];
+      ddetaDDy[i] = new double[M];
+      alpha[i] = new double* [M];
       beta[i] = new double[2];
       dhDx[i] = new double[2];
   }
-  for (int i=0;i<N+2;i++){
-      for(int j=0;j<M+2;j++){
+
+  for (int i=0;i<N;i++){
+      for(int j=0;j<M;j++){
           alpha[i][j] = new double[5];
       }
   }
-
-
 
   // Calculate derivatives
   dxi(data,dxiDx,dxiDy);
   deta(data,detaDx,detaDy);
   ddxi(data,ddxiDDx,ddxiDDy);
   ddeta(data,ddetaDDx,ddetaDDy);
-  for (int i=0;i<N+2;i++){
-      dhDx[i][0] = (ybottomof(data->x[i][0]+data->finiteDiffDx,data->y[i][0]) -ybottomof(data->x[i][0]-data->finiteDiffDx,data->y[i][0])      )/(2*data->finiteDiffDx);
-      dhDx[i][1] = (ytopof(data->x[i][data->dimJ-1]+data->finiteDiffDx,data->y[i][data->dimJ-1]) -ytopof(data->x[i][data->dimJ-1]-data->finiteDiffDx,data->y[i][data->dimJ-1])      )/(2*data->finiteDiffDx);
+  for (int i=0;i<N;i++){
+      dhDx[i][0] = (ybottomof(data->x[i][0]+fdx,data->y[i][0]) -ybottomof(data->x[i][0]-fdx,data->y[i][0])      )/(2*fdx);
+      dhDx[i][1] = (ytopof(data->x[i][M-1]+fdx,data->y[i][M-1]) -ytopof(data->x[i][M-1]-fdx,data->y[i][M-1]))/(2*fdx);
   }
 
 
-
   // Calculate alpha for inside
-  for (int i=1;i<data->dimI-1;i++){
-      for(int j=1;j<data->dimJ-1;j++){
+  for (int i=1;i<N-1;i++){
+      for(int j=1;j<M-1;j++){
           alpha[i][j][0] = (dxiDx[i][j]*dxiDx[i][j]+dxiDy[i][j]*dxiDy[i][j] )/dxi2;
           alpha[i][j][1] = (detaDx[i][j]*detaDx[i][j]+detaDy[i][j]*detaDy[i][j] )/deta2;
           alpha[i][j][2] = 2.*(dxiDx[i][j]*detaDx[i][j]+dxiDy[i][j]*detaDy[i][j])/deta1/dxi1;
@@ -119,13 +114,13 @@ bool gaussseidelMorphed(sData* data, double** s)
   }
 
   // Calculate beta for wall
-  for (int i=1;i<data->dimI-1;i++){
+  for (int i=1;i<N-1;i++){
       beta[i][0] = (dhDx[i][0]*dxiDx[i][0]-dxiDy[i][0])/(dhDx[i][0]*detaDx[i][0]-detaDy[i][0])* deta1/dxi1;
-      beta[i][1] = (dhDx[i][1]*dxiDx[i][data->dimJ-1]-dxiDy[i][data->dimJ-1)/(dhDx[i][1]*detaDx[i][data->dimJ-1]-detaDy[i][data->dimJ-1])* deta1/dxi1;
+      beta[i][1] = (dhDx[i][1]*dxiDx[i][M-1]-dxiDy[i][M-1])/(dhDx[i][1]*detaDx[i][M-1]-detaDy[i][M-1])* deta1/dxi1;
   }
 
   // free memory
-  for (int i=0;i<N+2;i++){
+  for (int i=0;i<N;i++){
       delete[] dxiDx[i];
       delete[] dxiDy[i];
       delete[] detaDx[i];
@@ -146,9 +141,11 @@ bool gaussseidelMorphed(sData* data, double** s)
   delete[] ddetaDDy;
   delete[] dhDx;
 
-
-
+  // Iterate over spatial domain
+  int curIter=0;
+  double a1,a2,a3,a4,a5, error, tmp;
   error = 0;
+
   while(curIter<data->maxIter) {
       std::cout << "\r\tGauss-Seidel: Iteration " << ++curIter << ", Residual= " << error;
       error =0;

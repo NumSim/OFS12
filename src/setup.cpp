@@ -78,9 +78,9 @@ bool setup(sData* data)
       /* MORE COMPLEX CASE !! DONT USE !!*/
       //x = data->x[i][0] - 1.1f;
       //y = 0 - 0.5f;
-      data->s1[i][0] =20*data->deltaXi*i;//u_inf*(10-data->x[i][0])+v_inf*data->y[i][0];//u_inf*data->x[i][0] + Eover2PI * log((x*x+y*y))/2;
+      data->s1[i][0] =0;//20*data->deltaXi*i;//u_inf*(10-data->x[i][0])+v_inf*data->y[i][0];//u_inf*data->x[i][0] + Eover2PI * log((x*x+y*y))/2;
       //x = data->x[i][data->dimJ-1]- 1.1f;
-      data->s1[i][data->dimJ-1]=20*data->deltaXi*i;// u_inf*(10-data->x[i][data->dimJ-1]) +v_inf*data->y[i][data->dimJ-1];//+ Eover2PI * log((x*x+y*y))/2;
+      data->s1[i][data->dimJ-1]=0;//20*data->deltaXi*i;// u_inf*(10-data->x[i][data->dimJ-1]) +v_inf*data->y[i][data->dimJ-1];//+ Eover2PI * log((x*x+y*y))/2;
 
   }
   for(int j=0; j<data->dimJ; j++) {

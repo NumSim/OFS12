@@ -36,7 +36,7 @@ double xrightof(double xi, double eta){
   return 20;//+10*eta;//+sin(5*eta);//+5*eta+sin(10*eta);;//+cos(eta);
 }
 double ytopof(double xi, double eta){
-  //eturn 1+10*xi;//sin(xi);//+0.05*xi;
+  //return 1+10*xi;//sin(xi);//+0.05*xi;
 
   if (xi<3){
       return 5;
@@ -46,11 +46,26 @@ double ytopof(double xi, double eta){
       return 17;
   }
 
-  return 1+xi*xi;//+xi;//xi*xi+2+xi;
+  return 1+xi;
+/*
+  if (xi<10){
+      return 1+xi;
+  }else{
+      return 21-xi;
+  }
+*/
+  //return 1+xi*xi;//+xi;//xi*xi+2+xi;
   //return 10+(xi);//50+xi-5.0*sin(xi);//4+cos(xi);
 }
 double ybottomof(double xi, double eta){
   //return 10*xi;//sin(xi);//-0.05*xi;
+/*
+  if (xi<10){
+      return -xi;
+  }else{
+      return -20+xi;
+  }
+*/
 
  if (xi<3){
       return 0;
@@ -60,7 +75,7 @@ double ybottomof(double xi, double eta){
       return 12;
   }
 
-  return xi*xi;;//xi;//xi*xi+0.5*sin(xi)-4*xi;
+  return xi;;//xi;//xi*xi+0.5*sin(xi)-4*xi;
   //return (xi);
   //return (xi<5 ? 0 : -1);//-xi*xi/50.0+0.1*sin(5.0*xi);//-sin(xi);
 }

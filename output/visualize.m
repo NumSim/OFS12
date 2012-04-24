@@ -8,7 +8,7 @@ Z=load('../output/scalar.dat');
 X=load('../output/phyGrid.meshX');
 Y=load('../output/phyGrid.meshY');
 
-numberOfPoints = 30;
+numberOfPoints = 10;
 Sz = ceil(length(Z)/numberOfPoints);
 Sx = ceil(length(X)/numberOfPoints);
 Sy = ceil(length(Y)/numberOfPoints);

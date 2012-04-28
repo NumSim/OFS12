@@ -11,8 +11,8 @@
 CC            = gcc
 CXX           = g++
 DEFINES       = -DQT_WEBKIT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED
-CFLAGS        = -m64 -pipe -O2 -Wall -W -D_REENTRANT $(DEFINES)
-CXXFLAGS      = -m64 -pipe -O2 -Wall -W -D_REENTRANT $(DEFINES)
+CFLAGS        = -m64 -pipe -O2 -Wall -W -D_REENTRANT $(DEFINES) -fopenmp
+CXXFLAGS      = -m64 -pipe -O2 -Wall -W -D_REENTRANT $(DEFINES) -fopenmp
 INCPATH       = -I/usr/share/qt4/mkspecs/linux-g++-64 -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I. -Isrc -I.
 LINK          = g++
 LFLAGS        = -m64 -Wl,-O1
@@ -111,9 +111,10 @@ first: all
 all: Makefile $(TARGET)
 
 $(TARGET):  $(OBJECTS)  
-	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJCOMP) $(LIBS)
+	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJCOMP) $(LIBS) -fopenmp
 	mv *.o obj/
 	mv $(TARGET) run/
+	date
 
 Makefile: OFS.pro  /usr/share/qt4/mkspecs/linux-g++-64/qmake.conf /usr/share/qt4/mkspecs/common/unix.conf \
 		/usr/share/qt4/mkspecs/common/linux.conf \
@@ -209,7 +210,7 @@ compiler_moc_source_clean:
 compiler_uic_make_all:
 compiler_uic_clean:
 compiler_yacc_decl_make_all:
-compiler_yacc_decl_clean:
+compiler_yacc_decl_clean:	
 compiler_yacc_impl_make_all:
 compiler_yacc_impl_clean:
 compiler_lex_make_all:

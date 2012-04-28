@@ -26,5 +26,6 @@ bool output(sData* data);
 bool saveGrid(const sData* data, const char* gridName);
 void showScalar(const sData* data, const char* scalarName, double** s);
 bool saveScalar(const sData* data, const char* fileName, double** s);
+bool saveList(const sData* data, const char* fileName, std::list <double> s);
 
 #endif

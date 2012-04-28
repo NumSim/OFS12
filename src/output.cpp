@@ -35,6 +35,7 @@ bool output(sData* data)
   if( !saveScalar(data, "output/phi.dat",data->s1) ){ return false; }
   if( !saveScalar(data, "output/u.dat",data->u) ){ return false; }
   if( !saveScalar(data, "output/v.dat",data->v) ){ return false; }
+  if( !saveList(data, "output/errorLog.dat",data->errorLog) ){ return false; }
 
   std::cout << "Residual r = " << data->error << " reached, after " << data->neededIter << " iterations. \n";
 
@@ -94,6 +95,21 @@ bool saveScalar(const sData* data, const char* fileName, double** s)
           scalarFile << " "<< s[i][j];
       }
       scalarFile << std::endl;
+  }
+  scalarFile.close();
+
+  return true;
+}
+bool saveList(const sData* data, const char* fileName, std::list <double> s)
+{
+  // save node-solutions
+  std::ofstream scalarFile(fileName);
+  if(!scalarFile) { return false;       }
+  scalarFile.clear();
+  int N = s.size();
+  for (int i=0;i<N;i++){
+      scalarFile <<s.front() << std::endl;
+      s.pop_front();
   }
   scalarFile.close();
 

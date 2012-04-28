@@ -9,6 +9,7 @@
 #include <iostream>
 #include "transformation.h"
 #include "data.h"
+#include "solve.h"
 
 
 
@@ -33,11 +34,28 @@ double xleftof(double xi, double eta){
   return 0;
 }
 double xrightof(double xi, double eta){
-  return 20;//+10*eta;//+sin(5*eta);//+5*eta+sin(10*eta);;//+cos(eta);
+  return 3*3.14159+5;//+10*eta;//+sin(5*eta);//+5*eta+sin(10*eta);;//+cos(eta);
 }
 double ytopof(double xi, double eta){
   //return 1+10*xi;//sin(xi);//+0.05*xi;
+  /*
+  if(xi<5){
+    return 3;
+  }
+  else if (xi<10){
+    return(xi-5)*(xi-5)/5+3;
+  }else
+    return 8;
+    */
+  if (xi<2) {
+      return 3;
+  }else if(xi<3*3.14159+2){
+      return cos(xi-2)+2;
+  }else{
+      return 1;
+  }
 
+  /*
   if (xi<3){
       return 5;
   }else if(xi<15){
@@ -47,6 +65,7 @@ double ytopof(double xi, double eta){
   }
 
   return 1+xi;
+  */
 /*
   if (xi<10){
       return 1+xi;
@@ -66,7 +85,26 @@ double ybottomof(double xi, double eta){
       return -20+xi;
   }
 */
+  /*
+  if(xi<5){
+    return 0;
+  }
+  else if(xi<10){
+    return(xi-5)*(xi-5)/5+0;
+  }else{
+      return 5;
+  }
+  */
 
+  if (xi<2) {
+      return 1;
+  }else if(xi<3*3.14159+2){
+      return cos(xi-2)+0;
+  }else{
+      return -1;
+  }
+
+  /*
  if (xi<3){
       return 0;
   }else if(xi<15){
@@ -74,6 +112,7 @@ double ybottomof(double xi, double eta){
   }else{
       return 12;
   }
+  */
 
   return xi;;//xi;//xi*xi+0.5*sin(xi)-4*xi;
   //return (xi);

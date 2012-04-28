@@ -19,6 +19,7 @@
  ***************************************************************************/
 #include <math.h>
 #include <iostream>
+#include <omp.h>
 
 #include "solve.h"
 #include "data.h"
@@ -32,7 +33,7 @@ float fAbs(float x)
 //------------------------------------------------------
 bool solve(sData* data)
 {
-  std::cout << "\nSolve:\t------->\t";
+  std::cout << "\nSolve:\t------->\t \n";
 
   if(!gaussseidel(data,data->s1)){ return false; }
   std::cout << "Success!\n";
@@ -141,77 +142,70 @@ bool gaussseidel(sData* data, double** s)
   // Iterate over spatial domain
   int curIter=0;
   double a1,a2,a3,a4,a5, error, tmp;
-  error = 0;
+  error = 1337;
 
   while(curIter<data->maxIter) {
+
+
       ++curIter;
-      if (curIter%1000==0){
-          std::cout << "\r\tGauss-Seidel: Iteration " << curIter << ", Residual= " << error;
+      if (curIter%1000==0 ){
+          std::cout << "\tGauss-Seidel: Iteration " << curIter << ", Residual= " << error << std::endl;
+          data->errorLog.push_back(error);
       }
       error =0;
-      for(int i = 1; i < data->dimI-1; i++)
-        {
-          if ((i%2)==0 ){ // upwards
-              s[i][0] = (   beta[i][0]*(s[i+1][0]-s[i-1][0]) - s[i][2] + 4*s[i][1]     )/3;
-              for(int j = 1 ; j < data->dimJ-1; j++)
-                {
-                  a1 = alpha[i][j][0];
-                  a2 = alpha[i][j][1];
-                  a3 = alpha[i][j][2];
-                  a4 = alpha[i][j][3];
-                  a5 = alpha[i][j][4];
 
-                  tmp =        s[i+1][j+1]   * (a3/4.0)
-                                                         + s[i+1][j]     * (a1+a4/2.0)
-                                                         + s[i+1][j-1]   * (-a3/4.0)
-                                                         + s[i][j+1]     * (a2+a5/2.0)
-                                                         + s[i][j-1]     * (a2-a5/2.0)
-                                                         + s[i-1][j+1]   * (-a3/4.0)
-                                                         + s[i-1][j]     * (a1-a4/2.0)
-                                                         + s[i-1][j-1]   * (a3/4.0);
-                  tmp /=(2.0*(a1+a2));
-                  error += fAbs(tmp-s[i][j]);
-                  s[i][j] = tmp;
-                }
-              s[i][data->dimJ-1] = (   - beta[i][1]*(s[i+1][data->dimJ-1]-s[i-1][data->dimJ-1]) - s[i][data->dimJ-1-2] + 4*s[i][data->dimJ-1-1] )/3;
+      int i,tid, nthreads;
+      #pragma omp parallel shared(s) private(i,tid) reduction (+:error)
+      {
+        tid = omp_get_thread_num();
+        if (tid == 0)
+          {
+          nthreads = omp_get_num_threads();
           }
-          else{ //downwards
-              s[i][data->dimJ-1] = (   - beta[i][1]*(s[i+1][data->dimJ-1]-s[i-1][data->dimJ-1]) - s[i][data->dimJ-1-2] + 4*s[i][data->dimJ-1-1] )/3;
-              for(int j = data->dimJ-2 ; j >0; j--)
-                {
-                  a1 = alpha[i][j][0];
-                  a2 = alpha[i][j][1];
-                  a3 = alpha[i][j][2];
-                  a4 = alpha[i][j][3];
-                  a5 = alpha[i][j][4];
+    //    std::cout << 1+(tid*data->dimI-1)/2 << " <-from , to->" << (data->dimI-1)/2+ tid * (data->dimI)/2 << std::endl;
+     //   #pragma omp for
+    //    for( i = 1+(tid*(data->dimI-1))/2; i < (data->dimI-1)/2+ tid * (data->dimI)/2; i++)
 
-                  tmp =        s[i+1][j+1]   * (a3/4.0)
-                                                         + s[i+1][j]     * (a1+a4/2.0)
-                                                         + s[i+1][j-1]   * (-a3/4.0)
-                                                         + s[i][j+1]     * (a2+a5/2.0)
-                                                         + s[i][j-1]     * (a2-a5/2.0)
-                                                         + s[i-1][j+1]   * (-a3/4.0)
-                                                         + s[i-1][j]     * (a1-a4/2.0)
-                                                         + s[i-1][j-1]   * (a3/4.0);
-                  tmp /=(2.0*(a1+a2));
-                  error += fAbs(tmp-s[i][j]);
-                  s[i][j] = tmp;
-                }
-              s[i][0] = (   beta[i][0]*(s[i+1][0]-s[i-1][0]) - s[i][2] + 4*s[i][1]     )/3;
+        for (int i=1;i<data->dimI-1;i++)
+          {
+
+
+
+            s[i][0] = (   beta[i][0]*(s[i+1][0]-s[i-1][0]) - s[i][2] + 4*s[i][1]     )/3;
+
+            for(int j = 1 ; j < data->dimJ-1; j++)
+              {
+                a1 = alpha[i][j][0];
+                a2 = alpha[i][j][1];
+                a3 = alpha[i][j][2];
+                a4 = alpha[i][j][3];
+                a5 = alpha[i][j][4];
+
+                tmp = s[i+1][j+1]   * (a3/4.0)
+                    + s[i+1][j]     * (a1+a4/2.0)
+                    + s[i+1][j-1]   * (-a3/4.0)
+                    + s[i][j+1]     * (a2+a5/2.0)
+                    + s[i][j-1]     * (a2-a5/2.0)
+                    + s[i-1][j+1]   * (-a3/4.0)
+                    + s[i-1][j]     * (a1-a4/2.0)
+                    + s[i-1][j-1]   * (a3/4.0);
+                tmp /=(2.0*(a1+a2));
+                error += fAbs(tmp-s[i][j]);
+                s[i][j] = tmp;
+              }
+            s[i][data->dimJ-1] = (   - beta[i][1]*(s[i+1][data->dimJ-1]-s[i-1][data->dimJ-1]) - s[i][data->dimJ-1-2] + 4*s[i][data->dimJ-1-1] )/3;
+
+
           }
-
-
-
-
-        }
+      }
       if(error < data->residuum){
-          std::cout << "\r\tFinal Gauss-Seidel: Iteration " << curIter << ", Residual= " << error;
+          std::cout << "\tFinal Gauss-Seidel: Iteration " << curIter << ", Residual= " << error;
           data->error =error;
           data->neededIter = curIter;
           return true;
       }
   }
-  std::cout << "\r\tFinal Gauss-Seidel: Iteration " << curIter << ", Residual= " << error;
+  std::cout << "\tFinal Gauss-Seidel: Iteration " << curIter << ", Residual= " << error;
   data->error =error;
   data->neededIter = curIter;
   return true;

@@ -32,6 +32,7 @@ bool setup(sData* data)
   ///////////////////
   // SETUP U V     //
   ///////////////////
+
   for(int i=0; i<data->dimI; i++) {
       for(int j=0; j<data->dimJ; j++) {
           data->u[i][j] = 0;
@@ -64,7 +65,7 @@ bool setup(sData* data)
   // set whole field 's1' to start value
   for(int i=0; i<data->dimI; i++) {
       for(int j=0; j<data->dimJ; j++) {
-          data->s1[i][j] = 13.37;
+          data->s1[i][j] = 1.337; // educated guess
       }
   }
 
@@ -98,10 +99,10 @@ bool setup(sData* data)
       /* MORE COMPLEX CASE !! DONT USE !!*/
       //x = 0- 1.1f;
       //y = data->y[0][j] - 0.5f;
-      data->s1[0][j] = 0;//u_inf*(10-data->x[0][j])+v_inf*data->y[0][j]; //u_inf*0 + Eover2PI * log((x*x+y*y))/2;
+      data->s1[0][j] = 10;//u_inf*(10-data->x[0][j])+v_inf*data->y[0][j]; //u_inf*0 + Eover2PI * log((x*x+y*y))/2;
       //x = 0-1.1f;
       //y = data->y[data->dimI-1][j]- 0.5f;
-      data->s1[data->dimI-1][j]=20;// u_inf*(10-data->x[data->dimI-1][j])+v_inf*data->y[data->dimI-1][j];//u_inf*1.f +Eover2PI * log((pow(0.1,2)+y*y))/2;
+      data->s1[data->dimI-1][j]=0;// u_inf*(10-data->x[data->dimI-1][j])+v_inf*data->y[data->dimI-1][j];//u_inf*1.f +Eover2PI * log((pow(0.1,2)+y*y))/2;
 
   }
 

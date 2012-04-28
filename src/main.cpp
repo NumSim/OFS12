@@ -20,6 +20,7 @@
 #include <stdio.h>
 #include <iostream>
 
+
 #include "data.h"
 #include "input.h"
 #include "setup.h"
@@ -64,11 +65,13 @@ int main(void)
   }
 
   // output data
+
   if(!output(data)) {
       std::cout << "ERROR while data output...exiting";
       getchar();
       return 1;
   }
+
 
 
 

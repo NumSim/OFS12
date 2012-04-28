@@ -19,8 +19,9 @@
  ***************************************************************************/
 #ifndef DATA_H
 #define DATA_H
-
+#include <list>
 #include <limits>
+
 
 #define MIN(a,b) ( ((a)<(b)) ? (a):(b) )
 #define MAX(a,b) ( ((a)>(b)) ? (a):(b) )
@@ -52,9 +53,11 @@ struct sData {
   double** s1;          // scalar value on node[i][j]
   double** u;
   double** v;
+  double** p;
 
 
   // solver settings
+  std::list <double> errorLog;
   int maxIter;
   int neededIter;
   double residuum;

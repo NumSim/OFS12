@@ -65,7 +65,6 @@ int main(void)
   }
 
   // output data
-
   if(!output(data)) {
       std::cout << "ERROR while data output...exiting";
       getchar();

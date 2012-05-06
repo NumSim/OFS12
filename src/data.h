@@ -49,6 +49,9 @@ struct sData {
   double** y;		// node position in y - y[i][j]
   double** xi;          // node position in xi - xi[i][j]
   double** eta;         // node position in eta - eta[i][j]
+// for adaptive mesh in xi eta plane
+  double ** deltaXiAdaptive;
+  double ** deltaEtaAdaptive;
 
   double** s1;          // scalar value on node[i][j]
   double** u;

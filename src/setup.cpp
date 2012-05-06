@@ -23,6 +23,7 @@
 #include "data.h"
 #include "solve.h"
 #include "transformation.h"
+#include "adaptive.h"
 
 //------------------------------------------------------
 bool setup(sData* data)
@@ -40,12 +41,16 @@ bool setup(sData* data)
       }
   }
   ///////////////////
-  // SETUP Xi Eta  //
+  // SETUP Xi Eta  // // Now in Adaptive way
   ///////////////////
+  preprocessing(data);
   for(int i=0; i<data->dimI; i++) {
       for(int j=0; j<data->dimJ; j++) {
-          data->xi[i][j] = i*data->deltaXi;
-          data->eta[i][j] = j* data->deltaEta;
+          data->xi[i][j] = 0.0;
+          data->eta[i][j] =0.0;
+          for (int k=0;k<i;k++) data->xi[i][j] += data->deltaXiAdaptive[k][j];
+          for (int k=0;k<j;k++) data->eta[i][j] += data->deltaEtaAdaptive[i][k];
+
       }
   }
   ///////////////////

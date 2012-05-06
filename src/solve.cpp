@@ -19,8 +19,6 @@
  ***************************************************************************/
 #include <math.h>
 #include <iostream>
-#include <omp.h>
-
 #include "solve.h"
 #include "data.h"
 #include "setup.h"
@@ -55,9 +53,13 @@ bool gaussseidel(sData* data, double** s)
   fdx = data->finiteDiffDx;
   dxi2 = dxi1*dxi1;
   deta2= deta1*deta1;
+  double fac0,fac1,fac2,fac3,fac4,fac5,fac6,fac7,fac8;
+  double **dXiA = data->deltaXiAdaptive;
+  double **dEtaA = data->deltaEtaAdaptive;
 
   // allocate memory for derivatives & coeff
   double ***alpha = new double**[N];
+  double ***fac = new double**[N];
   double **beta = new double*[N];
   double **dxiDx = new double*[N];
   double **dxiDy = new double*[N];
@@ -79,6 +81,7 @@ bool gaussseidel(sData* data, double** s)
       ddetaDDx[i] = new double[M];
       ddetaDDy[i] = new double[M];
       alpha[i] = new double* [M];
+      fac[i] = new double* [M];
       beta[i] = new double[2];
       dhDx[i] = new double[2];
   }
@@ -86,6 +89,7 @@ bool gaussseidel(sData* data, double** s)
   for (int i=0;i<N;i++){
       for(int j=0;j<M;j++){
           alpha[i][j] = new double[5];
+          fac[i][j] = new double[9];
       }
   }
 
@@ -103,11 +107,33 @@ bool gaussseidel(sData* data, double** s)
   // Calculate alpha for inside
   for (int i=1;i<N-1;i++){
       for(int j=1;j<M-1;j++){
-          alpha[i][j][0] = (dxiDx[i][j]*dxiDx[i][j]+dxiDy[i][j]*dxiDy[i][j] )/dxi2;
-          alpha[i][j][1] = (detaDx[i][j]*detaDx[i][j]+detaDy[i][j]*detaDy[i][j] )/deta2;
-          alpha[i][j][2] = 2.*(dxiDx[i][j]*detaDx[i][j]+dxiDy[i][j]*detaDy[i][j])/deta1/dxi1;
-          alpha[i][j][3] = (ddxiDDx[i][j]+ddxiDDy[i][j])/dxi1;
-          alpha[i][j][4] = (ddetaDDx[i][j]+ddetaDDy[i][j])/deta1;
+          alpha[i][j][0] = (dxiDx[i][j]*dxiDx[i][j]+dxiDy[i][j]*dxiDy[i][j] );
+          alpha[i][j][1] = (detaDx[i][j]*detaDx[i][j]+detaDy[i][j]*detaDy[i][j] );
+          alpha[i][j][2] = 2.*(dxiDx[i][j]*detaDx[i][j]+dxiDy[i][j]*detaDy[i][j]);
+          alpha[i][j][3] = (ddxiDDx[i][j]+ddxiDDy[i][j]);
+          alpha[i][j][4] = (ddetaDDx[i][j]+ddetaDDy[i][j]);
+      }
+  }
+
+  double a1,a2,a3,a4,a5, error, tmp;
+
+
+  for (int i=1;i<N-1;i++){
+      for (int j=1;j<M-1;j++){
+          a1 = alpha[i][j][0];
+          a2 = alpha[i][j][1];
+          a3 = alpha[i][j][2];
+          a4 = alpha[i][j][3];
+          a5 = alpha[i][j][4];
+          fac[i][j][0] = a1*2/(dXiA[i][j]*dXiA[i-1][j])+a2*2/(dEtaA[i][j]*dEtaA[i-1][j]);
+          fac[i][j][1] = a3 /(dXiA[i][j]+dXiA[i-1][j])/(dEtaA[i][j]+dEtaA[i][j-1]);
+          fac[i][j][2] = a1 *2/( dXiA[i][j]*dXiA[i][j]+dXiA[i-1][j]*dXiA[i][j]) + a4 /(dXiA[i][j]+dXiA[i-1][j]);
+          fac[i][j][3] = -a3 /(dXiA[i][j]+dXiA[i-1][j]) / (dEtaA[i][j]+dEtaA[i][j-1]);
+          fac[i][j][4] = a2 *2/(dEtaA[i][j]*dEtaA[i][j]+dEtaA[i][j-1]*dEtaA[i][j]) + a5 /(dEtaA[i][j]+dEtaA[i][j-1]);
+          fac[i][j][5] = a2 *2/(dEtaA[i][j-1]*dEtaA[i][j-1]+dEtaA[i][j-1]*dEtaA[i][j]) - a5 /(dEtaA[i][j]+dEtaA[i][j-1]);
+          fac[i][j][6] = -a3/(dXiA[i][j]+dXiA[i-1][j])/(dEtaA[i][j]+dEtaA[i][j-1]);
+          fac[i][j][7]= a1 *2/(dXiA[i-1][j]*dXiA[i-1][j]+dXiA[i-1][j]*dXiA[i][j]) - a4 /(dXiA[i][j]+dXiA[i-1][j]);
+          fac[i][j][8] = a3 /(dXiA[i][j]+dXiA[i-1][j]) / (dEtaA[i][j]+dEtaA[i][j-1]);
       }
   }
 
@@ -119,6 +145,11 @@ bool gaussseidel(sData* data, double** s)
 
   // free memory
   for (int i=0;i<N;i++){
+      for (int j=0;j<M;j++){
+          delete[] alpha[i][j];
+      }
+  }
+  for (int i=0;i<N;i++){
       delete[] dxiDx[i];
       delete[] dxiDy[i];
       delete[] detaDx[i];
@@ -128,7 +159,9 @@ bool gaussseidel(sData* data, double** s)
       delete[] ddetaDDx[i];
       delete[] ddetaDDy[i];
       delete[] dhDx[i];
+      delete[] alpha[i];
   }
+
   delete[] dxiDx;
   delete[] dxiDy;
   delete[] detaDx;
@@ -138,11 +171,12 @@ bool gaussseidel(sData* data, double** s)
   delete[] ddetaDDx;
   delete[] ddetaDDy;
   delete[] dhDx;
+  delete[] alpha;
 
   // Iterate over spatial domain
   int curIter=0;
-  double a1,a2,a3,a4,a5, error, tmp;
-  error = 1337;
+
+  error =9999      ; // Just to avoid a segfault in first printing of error
 
   while(curIter<data->maxIter) {
 
@@ -153,57 +187,51 @@ bool gaussseidel(sData* data, double** s)
           data->errorLog.push_back(error);
       }
       error =0;
-
-      int i,tid, nthreads;
-      #pragma omp parallel shared(s) private(i,tid) reduction (+:error)
-      {
-        tid = omp_get_thread_num();
-        if (tid == 0)
-          {
-          nthreads = omp_get_num_threads();
-          }
-    //    std::cout << 1+(tid*data->dimI-1)/2 << " <-from , to->" << (data->dimI-1)/2+ tid * (data->dimI)/2 << std::endl;
-     //   #pragma omp for
-    //    for( i = 1+(tid*(data->dimI-1))/2; i < (data->dimI-1)/2+ tid * (data->dimI)/2; i++)
-
-        for (int i=1;i<data->dimI-1;i++)
-          {
+      for (int i=1;i<data->dimI-1;i++)
+        {
 
 
 
-            s[i][0] = (   beta[i][0]*(s[i+1][0]-s[i-1][0]) - s[i][2] + 4*s[i][1]     )/3;
+          s[i][0] = (   beta[i][0]*(s[i+1][0]-s[i-1][0]) - s[i][2] + 4*s[i][1]     )/3;
 
-            for(int j = 1 ; j < data->dimJ-1; j++)
-              {
-                a1 = alpha[i][j][0];
-                a2 = alpha[i][j][1];
-                a3 = alpha[i][j][2];
-                a4 = alpha[i][j][3];
-                a5 = alpha[i][j][4];
-
-                tmp = s[i+1][j+1]   * (a3/4.0)
-                    + s[i+1][j]     * (a1+a4/2.0)
-                    + s[i+1][j-1]   * (-a3/4.0)
-                    + s[i][j+1]     * (a2+a5/2.0)
-                    + s[i][j-1]     * (a2-a5/2.0)
-                    + s[i-1][j+1]   * (-a3/4.0)
-                    + s[i-1][j]     * (a1-a4/2.0)
-                    + s[i-1][j-1]   * (a3/4.0);
-                tmp /=(2.0*(a1+a2));
-                error += fAbs(tmp-s[i][j]);
-                s[i][j] = tmp;
-              }
-            s[i][data->dimJ-1] = (   - beta[i][1]*(s[i+1][data->dimJ-1]-s[i-1][data->dimJ-1]) - s[i][data->dimJ-1-2] + 4*s[i][data->dimJ-1-1] )/3;
+          for(int j = 1 ; j < data->dimJ-1; j++)
+            {
+              fac0 = fac[i][j][0];
+              fac1 = fac[i][j][1];
+              fac2 = fac[i][j][2];
+              fac3 = fac[i][j][3];
+              fac4 = fac[i][j][4];
+              fac5 = fac[i][j][5];
+              fac6 = fac[i][j][6];
+              fac7 = fac[i][j][7];
+              fac8 = fac[i][j][8];
 
 
-          }
-      }
+              tmp = s[i+1][j+1]   * fac1
+                  + s[i+1][j]     * fac2
+                  + s[i+1][j-1]   * fac3
+                  + s[i][j+1]     * fac4
+                  + s[i][j-1]     * fac5
+                  + s[i-1][j+1]   * fac6
+                  + s[i-1][j]     * fac7
+                  + s[i-1][j-1]   * fac8;
+
+
+              tmp /=fac0;
+              error += fAbs(tmp-s[i][j]);
+              s[i][j] = tmp;
+            }
+          s[i][data->dimJ-1] = (   - beta[i][1]*(s[i+1][data->dimJ-1]-s[i-1][data->dimJ-1]) - s[i][data->dimJ-1-2] + 4*s[i][data->dimJ-1-1] )/3;
+
+
+        }
       if(error < data->residuum){
           std::cout << "\tFinal Gauss-Seidel: Iteration " << curIter << ", Residual= " << error;
           data->error =error;
           data->neededIter = curIter;
           return true;
       }
+
   }
   std::cout << "\tFinal Gauss-Seidel: Iteration " << curIter << ", Residual= " << error;
   data->error =error;
@@ -241,10 +269,10 @@ bool postprocessing(sData* data)
   for (int i=1;i<N-1;i++){
       for (int j=1;j<M-1;j++)
         {
-          dphiDxi = (data->s1[i+1][j]-data->s1[i-1][j])/(2*data->deltaXi);
-          dphiDeta = (data->s1[i][j+1]-data->s1[i][j-1])/(2*data->deltaEta);
-          data->u[i][j] = dphiDxi*dxiDx[i][j] + dphiDeta*detaDx[i][j];
-          data->v[i][j] = dphiDxi*dxiDy[i][j] + dphiDeta*detaDy[i][j];
+          dphiDxi = (data->s1[i+1][j]-data->s1[i-1][j])/(data->deltaXiAdaptive[i][j]+data->deltaXiAdaptive[i-1][j]);
+          dphiDeta = (data->s1[i][j+1]-data->s1[i][j-1])/(data->deltaEtaAdaptive[i][j]+data->deltaEtaAdaptive[i][j-1]);
+          data->u[i][j] = dphiDxi;//dphiDxi*dxiDx[i][j] + dphiDeta*detaDx[i][j];
+          data->v[i][j] = dphiDeta;//dphiDxi*dxiDy[i][j] + dphiDeta*detaDy[i][j];
 
 
         }

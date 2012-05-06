@@ -1,1 +1,4 @@
 # left and right boundary can only be constant
+
+# does one need the adaptive steps for the derivatives in trafo.cpp ?  I don't think so.
+# should be a property of solve.cpp only

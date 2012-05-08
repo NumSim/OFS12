@@ -34,7 +34,7 @@ int main(void)
   int errLine = 0;
 
   std::cout << "\tSimulationstechnik V \n\t====================\n";
-  cfgFilePath = (char*)"run/cfg.txt";
+  cfgFilePath = (char*)"cfg.txt";
 
   // read config from input file
   if(!input(cfgFilePath,data, errLine)) {

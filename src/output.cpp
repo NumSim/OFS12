@@ -31,10 +31,10 @@ bool output(sData* data)
 
   showScalar(data, "phi.dat", data->s1);
 
-  if( !saveGrid(data, "output/grid") ) { return false; }
-  if( !saveScalar(data, "output/phi.dat",data->s1) ){ return false; }
-  if( !saveScalar(data, "output/u.dat",data->u) ){ return false; }
-  if( !saveScalar(data, "output/v.dat",data->v) ){ return false; }
+  if( !saveGrid(data, "../output/grid") ) { return false; }
+  if( !saveScalar(data, "../output/phi.dat",data->s1) ){ return false; }
+  if( !saveScalar(data, "../output/u.dat",data->u) ){ return false; }
+  if( !saveScalar(data, "../output/v.dat",data->v) ){ return false; }
 
   std::cout << "Residual r = " << data->error << " reached, after " << data->neededIter << " iterations. \n";
 

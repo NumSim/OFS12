@@ -47,6 +47,8 @@ bool setup(sData* data)
           data->eta[i][j] = j* data->deltaEta;
       }
   }
+
+
   ///////////////////
   // SETUP X Y     //
   ///////////////////
@@ -61,48 +63,34 @@ bool setup(sData* data)
   /////////////////////////////////
   // SETUP INITIAL SCALAR VALUES //
   /////////////////////////////////
-  // set whole field 's1' to start value
   for(int i=0; i<data->dimI; i++) {
       for(int j=0; j<data->dimJ; j++) {
-          data->s1[i][j] = 13.37;
+          data->phi[i][j] = 1.337;
+          data->psi[i][j] = 1.337;
       }
   }
+
 
   //////////////////////////////////
   // SETUP BOUNDARY SCALAR VALUES //
   //////////////////////////////////
-
-  /* MORE COMPLEX CASE !! DONT USE !!*/
-  /* float Eover2PI = 1;
-  float x =0;
-  float y = 0; */
-  //float u_inf =0;
-  //float v_inf =0.;
-
-
-
+  // PHI
   for(int i=0; i<data->dimI; i++) {
-      //data->s1[i][0] = 1;
-      //data->s1[i][data->dimJ-1] = 1;
-      /* MORE COMPLEX CASE !! DONT USE !!*/
-      //x = data->x[i][0] - 1.1f;
-      //y = 0 - 0.5f;
-      data->s1[i][0] =0;//20*data->deltaXi*i;//u_inf*(10-data->x[i][0])+v_inf*data->y[i][0];//u_inf*data->x[i][0] + Eover2PI * log((x*x+y*y))/2;
-      //x = data->x[i][data->dimJ-1]- 1.1f;
-      data->s1[i][data->dimJ-1]=0;//20*data->deltaXi*i;// u_inf*(10-data->x[i][data->dimJ-1]) +v_inf*data->y[i][data->dimJ-1];//+ Eover2PI * log((x*x+y*y))/2;
-
+      data->phi[i][0] =0;
+      data->phi[i][data->dimJ-1]=0;
   }
   for(int j=0; j<data->dimJ; j++) {
-      //data->s1[0][j] = 1;
-      //data->s1[data->dimI-1][j] = 1;
-      /* MORE COMPLEX CASE !! DONT USE !!*/
-      //x = 0- 1.1f;
-      //y = data->y[0][j] - 0.5f;
-      data->s1[0][j] = 0;//u_inf*(10-data->x[0][j])+v_inf*data->y[0][j]; //u_inf*0 + Eover2PI * log((x*x+y*y))/2;
-      //x = 0-1.1f;
-      //y = data->y[data->dimI-1][j]- 0.5f;
-      data->s1[data->dimI-1][j]=20;// u_inf*(10-data->x[data->dimI-1][j])+v_inf*data->y[data->dimI-1][j];//u_inf*1.f +Eover2PI * log((pow(0.1,2)+y*y))/2;
-
+      data->phi[0][j] = 2;
+      data->phi[data->dimI-1][j]=0;
+  }
+  // PSI
+  for(int i=0; i<data->dimI; i++) {
+      data->psi[i][0] =0;
+      data->psi[i][data->dimJ-1]=2;
+  }
+  for(int j=0; j<data->dimJ; j++) {
+      data->psi[0][j] = 2.0*j/(data->dimJ-1);
+      data->psi[data->dimI-1][j]=2.0*j/(data->dimJ-1);
   }
 
   std::cout << "Success!\n";

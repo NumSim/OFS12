@@ -49,7 +49,8 @@ struct sData {
   double** xi;          // node position in xi - xi[i][j]
   double** eta;         // node position in eta - eta[i][j]
 
-  double** s1;          // scalar value on node[i][j]
+  double** phi;         // scalar value on node[i][j]
+  double** psi;
   double** u;
   double** v;
 

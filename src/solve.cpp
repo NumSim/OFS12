@@ -34,7 +34,7 @@ bool solve(sData* data)
 {
   std::cout << "\nSolve:\t------->\t";
 
-  if(!gaussseidel(data,data->s1)){ return false; }
+  if(!gaussseidel(data,data->phi,data->psi)){ return false; }
   std::cout << "Success!\n";
   return true;
 }
@@ -42,7 +42,7 @@ bool solve(sData* data)
 //------------------------------------------------------
 
 
-bool gaussseidel(sData* data, double** s)
+bool gaussseidel(sData* data, double** phi,double** psi)
 {
 
   int N,M;
@@ -140,65 +140,63 @@ bool gaussseidel(sData* data, double** s)
 
   // Iterate over spatial domain
   int curIter=0;
-  double a1,a2,a3,a4,a5, error, tmp;
+  double a1,a2,a3,a4,a5, error,errorPsi,errorPhi, tmp;
+  errorPsi = 0;
+  errorPhi = 0;
   error = 0;
-
   while(curIter<data->maxIter) {
       ++curIter;
       if (curIter%1000==0){
           std::cout << "\r\tGauss-Seidel: Iteration " << curIter << ", Residual= " << error;
       }
       error =0;
+      errorPsi = 0;
+      errorPhi = 0;
       for(int i = 1; i < data->dimI-1; i++)
         {
-          if ((i%2)==0 ){ // upwards
-              s[i][0] = (   beta[i][0]*(s[i+1][0]-s[i-1][0]) - s[i][2] + 4*s[i][1]     )/3;
-              for(int j = 1 ; j < data->dimJ-1; j++)
-                {
-                  a1 = alpha[i][j][0];
-                  a2 = alpha[i][j][1];
-                  a3 = alpha[i][j][2];
-                  a4 = alpha[i][j][3];
-                  a5 = alpha[i][j][4];
 
-                  tmp =        s[i+1][j+1]   * (a3/4.0)
-                                                         + s[i+1][j]     * (a1+a4/2.0)
-                                                         + s[i+1][j-1]   * (-a3/4.0)
-                                                         + s[i][j+1]     * (a2+a5/2.0)
-                                                         + s[i][j-1]     * (a2-a5/2.0)
-                                                         + s[i-1][j+1]   * (-a3/4.0)
-                                                         + s[i-1][j]     * (a1-a4/2.0)
-                                                         + s[i-1][j-1]   * (a3/4.0);
-                  tmp /=(2.0*(a1+a2));
-                  error += fAbs(tmp-s[i][j]);
-                  s[i][j] = tmp;
-                }
-              s[i][data->dimJ-1] = (   - beta[i][1]*(s[i+1][data->dimJ-1]-s[i-1][data->dimJ-1]) - s[i][data->dimJ-1-2] + 4*s[i][data->dimJ-1-1] )/3;
-          }
-          else{ //downwards
-              s[i][data->dimJ-1] = (   - beta[i][1]*(s[i+1][data->dimJ-1]-s[i-1][data->dimJ-1]) - s[i][data->dimJ-1-2] + 4*s[i][data->dimJ-1-1] )/3;
-              for(int j = data->dimJ-2 ; j >0; j--)
-                {
-                  a1 = alpha[i][j][0];
-                  a2 = alpha[i][j][1];
-                  a3 = alpha[i][j][2];
-                  a4 = alpha[i][j][3];
-                  a5 = alpha[i][j][4];
+          phi[i][0] = (   beta[i][0]*(phi[i+1][0]-phi[i-1][0]) - phi[i][2] + 4*phi[i][1]     )/3;
+          phi[i][data->dimJ-1] = (   - beta[i][1]*(phi[i+1][data->dimJ-1]-phi[i-1][data->dimJ-1]) - phi[i][data->dimJ-1-2] + 4*phi[i][data->dimJ-1-1] )/3;
+         // psi[i][0] = (   beta[i][0]*(psi[i+1][0]-psi[i-1][0]) - psi[i][2] + 4*psi[i][1]     )/3;
+          for(int j = 1 ; j < data->dimJ-1; j++)
+            {
+              a1 = alpha[i][j][0];
+              a2 = alpha[i][j][1];
+              a3 = alpha[i][j][2];
+              a4 = alpha[i][j][3];
+              a5 = alpha[i][j][4];
 
-                  tmp =        s[i+1][j+1]   * (a3/4.0)
-                                                         + s[i+1][j]     * (a1+a4/2.0)
-                                                         + s[i+1][j-1]   * (-a3/4.0)
-                                                         + s[i][j+1]     * (a2+a5/2.0)
-                                                         + s[i][j-1]     * (a2-a5/2.0)
-                                                         + s[i-1][j+1]   * (-a3/4.0)
-                                                         + s[i-1][j]     * (a1-a4/2.0)
-                                                         + s[i-1][j-1]   * (a3/4.0);
-                  tmp /=(2.0*(a1+a2));
-                  error += fAbs(tmp-s[i][j]);
-                  s[i][j] = tmp;
-                }
-              s[i][0] = (   beta[i][0]*(s[i+1][0]-s[i-1][0]) - s[i][2] + 4*s[i][1]     )/3;
-          }
+              tmp =        phi[i+1][j+1]   * (a3/4.0)
+                                                             + phi[i+1][j]     * (a1+a4/2.0)
+                                                             + phi[i+1][j-1]   * (-a3/4.0)
+                                                             + phi[i][j+1]     * (a2+a5/2.0)
+                                                             + phi[i][j-1]     * (a2-a5/2.0)
+                                                             + phi[i-1][j+1]   * (-a3/4.0)
+                                                             + phi[i-1][j]     * (a1-a4/2.0)
+                                                             + phi[i-1][j-1]   * (a3/4.0);
+
+              tmp /=(2.0*(a1+a2));
+              errorPhi += fAbs(tmp-phi[i][j]);
+              phi[i][j] = tmp;
+              tmp =        psi[i+1][j+1]   * (a3/4.0)
+                                                             + psi[i+1][j]     * (a1+a4/2.0)
+                                                             + psi[i+1][j-1]   * (-a3/4.0)
+                                                             + psi[i][j+1]     * (a2+a5/2.0)
+                                                             + psi[i][j-1]     * (a2-a5/2.0)
+                                                             + psi[i-1][j+1]   * (-a3/4.0)
+                                                             + psi[i-1][j]     * (a1-a4/2.0)
+                                                             + psi[i-1][j-1]   * (a3/4.0);
+
+              tmp /=(2.0*(a1+a2));
+              errorPsi += fAbs(tmp-psi[i][j]);
+              psi[i][j] = tmp;
+
+
+              error = (errorPsi>errorPhi)? errorPsi : errorPhi;
+            }
+
+        //  psi[i][data->dimJ-1] = (   - beta[i][1]*(psi[i+1][data->dimJ-1]-psi[i-1][data->dimJ-1]) - psi[i][data->dimJ-1-2] + 4*phi[i][data->dimJ-1-1] )/3;
+
 
 
 
@@ -247,8 +245,8 @@ bool postprocessing(sData* data)
   for (int i=1;i<N-1;i++){
       for (int j=1;j<M-1;j++)
         {
-          dphiDxi = (data->s1[i+1][j]-data->s1[i-1][j])/(2*data->deltaXi);
-          dphiDeta = (data->s1[i][j+1]-data->s1[i][j-1])/(2*data->deltaEta);
+          dphiDxi = (data->phi[i+1][j]-data->phi[i-1][j])/(2*data->deltaXi);
+          dphiDeta = (data->phi[i][j+1]-data->phi[i][j-1])/(2*data->deltaEta);
           data->u[i][j] = dphiDxi*dxiDx[i][j] + dphiDeta*detaDx[i][j];
           data->v[i][j] = dphiDxi*dxiDy[i][j] + dphiDeta*detaDy[i][j];
 

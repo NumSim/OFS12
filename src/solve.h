@@ -24,7 +24,7 @@
 
 float fAbs(float x);
 bool solve(sData* data);
-bool gaussseidel(sData* data, double** s);
+bool gaussseidel(sData* data, double** phi,double** psi);
 float myAbs(float x);
 bool postprocessing(sData* data);
 

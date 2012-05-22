@@ -69,8 +69,8 @@ bool input(const char* cfgFilePath, sData* data, int &errLine)
       }
   }
   cfgFile.close();
-  data->deltaEta= 1.0/(data->dimJ+1);
-  data->deltaXi = 1.0/(data->dimI+1);
+  data->deltaEta= 1.0/(data->dimJ-1);
+  data->deltaXi = 1.0/(data->dimI-1);
   data->x       = allocGrid1Mem(data, MAXDOUBLE);
   data->y       = allocGrid1Mem(data, MAXDOUBLE);
   data->phi      = allocGrid1Mem(data, MAXDOUBLE);

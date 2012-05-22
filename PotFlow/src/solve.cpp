@@ -95,7 +95,7 @@ bool gaussseidel(sData* data, double** phi,double** psi)
   ddeta(data,ddetaDDx,ddetaDDy);
   for (int i=0;i<N;i++){
       dhDx[i][0] = (ybottomof(data->x[i][0]+fdx,data->y[i][0]) -ybottomof(data->x[i][0]-fdx,data->y[i][0])      )/(2*fdx);
-      dhDx[i][1] = (ytopof(data->x[i][M-1]+fdx,data->y[i][M-1]) -ytopof(data->x[i][M-1]-fdx,data->y[i][M-1]))/(2*fdx);
+      dhDx[i][1] = (ytopof(data->x[i][M-1]+fdx,data->y[i][M-1])-ytopof(data->x[i][M-1]-fdx,data->y[i][M-1]))/(2*fdx);
   }
 
 
@@ -152,12 +152,14 @@ bool gaussseidel(sData* data, double** phi,double** psi)
       error =0;
       errorPsi = 0;
       errorPhi = 0;
+
       for(int i = 1; i < data->dimI-1; i++)
         {
 
           phi[i][0] = (   beta[i][0]*(phi[i+1][0]-phi[i-1][0]) - phi[i][2] + 4*phi[i][1]     )/3;
           phi[i][data->dimJ-1] = (   - beta[i][1]*(phi[i+1][data->dimJ-1]-phi[i-1][data->dimJ-1]) - phi[i][data->dimJ-1-2] + 4*phi[i][data->dimJ-1-1] )/3;
-         // psi[i][0] = (   beta[i][0]*(psi[i+1][0]-psi[i-1][0]) - psi[i][2] + 4*psi[i][1]     )/3;
+
+
           for(int j = 1 ; j < data->dimJ-1; j++)
             {
               a1 = alpha[i][j][0];
@@ -193,10 +195,8 @@ bool gaussseidel(sData* data, double** phi,double** psi)
 
 
               error = (errorPsi>errorPhi)? errorPsi : errorPhi;
+
             }
-
-        //  psi[i][data->dimJ-1] = (   - beta[i][1]*(psi[i+1][data->dimJ-1]-psi[i-1][data->dimJ-1]) - psi[i][data->dimJ-1-2] + 4*phi[i][data->dimJ-1-1] )/3;
-
 
 
 

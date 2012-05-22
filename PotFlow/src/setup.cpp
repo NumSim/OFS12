@@ -53,7 +53,13 @@ bool setup(sData* data)
   // SETUP X Y     //
   ///////////////////
   for(int i=0; i<data->dimI; i++) {
-      for(int j=0; j<data->dimJ; j++) {
+    /*  data->x[i][0] = xof(data->xi[i][0],0);
+      data->x[i][data->dimJ-1] = xof(data->xi[i][data->dimJ-1],1);
+
+      data->y[i][0] = yof(data->x[i][0],0);
+      data->y[i][data->dimJ-1] = yof(data->x[i][data->dimJ-1],1);
+*/
+      for(int j=0/*1*/; j<data->dimJ/*-1*/; j++) {
           data->x[i][j] = xof(data->xi[i][j],data->eta[i][j]);
           data->y[i][j] = yof(data->x[i][j],data->eta[i][j]);
       }

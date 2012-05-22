@@ -1,7 +1,7 @@
-dimI			31
-dimJ			31
+dimI			51
+dimJ			22
 
-maxIter			1000000
+maxIter			200000
 residuum		1.0E-6
 overrelax		1.0
 finiteDiffDx 	1.0E-5

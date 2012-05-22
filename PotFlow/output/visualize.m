@@ -13,7 +13,7 @@ V=load('../output/v.dat');
 X=load('../output/grid.x.dat');
 Y=load('../output/grid.y.dat');
 
-numberOfPoints = 70;
+numberOfPoints = 50;
 Sz = ceil(length(PHI)/numberOfPoints);
 Su = ceil(length(U)/numberOfPoints);
 Sv = ceil(length(V)/numberOfPoints);
@@ -32,18 +32,21 @@ X = X(1:Sx:XX,1:Sx:XY);
 Y = Y(1:Sy:YX,1:Sy:YY);
 U = U(1:Su:UX,1:Su:UY);
 V = V(1:Sv:VX,1:Sv:VY);
-
-
+ 
+ 
 % figure(1)
 % mesh(X,Y,PHI)
 % xlabel('x');
 % ylabel('y');
 % zlabel('z');
+scale = 50;
+figure('Position',[100,900,scale*(max(max(X))-min(min(X))),scale*(max(max(Y))-min(min(Y)))])
+close 1
 
-scale = 100;
-figure('Position',[100,100,scale*(max(max(X))-min(min(X))),scale*(max(max(Y))-min(min(Y)))])
+contour(X,Y,PHI,100);
+hold on
+contour(X,Y,PSI,50)
 
-contour(X,Y,PHI,50)
 xlabel('x');
 ylabel('y');
 zlabel('z');
@@ -51,20 +54,22 @@ zlabel('z');
 % figure(3)
 %quiver(X,Y,U,V);
 
-%figure(5)
-hold on
+
 %figure(1)
-contour(X,Y,PSI,30)
-xlabel('x');
-ylabel('y');
-zlabel('z');
+
+% Y
+% 
+% 
+% xlabel('x');
+% ylabel('y');
+% zlabel('z');
 
 % figure(4)
 % mesh(PHI)
 % xlabel('x');
 % ylabel('y');
 % zlabel('z');
-close 1
+
 
 
 

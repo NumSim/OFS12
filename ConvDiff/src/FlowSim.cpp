@@ -30,9 +30,9 @@
 int main(int, char**)
 {
     sData* data = new sData;
-    const char* cfgFilePath  = "data.cfg";
-    const char* faceFilePath = "faces.cfg";
-    const char* cellFilePath = "cells.cfg";
+    const char* cfgFilePath  = "run/data.cfg";
+    const char* faceFilePath = "run/faces.cfg";
+    const char* cellFilePath = "run/cells.cfg";
 
     std::cout << "\t Simulationstechnik V\n"
             << "\t====== FlowSim ======\n";

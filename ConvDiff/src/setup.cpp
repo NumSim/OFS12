@@ -29,49 +29,59 @@
 //------------------------------------------------------
 bool setup(sData* data)
 {
-    sCell* curCell=0;
-    sFace* curFace=0;
+  sCell* curCell=0;
+  sFace* curFace=0;
 
-    ////////////////////////
-    // SET FACE VELOCITY  //
-    ////////////////////////
-    for(int fId=0; fId<data->faceNo; fId++) {
-        curFace=&data->faces[fId];
+  ////////////////////////
+  // SET FACE VELOCITY  //
+  ////////////////////////
+  for(int fId=0; fId<data->faceNo; fId++) {
+      curFace=&data->faces[fId];
+      curFace->uv[0] = 1;
+      curFace->uv[1] = 0;
+  }
 
-        // TODO
-    }
+  /////////////////////
+  // SET CELL VOLUME //
+  /////////////////////
+  for(int cId=0; cId<data->cellNo; cId++) {
+      curCell=&data->cells[cId];
+      curCell->volume = ABS(curCell->cFaces[NORTH]->deltaxy[0]*
+          curCell->cFaces[WEST]->deltaxy[1]);
 
-    /////////////////////
-    // SET CELL VOLUME //
-    /////////////////////
-    for(int cId=0; cId<data->cellNo; cId++) {
-        curCell=&data->cells[cId];
 
-        // TODO
-    }
+  }
 
-    /////////////////////////////
-    // SET INITIAL CONDITIONS  //
-    /////////////////////////////
-    for(int cId=0; cId<data->cellNo; cId++) {
-        curCell=&data->cells[cId];
+  /////////////////////////////
+  // SET INITIAL CONDITIONS  //
+  /////////////////////////////
+  for(int cId=0; cId<data->cellNo; cId++) {
+      curCell=&data->cells[cId];
 
-        // TODO
-    }
+      curCell->phi[0] = PETER;
+      curCell->phi[1] = THOMAS;
+  }
 
-    //////////////////////////////
-    // SET BOUNDARY CONDITIONS  //
-    //////////////////////////////
-    for(int fId=0; fId<data->faceNo; fId++) {
-        curFace=&data->faces[fId];
+  //////////////////////////////
+  // SET BOUNDARY CONDITIONS  //
+  //////////////////////////////
 
-        // TODO
-    }
-    for(int cId=0; cId<data->cellNo; cId++) {
-        curCell=&data->cells[cId];
+  for(int fId=0; fId<data->faceNo; fId++) {
+      curFace=&data->faces[fId];
+      if (curFace->bType==2){
+          curFace->numFlux[0] = curFace->bValue0;
+          curFace->numFlux[1] = curFace->bValue1;
+      }
 
-        // TODO
-    }
 
-    return true;
+  }
+  for(int cId=0; cId<data->cellNo; cId++) {
+      curCell=&data->cells[cId];
+      if (curCell->bType==2){
+          curCell->phi[0] = curCell->bValue0;
+      }
+
+  }
+
+  return true;
 }

@@ -29,7 +29,7 @@
 //------------------------------------------------------
 bool output(sData* data)
 {
-    if(!saveData(data, "data")) return false;
+    if(!saveData(data, "output/data")) return false;
     return true;
 }
 

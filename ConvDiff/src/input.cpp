@@ -75,8 +75,8 @@ bool input(const char* cfgFilePath, const char* faceFilePath, const char* cellFi
             // numerical settings
         } else if(!strcmp(token,"maxTime")) {
             if(sscanf(line,"%15s %lf",token,&data->maxTime)		!= 2){ return error(cfgFilePath,lineNo,line); };
-        } else if(!strcmp(token,"maxIter")) {
-            if(sscanf(line,"%15s %d",token,&data->maxIter)		!= 2){ return error(cfgFilePath,lineNo,line); };
+        } else if(!strcmp(token,"numberTimeSteps")) {
+            if(sscanf(line,"%15s %d",token,&data->numberTimeSteps)		!= 2){ return error(cfgFilePath,lineNo,line); };
         } else if(!strcmp(token,"residuum")) {
             if(sscanf(line,"%15s %lf",token,&data->residuum)	!= 2){ return error(cfgFilePath,lineNo,line); };
 

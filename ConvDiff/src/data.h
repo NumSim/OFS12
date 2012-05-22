@@ -22,7 +22,8 @@
 
 #include <limits>
 
-#define WITHOUT_INFLUENCE	4711.0
+#define PETER	3400
+#define THOMAS 6706
 
 #define MIN(a,b) ( ((a)<(b)) ? (a):(b) )
 #define MAX(a,b) ( ((a)>(b)) ? (a):(b) )
@@ -61,6 +62,7 @@ struct sFace {
         int     id;
 
 	// grid settings
+
 	double	xy[2];			// x,y-coordinate
 	double	deltaxy[2];		// dx,dy relative to x,y
 	sCell*	nCells[2];		// two neighbour cells
@@ -115,7 +117,7 @@ struct sData {
 
 	// numerical settings
 	double	maxTime;
-	int		maxIter;
+	int		numberTimeSteps;
 
 	double	overrelax;
 	double	residuum;

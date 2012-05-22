@@ -28,28 +28,92 @@
 //------------------------------------------------------
 bool solve(sData* data)
 {
-    sCell* curCell=0;
-    sFace* curFace=0;
+  sCell* curCell=0;
+  sFace* curFace=0;
 
-    std::cout << "\nCalculation:\n------------\n";
+  std::cout << "\nCalculation:\n------------\n";
 
-    // TODO
 
-    std::cout << "\n";
-    return true;
+
+  double dphidt;
+  double dt = data->maxTime / data->numberTimeSteps;
+
+
+  for (int t=0;t<data->numberTimeSteps;t++){
+      calcFlux(data);
+      std::cout<<t<<std::endl;
+      for (int i = 0;i < data->cellNo;i++){
+
+          curCell = &data->cells[i];
+          if (curCell->bType == 1){
+              // skip
+          }else{
+              //WARNING, FLUX DIRECTION ? always left to right?
+              dphidt = (curCell->cFaces[WEST]->numFlux[0]-
+                    curCell->cFaces[EAST]->numFlux[0])*curCell->cFaces[WEST]->deltaxy[1]+
+                    (curCell->cFaces[NORTH]->numFlux[1]-
+                    curCell->cFaces[SOUTH]->numFlux[1])*curCell->cFaces[NORTH]->deltaxy[0];
+              std::cout << " dphidt = " << dphidt << std::endl;
+              dphidt /= (curCell->volume*data->rho);
+              std::cout << " dphidt = " << dphidt << std::endl;
+
+              curCell->phi[0] = curCell->phi[0]+dphidt*dt;
+
+          }
+
+      }
+  }
+
+
+
+
+
+  std::cout << "\n";
+  return true;
 }
 
 //------------------------------------------------------
 void calcFlux(sData* data)
 {
-    static sFace* curFace=0;
+  static sFace* curFace=0;
 
-    // numerical flux of each face
-    for(int fId=0; fId<data->faceNo; fId++) {
-        curFace=&data->faces[fId];
+  // numerical flux of each face
+  for(int fId=0; fId<data->faceNo; fId++) {
+      curFace=&data->faces[fId];
+      // check whether or not to update
+      if (curFace->bType==1){
 
-        // TODO
-    }
+      }else if (curFace->bType==2){
+
+      }else{
+          // check orientation
+          if (curFace->deltaxy[0]==0){
+              //    |
+              curFace->numFlux[1] = 0;
+              curFace->numFlux[0] = data->rho*curFace->uv[0]*
+                  (curFace->nCells[0]->phi[0]+curFace->nCells[1]->phi[0])/2
+                  -data->alpha*(curFace->nCells[1]->phi[0]-curFace->nCells[0]->phi[0])/
+                  (curFace->nCells[1]->xy[0]-curFace->nCells[0]->xy[0]);
+              ;
+
+          }else{
+              //    -
+              curFace->numFlux[0] = 0;
+              curFace->numFlux[1] = data->rho*curFace->uv[1]*
+                  (curFace->nCells[0]->phi[0]+curFace->nCells[1]->phi[0])/2
+                  -data->alpha*(curFace->nCells[1]->phi[0]-curFace->nCells[0]->phi[0])/
+                  (curFace->nCells[1]->xy[1]-curFace->nCells[0]->xy[1]);
+              ;
+
+          }
+
+
+
+
+      }
+
+      // TODO
+  }
 }
 
 

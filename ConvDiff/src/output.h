@@ -24,5 +24,5 @@
 
 bool output(sData* data);
 bool saveData(const sData* data, const char* fileName);
-
+void showScalar(const sData* data, const char* scalarName, double** s);
 #endif

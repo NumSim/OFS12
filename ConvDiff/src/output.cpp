@@ -30,6 +30,7 @@
 bool output(sData* data)
 {
     if(!saveData(data, "output/data")) return false;
+   // showScalar(data, "output/data.phi", data->phi[0]);
     return true;
 }
 
@@ -125,3 +126,43 @@ bool saveData(const sData* data, const char* fileName)
 
     return true;
 }
+//------------------------------------------------------
+/*
+void showScalar(const sData* data, const char* scalarName, double** s)
+{
+  const int maxHoriz=5;
+  const int maxVert =5;
+
+  std::cout.precision( 1 );
+
+  std::cout << "\nY\t------------------------- " << scalarName << " -------------------------\n"
+      << "^\n"
+      << "|\n";
+
+  double iStep,jStep;
+  if(data->dimI<maxVert)  { iStep=1; } else { iStep=data->dimI/(double)maxVert; }
+  if(data->dimJ<maxHoriz) { jStep=1; } else { jStep=data->dimJ/(double)maxHoriz;}
+
+  double i,j=data->dimJ-1 + jStep;
+  while(j>0) {
+      j-=jStep; if(j<1){ j=0; }
+      std::cout << std::fixed << (int)j << "\t";
+
+      i=-iStep;
+      while(i<data->dimI-1) {
+          i+=iStep; if(i>data->dimI-2){ i=data->dimI-1; }
+          std::cout.setf(std::ios::showpos);
+          std::cout << std::scientific << s[(int)i][(int)j] << "  ";
+          std::cout.unsetf(std::ios::showpos);
+      }
+      std::cout << "\n|\n";
+  }
+  std::cout << " --\t";
+
+  i=-iStep;
+  while(i<data->dimI-1) {
+      i+=iStep; if(i>data->dimI-2){ i=data->dimI-1; }
+      std::cout << "   -" << (int)i << "-    ";
+  }
+  std::cout << "->X\n\n";
+}*/

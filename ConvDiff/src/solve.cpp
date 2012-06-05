@@ -24,14 +24,14 @@
 
 #include "solve.h"
 #include "data.h"
-
+using namespace std;
 //------------------------------------------------------
 bool solve(sData* data)
 {
   sCell* curCell=0;
   sFace* curFace=0;
 
-  std::cout << "\nCalculation:\n------------\n";
+  cout << "\nCalculation:\n------------\n";
 
 
 
@@ -41,21 +41,34 @@ bool solve(sData* data)
 
   for (int t=0;t<data->numberTimeSteps;t++){
       calcFlux(data);
-      std::cout<<t<<std::endl;
+      if (t%10000==0) cout<<"i= " <<t<<endl;
       for (int i = 0;i < data->cellNo;i++){
 
           curCell = &data->cells[i];
-          if (curCell->bType == 1){
+          if (curCell->bType == 1 ){
               // skip
+          }else if (curCell->bType == 2){
+
           }else{
+
+
               //WARNING, FLUX DIRECTION ? always left to right?
+        //    cout << " delta xy = "<< curCell->cFaces[WEST]->deltaxy[1]<<endl;
+         //    cout << " delta xy = "<< curCell->cFaces[NORTH]->deltaxy[0]<<endl;
+           //   cout << "factor 1 " << (curCell->cFaces[WEST]->numFlux[0]-
+           //      curCell->cFaces[EAST]->numFlux[0])<< endl;
+            // cout << " summand 1 = "<< curCell->cFaces[WEST]->numFlux[0]<< endl;
+            //  cout << " summand 2 = "<< curCell->cFaces[EAST]->numFlux[0]<< endl;
+          //    cout << "factor 1 " << (curCell->cFaces[NORTH]->numFlux[1]-
+            //      curCell->cFaces[SOUTH]->numFlux[1])<< endl;
+
               dphidt = (curCell->cFaces[WEST]->numFlux[0]-
-                    curCell->cFaces[EAST]->numFlux[0])*curCell->cFaces[WEST]->deltaxy[1]+
-                    (curCell->cFaces[NORTH]->numFlux[1]-
-                    curCell->cFaces[SOUTH]->numFlux[1])*curCell->cFaces[NORTH]->deltaxy[0];
-              std::cout << " dphidt = " << dphidt << std::endl;
+                    curCell->cFaces[EAST]->numFlux[0])*ABS(curCell->cFaces[WEST]->deltaxy[1])+
+                    (-curCell->cFaces[NORTH]->numFlux[1]+
+                    curCell->cFaces[SOUTH]->numFlux[1])*ABS(curCell->cFaces[NORTH]->deltaxy[0]);
+
               dphidt /= (curCell->volume*data->rho);
-              std::cout << " dphidt = " << dphidt << std::endl;
+          //    cout << " dphidt = " << dphidt << endl;
 
               curCell->phi[0] = curCell->phi[0]+dphidt*dt;
 
@@ -84,26 +97,34 @@ void calcFlux(sData* data)
       if (curFace->bType==1){
 
       }else if (curFace->bType==2){
-
+ //         cout << " btype = " << endl;
       }else{
+    //     cout << " --------------------" << endl;
           // check orientation
-          if (curFace->deltaxy[0]==0){
+   //      cout << curFace->nCells[0]->phi[0] << " "<< curFace->nCells[1]->phi[0] << endl;
+
+         if (curFace->deltaxy[0]==0){
               //    |
               curFace->numFlux[1] = 0;
               curFace->numFlux[0] = data->rho*curFace->uv[0]*
-                  (curFace->nCells[0]->phi[0]+curFace->nCells[1]->phi[0])/2
+                 // (curFace->nCells[0]->phi[0]+curFace->nCells[1]->phi[0])/2
+                  curFace->nCells[0]->phi[0]
                   -data->alpha*(curFace->nCells[1]->phi[0]-curFace->nCells[0]->phi[0])/
                   (curFace->nCells[1]->xy[0]-curFace->nCells[0]->xy[0]);
-              ;
+     /*         cout << " | " << endl;
+              cout << " flux = " << curFace->numFlux[0] << endl;*/
 
           }else{
               //    -
               curFace->numFlux[0] = 0;
               curFace->numFlux[1] = data->rho*curFace->uv[1]*
-                  (curFace->nCells[0]->phi[0]+curFace->nCells[1]->phi[0])/2
+                  //(curFace->nCells[0]->phi[0]+curFace->nCells[1]->phi[0])/2
+                  curFace->nCells[0]->phi[0]
                   -data->alpha*(curFace->nCells[1]->phi[0]-curFace->nCells[0]->phi[0])/
                   (curFace->nCells[1]->xy[1]-curFace->nCells[0]->xy[1]);
-              ;
+         //     cout << " -" << endl;
+          //   cout << " flux = " << curFace->numFlux[0] << endl;
+
 
           }
 
@@ -111,8 +132,6 @@ void calcFlux(sData* data)
 
 
       }
-
-      // TODO
   }
 }
 

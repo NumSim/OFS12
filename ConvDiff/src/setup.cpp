@@ -25,6 +25,7 @@
 #include "setup.h"
 #include "data.h"
 #include "output.h"
+using namespace std;
 
 //------------------------------------------------------
 bool setup(sData* data)
@@ -37,7 +38,7 @@ bool setup(sData* data)
   ////////////////////////
   for(int fId=0; fId<data->faceNo; fId++) {
       curFace=&data->faces[fId];
-      curFace->uv[0] = 1;
+      curFace->uv[0] = 0;
       curFace->uv[1] = 0;
   }
 
@@ -58,8 +59,8 @@ bool setup(sData* data)
   for(int cId=0; cId<data->cellNo; cId++) {
       curCell=&data->cells[cId];
 
-      curCell->phi[0] = PETER;
-      curCell->phi[1] = THOMAS;
+      curCell->phi[0] = SOMENUMBER;
+      curCell->phi[1] = ANOTHERNUMBER;
   }
 
   //////////////////////////////
@@ -77,7 +78,8 @@ bool setup(sData* data)
   }
   for(int cId=0; cId<data->cellNo; cId++) {
       curCell=&data->cells[cId];
-      if (curCell->bType==2){
+      if (curCell->bType==1){
+
           curCell->phi[0] = curCell->bValue0;
       }
 

@@ -78,11 +78,11 @@ bool setup(sData* data)
   }
   for(int cId=0; cId<data->cellNo; cId++) {
       curCell=&data->cells[cId];
-      std::cout<< "cId = " << cId << std::endl;
+   //   std::cout<< "cId = " << cId << std::endl;
       if (curCell->bType==1){
 
           curCell->phi[0] = curCell->bValue0;
-          std::cout<< "btype = 1 \n";
+   //       std::cout<< "btype = 1 \n";
       }
 
   }

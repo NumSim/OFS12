@@ -23,7 +23,7 @@
 #include <limits>
 
 #define SOMENUMBER	123//3400
-#define ANOTHERNUMBER 0
+#define ANOTHERNUMBER 321
 
 #define MIN(a,b) ( ((a)<(b)) ? (a):(b) )
 #define MAX(a,b) ( ((a)>(b)) ? (a):(b) )

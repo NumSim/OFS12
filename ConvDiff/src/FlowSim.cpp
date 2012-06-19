@@ -52,7 +52,7 @@ int main(int, char**)
     }
 
     // iterativ solver
-    if(!solve(data)) {
+    if(!solve2(data)) {
         std::cout << "ERROR while solving...exiting";
         getchar();
         return 1;

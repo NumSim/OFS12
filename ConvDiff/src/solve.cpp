@@ -172,3 +172,72 @@ calcFlux(sData* data)
     }
 }
 
+
+
+
+bool
+solve2(sData* data)
+{
+  sCell* curCell = 0;
+  sFace* curFace = 0;
+
+  cout << "\nCalculation:\n------------\n";
+
+
+
+  for (int t = 0; t < data->numberTimeSteps; t++)
+    {
+      if (t % 10000 == 0 )
+              cout << "i= " << t << endl;
+      double Pex = data->rho*data->uv[0]*1/data->alpha; // ersetze 1 durch dimX
+      double Pey = data->rho*data->uv[1]*1/data->alpha;
+      double ap,ae,aw,an,as;
+      double f,g,dx,dy;
+      f  =data->rho*data->uv[0];
+      g  =data->rho*data->uv[1];
+      dx = data->alpha/1;
+      dy = data->alpha/1;
+
+      double APEXABS, APEYABS;
+      APEXABS = 1;//ABS(Pex)/(exp(ABS(Pex)-1));
+      APEYABS = 2;//ABS(Pey)/(exp(ABS(Pey)-1));
+
+      double deltaX = 0.1;
+      double deltaY = 0.1;
+      ae = dx*deltaY*APEXABS+MAX(-f*deltaY,0);
+      aw = dx*deltaY*APEXABS+MAX(f*deltaY,0);
+      an = dy*deltaX*APEYABS+MAX(-g*deltaX,0);
+      as = dy*deltaX*APEYABS+MAX(g*deltaX,0);
+      ap = ae+aw+an+as;
+
+
+      for (int i = 0; i < data->cellNo; i++)
+        {
+
+          curCell = &data->cells[i];
+
+          if (curCell->bType == 1)
+            {
+            }
+          else if (curCell->cFaces[NORTH]->bType==2 || curCell->cFaces[SOUTH]->bType ==2)
+            {
+            }
+          else
+            {
+
+
+              curCell->phi[0] = (ae*curCell->nCells[EAST]->phi[0]
+                                    +aw*curCell->nCells[WEST]->phi[0]
+                                    +an*curCell->nCells[NORTH]->phi[0]
+                                    +as*curCell->nCells[SOUTH]->phi[0]);
+              curCell->phi[0]/=ap;
+
+            }
+
+        }
+    }
+
+  std::cout << "\n";
+  return true;
+}
+

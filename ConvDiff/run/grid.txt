@@ -1,4 +1,4 @@
-dimX	100
-dimY	100
+dimX	10
+dimY	10
 sizeX	1
 sizeY	1

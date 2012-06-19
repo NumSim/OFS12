@@ -23,6 +23,7 @@
 #include "data.h"
 
 bool solve(sData* data);
+bool solve2(sData* data);
 void calcFlux(sData* data);
 double calcA(double Pe, int schema);
 

@@ -106,6 +106,7 @@ struct sCell {
 
 //------------------------------------------------------
 struct sData {
+
 	// cells
 	int		cellNo;
 	sCell*	cells;

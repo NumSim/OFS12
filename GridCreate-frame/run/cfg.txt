@@ -1,0 +1,4 @@
+dimX	5
+dimY	5
+sizeX	1
+sizeY	1

@@ -94,6 +94,13 @@ bool saveFaces(const sData* data)
         facesFile << "\t" << i << "\t 2 \t 9999.9 \t 0 \n" ;
         facesFile << "\t" << i+data->dimX*data->dimY << "\t 2 \t 9999.9 \t 0 \n" ;
     }
+
+    // 200x200 madness? NO THIS IS SPARTA
+  //  for (int i=60700;i<60800;i++){
+        // upper & lower x boundaries
+   //         facesFile << "\t" << i << "\t 2 \t 9999.9 \t 0 \n" ;
+    //    }
+
         // const. flux calc on north,south boundary faces
             // TODO ? haven't we done that?
 

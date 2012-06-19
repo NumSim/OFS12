@@ -75,7 +75,8 @@ solve(sData* data)
                       * ABS(curCell->cFaces[NORTH]->deltaxy[0]);
 
               dphidt /= (curCell->volume * data->rho);
-              //std::cout << dphidt << "\n";
+              //
+           //   std::cout << dphidt << "\n";
               //    cout << " dphidt = " << dphidt << endl;
 
               curCell->phi[0] = curCell->phi[0] + dphidt * dt;
@@ -95,6 +96,7 @@ calcFlux(sData* data)
 {
   //std::cout << "in calcFlux\n";
   static sFace* curFace = 0;
+  double vel;
 
   // numerical flux of each face
   for (int fId = 0; fId < data->faceNo; fId++)
@@ -105,9 +107,11 @@ calcFlux(sData* data)
       if (curFace->bType == 1)
         {
           // if bType == 1 SKIP FLUX CALC
+         // std::cout << fId << "type 1" << std::endl;
         }
       else if (curFace->bType == 2)
         {
+        //  std::cout << fId << "type 2 " << std::endl;
           // if bType ==2 CONST FLUX
           //curFace->numFlux[1] = 0; // ?
           //curFace->numFlux[0] = 0;
@@ -122,11 +126,14 @@ calcFlux(sData* data)
             {
               //    |
            //   std::cout << "| \n";
+
+              vel = (curFace->uv[0] <0)?curFace->nCells[1]->phi[0]:curFace->nCells[0]->phi[0];
+
               curFace->numFlux[1] = 0;
               curFace->numFlux[0] =
                   data->rho * curFace->uv[0] *
                   // (curFace->nCells[0]->phi[0]+curFace->nCells[1]->phi[0])/2
-                      curFace->nCells[0]->phi[0]
+                      vel
                       - data->alpha
                           * (curFace->nCells[1]->phi[0]
                               - curFace->nCells[0]->phi[0])
@@ -141,11 +148,13 @@ calcFlux(sData* data)
             {
               //    -
              // std::cout << "| \n";
+              vel = (curFace->uv[0] <0)?curFace->nCells[1]->phi[0]:curFace->nCells[0]->phi[0];
+
               curFace->numFlux[0] = 0;
               curFace->numFlux[1] =
                   data->rho * curFace->uv[1] *
                   //(curFace->nCells[0]->phi[0]+curFace->nCells[1]->phi[0])/2
-                      curFace->nCells[0]->phi[0]
+                      vel
                       - data->alpha
                           * (curFace->nCells[1]->phi[0]
                               - curFace->nCells[0]->phi[0])
@@ -158,6 +167,8 @@ calcFlux(sData* data)
             }
 
         }
+      //curFace = &data->faces[16];
+      //std::cout << curFace->numFlux[0] << " " << curFace->numFlux[1] << std::endl;
     }
 }
 

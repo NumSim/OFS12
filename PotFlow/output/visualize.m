@@ -13,7 +13,7 @@ V=load('../output/v.dat');
 X=load('../output/grid.x.dat');
 Y=load('../output/grid.y.dat');
 
-numberOfPoints = 50;
+numberOfPoints = 10;
 Sz = ceil(length(PHI)/numberOfPoints);
 Su = ceil(length(U)/numberOfPoints);
 Sv = ceil(length(V)/numberOfPoints);

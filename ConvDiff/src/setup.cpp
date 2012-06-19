@@ -38,8 +38,8 @@ bool setup(sData* data)
   ////////////////////////
   for(int fId=0; fId<data->faceNo; fId++) {
       curFace=&data->faces[fId];
-      curFace->uv[0] = 0;
-      curFace->uv[1] = 0;
+      curFace->uv[0] = data->uv[0];
+      curFace->uv[1] = data->uv[1];
   }
 
   /////////////////////

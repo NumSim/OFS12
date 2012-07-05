@@ -30,9 +30,9 @@
 int main(int, char**)
 {
     sData* data = new sData;
-    const char* cfgFilePath  = "/home/thomas/workspace/OFS12/ConvDiff/run/data.cfg";
-    const char* faceFilePath = "/home/thomas/workspace/OFS12/GridCreate-frame/run/faces2.cfg";
-    const char* cellFilePath = "/home/thomas/workspace/OFS12/GridCreate-frame/run/cells2.cfg";
+    const char* cfgFilePath  = "/home/tc497585/programming/workspace/OFS12/ConvDiff/run/data.cfg";
+    const char* faceFilePath = "/home/tc497585/programming/workspace/OFS12/GridCreate-frame/run/faces2.cfg";
+    const char* cellFilePath = "/home/tc497585/programming/workspace/OFS12/GridCreate-frame/run/cells2.cfg";
 
     std::cout << "\t Simulationstechnik V\n"
             << "\t====== FlowSim ======\n";

@@ -32,14 +32,21 @@ bool setup(sData* data)
 {
   sCell* curCell=0;
   sFace* curFace=0;
+  data->deltaX =0.1;
+  data->deltaY = 0.1; // TODO change this
 
   ////////////////////////
   // SET FACE VELOCITY  //
   ////////////////////////
   for(int fId=0; fId<data->faceNo; fId++) {
       curFace=&data->faces[fId];
+      if (curFace->bType == 1 ){
       curFace->uv[0] = data->uv[0];
       curFace->uv[1] = data->uv[1];
+      }else{
+          curFace->uv[0] = 0.4567;
+          curFace->uv[1] = 0.789;
+      }
   }
 
   /////////////////////
@@ -61,6 +68,7 @@ bool setup(sData* data)
 
       curCell->phi[0] = SOMENUMBER;
       curCell->phi[1] = ANOTHERNUMBER;
+      curCell->p = 0.1234;
   }
 
   //////////////////////////////
@@ -72,6 +80,7 @@ bool setup(sData* data)
       if (curFace->bType==2){
           curFace->numFlux[0] = curFace->bValue0;
           curFace->numFlux[1] = curFace->bValue1;
+
       }
 
 

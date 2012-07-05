@@ -99,6 +99,7 @@ struct sCell {
 	// physical settings
 
 	// numerical settings
+	double p; // pressure
 	double	volume;			// cell volume
 	double	fluxBalance;	// flux balance of cell
 	double	phi[2];			// phi at cell center
@@ -106,6 +107,8 @@ struct sCell {
 
 //------------------------------------------------------
 struct sData {
+  double deltaX;
+  double deltaY;
 
 	// cells
 	int		cellNo;

@@ -27,142 +27,246 @@
 #include "data.h"
 
 //------------------------------------------------------
-bool output(sData* data)
+bool
+output(sData* data)
 {
-    if(!saveData(data, "output/data")) return false;
-   // showScalar(data, "output/data.phi", data->phi[0]);
-    return true;
+  if (!saveData(data, "output/data"))
+    return false;
+  // showScalar(data, "output/data.phi", data->phi[0]);
+  return true;
 }
 
 //------------------------------------------------------
-bool saveData(const sData* data, const char* fileName)
+bool
+saveData(const sData* data, const char* fileName)
 {
-    sCell *rowCell, *columnCell;
-    double x[2],y[2];
-    int east,west;
-    char fileNameX[80], fileNameY[80],fileNamePhi[80];
+  sCell *rowCell, *columnCell;
+  double x[2], y[2];
+  int east, west;
+  char fileNameX[80], fileNameY[80], fileNamePhi[80], fileNameP[80],
+      fileNameU[80], fileNameV[80];
 
-    // open/create files
-    sprintf(fileNameX,"%s.meshX",fileName);
-    sprintf(fileNameY,"%s.meshY",fileName);
-    sprintf(fileNamePhi,"%s.phi",fileName);
-    std::ofstream meshXFile(fileNameX);
-    std::ofstream meshYFile(fileNameY);
-    std::ofstream phiFile(fileNamePhi);
-    if(!meshXFile) { return false; }
-    if(!meshYFile) { return false; }
-    if(!phiFile)   { return false; }
-    meshXFile.clear();
-    meshYFile.clear();
-    phiFile.clear();
+  // open/create files
+  sprintf(fileNameX, "%s.meshX", fileName);
+  sprintf(fileNameY, "%s.meshY", fileName);
+  sprintf(fileNamePhi, "%s.phi", fileName);
+  sprintf(fileNameP, "%s.press", fileName);
+  sprintf(fileNameU, "%s.veloU", fileName);
+  sprintf(fileNameV, "%s.veloV", fileName);
+  std::ofstream meshXFile(fileNameX);
+  std::ofstream meshYFile(fileNameY);
+  std::ofstream phiFile(fileNamePhi);
 
-    // search for the left-top-cell
-    rowCell=&data->cells[0];
-    while(rowCell->nCells[WEST]) { rowCell=rowCell->nCells[WEST]; };
-    while(rowCell->nCells[NORTH]){ rowCell=rowCell->nCells[NORTH];};
-
-    // save north row first
-    columnCell=rowCell;
-    // save east-south-coords
-    x[0] = columnCell->cFaces[NORTH]->xy[0];
-    x[1] = columnCell->cFaces[NORTH]->xy[0] +columnCell->cFaces[NORTH]->deltaxy[0];
-    y[0] = columnCell->cFaces[NORTH]->xy[1];
-    y[1] = columnCell->cFaces[NORTH]->xy[1] +columnCell->cFaces[NORTH]->deltaxy[1];
-    if(x[0]<x[1]){ west=0; }
-    else         { west=1; }
-    meshXFile << x[west] << " ";
-    meshYFile << y[west] << " ";
-
-    while(columnCell){
-        // save east-north-coords
-        x[0] = columnCell->cFaces[NORTH]->xy[0];
-        x[1] = columnCell->cFaces[NORTH]->xy[0] +columnCell->cFaces[NORTH]->deltaxy[0];
-        y[0] = columnCell->cFaces[NORTH]->xy[1];
-        y[1] = columnCell->cFaces[NORTH]->xy[1] +columnCell->cFaces[NORTH]->deltaxy[1];
-        if(x[0]>x[1]){ east=0; }
-        else         { east=1; }
-        meshXFile << x[east] << " ";
-        meshYFile << y[east] << " ";
-        columnCell=columnCell->nCells[EAST];
+  std::ofstream pFile(fileNameP);
+  std::ofstream uFile(fileNameU);
+  std::ofstream vFile(fileNameV);
+  if (!meshXFile)
+    {
+      return false;
     }
-    meshXFile << std::endl;
-    meshYFile << std::endl;
+  if (!meshYFile)
+    {
+      return false;
+    }
+  if (!phiFile)
+    {
+      return false;
+    }
+  meshXFile.clear();
+  meshYFile.clear();
+  phiFile.clear();
+  if (!pFile)
+    {
+      return false;
+    }
+  if (!uFile)
+    {
+      return false;
+    }
+  if (!vFile)
+    {
+      return false;
+    }
+  pFile.clear();
+  vFile.clear();
+  uFile.clear();
 
-    // save all south rows
-    while(rowCell){
-        columnCell=rowCell;
+  int pp = sqrt(data->cellNo);
+  for (int i = 0; i < data->cellNo; i++)
+    {
+      if (i % pp == 0)
+        pFile << std::endl;
 
-        // save west-south-coords
-        x[0] = columnCell->cFaces[SOUTH]->xy[0];
-        x[1] = columnCell->cFaces[SOUTH]->xy[0] +columnCell->cFaces[SOUTH]->deltaxy[0];
-        y[0] = columnCell->cFaces[SOUTH]->xy[1];
-        y[1] = columnCell->cFaces[SOUTH]->xy[1] +columnCell->cFaces[SOUTH]->deltaxy[1];
-        if(x[0]<x[1]){ west=0; }
-        else         { west=1; }
-        meshXFile << x[west] << " ";
-        meshYFile << y[west] << " ";
+      sCell* curCell = &data->cells[i];
+      pFile << curCell->p << " ";
+    }
+  pFile.close();
+  for (int i = 0; i < data->cellNo; i++)
+    {
+      if (i % pp == 0)
+        uFile << std::endl;
 
-        while(columnCell){
-            // save east-south-coords
-            x[0] = columnCell->cFaces[SOUTH]->xy[0];
-            x[1] = columnCell->cFaces[SOUTH]->xy[0] +columnCell->cFaces[SOUTH]->deltaxy[0];
-            y[0] = columnCell->cFaces[SOUTH]->xy[1];
-            y[1] = columnCell->cFaces[SOUTH]->xy[1] +columnCell->cFaces[SOUTH]->deltaxy[1];
-            if(x[0]>x[1]){ east=0; }
-            else         { east=1; }
-            meshXFile << x[east] << " ";
-            meshYFile << y[east] << " ";
-            phiFile   << columnCell->phi[0] << " ";
-            columnCell=columnCell->nCells[EAST];
+      sCell* curCell = &data->cells[i];
+      uFile << curCell->cFaces[WEST]->uv[0] << " ";
+    }
+  uFile.close();
+  for (int i = 0; i < data->cellNo; i++)
+    {
+      if (i % pp == 0)
+        vFile << std::endl;
+
+      sCell* curCell = &data->cells[i];
+      vFile << curCell->cFaces[NORTH]->uv[1] << " ";
+    }
+  vFile.close();
+  // search for the left-top-cell
+  rowCell = &data->cells[0];
+  while (rowCell->nCells[WEST])
+    {
+      rowCell = rowCell->nCells[WEST];
+    };
+  while (rowCell->nCells[NORTH])
+    {
+      rowCell = rowCell->nCells[NORTH];
+    };
+
+  // save north row first
+  columnCell = rowCell;
+  // save east-south-coords
+  x[0] = columnCell->cFaces[NORTH]->xy[0];
+  x[1] = columnCell->cFaces[NORTH]->xy[0]
+      + columnCell->cFaces[NORTH]->deltaxy[0];
+  y[0] = columnCell->cFaces[NORTH]->xy[1];
+  y[1] = columnCell->cFaces[NORTH]->xy[1]
+      + columnCell->cFaces[NORTH]->deltaxy[1];
+  if (x[0] < x[1])
+    {
+      west = 0;
+    }
+  else
+    {
+      west = 1;
+    }
+  meshXFile << x[west] << " ";
+  meshYFile << y[west] << " ";
+
+  while (columnCell)
+    {
+      // save east-north-coords
+      x[0] = columnCell->cFaces[NORTH]->xy[0];
+      x[1] = columnCell->cFaces[NORTH]->xy[0]
+          + columnCell->cFaces[NORTH]->deltaxy[0];
+      y[0] = columnCell->cFaces[NORTH]->xy[1];
+      y[1] = columnCell->cFaces[NORTH]->xy[1]
+          + columnCell->cFaces[NORTH]->deltaxy[1];
+      if (x[0] > x[1])
+        {
+          east = 0;
         }
-        rowCell=rowCell->nCells[SOUTH];
-
-        meshXFile << std::endl;
-        meshYFile << std::endl;
-        phiFile   << std::endl;
+      else
+        {
+          east = 1;
+        }
+      meshXFile << x[east] << " ";
+      meshYFile << y[east] << " ";
+      columnCell = columnCell->nCells[EAST];
     }
-    meshXFile.close();
-    meshYFile.close();
+  meshXFile << std::endl;
+  meshYFile << std::endl;
 
-    return true;
+  // save all south rows
+  while (rowCell)
+    {
+      columnCell = rowCell;
+
+      // save west-south-coords
+      x[0] = columnCell->cFaces[SOUTH]->xy[0];
+      x[1] = columnCell->cFaces[SOUTH]->xy[0]
+          + columnCell->cFaces[SOUTH]->deltaxy[0];
+      y[0] = columnCell->cFaces[SOUTH]->xy[1];
+      y[1] = columnCell->cFaces[SOUTH]->xy[1]
+          + columnCell->cFaces[SOUTH]->deltaxy[1];
+      if (x[0] < x[1])
+        {
+          west = 0;
+        }
+      else
+        {
+          west = 1;
+        }
+      meshXFile << x[west] << " ";
+      meshYFile << y[west] << " ";
+
+      while (columnCell)
+        {
+          // save east-south-coords
+          x[0] = columnCell->cFaces[SOUTH]->xy[0];
+          x[1] = columnCell->cFaces[SOUTH]->xy[0]
+              + columnCell->cFaces[SOUTH]->deltaxy[0];
+          y[0] = columnCell->cFaces[SOUTH]->xy[1];
+          y[1] = columnCell->cFaces[SOUTH]->xy[1]
+              + columnCell->cFaces[SOUTH]->deltaxy[1];
+          if (x[0] > x[1])
+            {
+              east = 0;
+            }
+          else
+            {
+              east = 1;
+            }
+          meshXFile << x[east] << " ";
+          meshYFile << y[east] << " ";
+          phiFile << columnCell->phi[0] << " ";
+          columnCell = columnCell->nCells[EAST];
+        }
+      rowCell = rowCell->nCells[SOUTH];
+
+      meshXFile << std::endl;
+      meshYFile << std::endl;
+      phiFile << std::endl;
+    }
+  meshXFile.close();
+  meshYFile.close();
+
+  return true;
 }
 //------------------------------------------------------
 /*
-void showScalar(const sData* data, const char* scalarName, double** s)
-{
-  const int maxHoriz=5;
-  const int maxVert =5;
+ void showScalar(const sData* data, const char* scalarName, double** s)
+ {
+ const int maxHoriz=5;
+ const int maxVert =5;
 
-  std::cout.precision( 1 );
+ std::cout.precision( 1 );
 
-  std::cout << "\nY\t------------------------- " << scalarName << " -------------------------\n"
-      << "^\n"
-      << "|\n";
+ std::cout << "\nY\t------------------------- " << scalarName << " -------------------------\n"
+ << "^\n"
+ << "|\n";
 
-  double iStep,jStep;
-  if(data->dimI<maxVert)  { iStep=1; } else { iStep=data->dimI/(double)maxVert; }
-  if(data->dimJ<maxHoriz) { jStep=1; } else { jStep=data->dimJ/(double)maxHoriz;}
+ double iStep,jStep;
+ if(data->dimI<maxVert)  { iStep=1; } else { iStep=data->dimI/(double)maxVert; }
+ if(data->dimJ<maxHoriz) { jStep=1; } else { jStep=data->dimJ/(double)maxHoriz;}
 
-  double i,j=data->dimJ-1 + jStep;
-  while(j>0) {
-      j-=jStep; if(j<1){ j=0; }
-      std::cout << std::fixed << (int)j << "\t";
+ double i,j=data->dimJ-1 + jStep;
+ while(j>0) {
+ j-=jStep; if(j<1){ j=0; }
+ std::cout << std::fixed << (int)j << "\t";
 
-      i=-iStep;
-      while(i<data->dimI-1) {
-          i+=iStep; if(i>data->dimI-2){ i=data->dimI-1; }
-          std::cout.setf(std::ios::showpos);
-          std::cout << std::scientific << s[(int)i][(int)j] << "  ";
-          std::cout.unsetf(std::ios::showpos);
-      }
-      std::cout << "\n|\n";
-  }
-  std::cout << " --\t";
+ i=-iStep;
+ while(i<data->dimI-1) {
+ i+=iStep; if(i>data->dimI-2){ i=data->dimI-1; }
+ std::cout.setf(std::ios::showpos);
+ std::cout << std::scientific << s[(int)i][(int)j] << "  ";
+ std::cout.unsetf(std::ios::showpos);
+ }
+ std::cout << "\n|\n";
+ }
+ std::cout << " --\t";
 
-  i=-iStep;
-  while(i<data->dimI-1) {
-      i+=iStep; if(i>data->dimI-2){ i=data->dimI-1; }
-      std::cout << "   -" << (int)i << "-    ";
-  }
-  std::cout << "->X\n\n";
-}*/
+ i=-iStep;
+ while(i<data->dimI-1) {
+ i+=iStep; if(i>data->dimI-2){ i=data->dimI-1; }
+ std::cout << "   -" << (int)i << "-    ";
+ }
+ std::cout << "->X\n\n";
+ }*/

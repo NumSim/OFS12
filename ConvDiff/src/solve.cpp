@@ -40,7 +40,7 @@ solve(sData* data)
   for (int t = 0; t < data->numberTimeSteps; t++)
     {
       calcFlux(data);
-      if (t % 10000 == 0 )
+      if (t % 10000 == 0)
         cout << "i= " << t << endl;
       for (int i = 0; i < data->cellNo; i++)
         {
@@ -76,7 +76,7 @@ solve(sData* data)
 
               dphidt /= (curCell->volume * data->rho);
               //
-           //   std::cout << dphidt << "\n";
+              //   std::cout << dphidt << "\n";
               //    cout << " dphidt = " << dphidt << endl;
 
               curCell->phi[0] = curCell->phi[0] + dphidt * dt;
@@ -101,17 +101,17 @@ calcFlux(sData* data)
   // numerical flux of each face
   for (int fId = 0; fId < data->faceNo; fId++)
     {
-     // std::cout << fId << "\n";
+      // std::cout << fId << "\n";
       curFace = &data->faces[fId];
       // check whether or not to update
       if (curFace->bType == 1)
         {
           // if bType == 1 SKIP FLUX CALC
-         // std::cout << fId << "type 1" << std::endl;
+          // std::cout << fId << "type 1" << std::endl;
         }
       else if (curFace->bType == 2)
         {
-        //  std::cout << fId << "type 2 " << std::endl;
+          //  std::cout << fId << "type 2 " << std::endl;
           // if bType ==2 CONST FLUX
           //curFace->numFlux[1] = 0; // ?
           //curFace->numFlux[0] = 0;
@@ -125,9 +125,11 @@ calcFlux(sData* data)
           if (curFace->deltaxy[0] == 0)
             {
               //    |
-           //   std::cout << "| \n";
+              //   std::cout << "| \n";
 
-              vel = (curFace->uv[0] <0)?curFace->nCells[1]->phi[0]:curFace->nCells[0]->phi[0];
+              vel =
+                  (curFace->uv[0] < 0) ?
+                      curFace->nCells[1]->phi[0] : curFace->nCells[0]->phi[0];
 
               curFace->numFlux[1] = 0;
               curFace->numFlux[0] =
@@ -140,15 +142,17 @@ calcFlux(sData* data)
                           / (curFace->nCells[1]->xy[0]
                               - curFace->nCells[0]->xy[0]);
               //       cout << " | " << endl;
-             //        cout << (curFace->nCells[1]->phi[0]- curFace->nCells[0]->phi[0]) << "<- is this zero \n";
-             //  cout << " flux = " << curFace->numFlux[0] << endl;
+              //        cout << (curFace->nCells[1]->phi[0]- curFace->nCells[0]->phi[0]) << "<- is this zero \n";
+              //  cout << " flux = " << curFace->numFlux[0] << endl;
 
             }
           else
             {
               //    -
-             // std::cout << "| \n";
-              vel = (curFace->uv[0] <0)?curFace->nCells[1]->phi[0]:curFace->nCells[0]->phi[0];
+              // std::cout << "| \n";
+              vel =
+                  (curFace->uv[0] < 0) ?
+                      curFace->nCells[1]->phi[0] : curFace->nCells[0]->phi[0];
 
               curFace->numFlux[0] = 0;
               curFace->numFlux[1] =
@@ -160,9 +164,9 @@ calcFlux(sData* data)
                               - curFace->nCells[0]->phi[0])
                           / (curFace->nCells[1]->xy[1]
                               - curFace->nCells[0]->xy[1]);
-               //    cout << " -" << endl;
-               //    cout << (curFace->nCells[1]->phi[0]- curFace->nCells[0]->phi[0]) << "<- is this zero \n";
-             //   cout << " flux = " << curFace->numFlux[0] << endl;
+              //    cout << " -" << endl;
+              //    cout << (curFace->nCells[1]->phi[0]- curFace->nCells[0]->phi[0]) << "<- is this zero \n";
+              //   cout << " flux = " << curFace->numFlux[0] << endl;
 
             }
 
@@ -172,9 +176,6 @@ calcFlux(sData* data)
     }
 }
 
-
-
-
 bool
 solve2(sData* data)
 {
@@ -183,57 +184,191 @@ solve2(sData* data)
 
   cout << "\nCalculation:\n------------\n";
 
-
-
   for (int t = 0; t < data->numberTimeSteps; t++)
     {
-      if (t % 10000 == 0 )
-              cout << "i= " << t << endl;
-      double Pex = data->rho*data->uv[0]*1/data->alpha; // ersetze 1 durch dimX
-      double Pey = data->rho*data->uv[1]*1/data->alpha;
-      double ap,ae,aw,an,as;
-      double f,g,dx,dy;
-      f  =data->rho*data->uv[0];
-      g  =data->rho*data->uv[1];
-      dx = data->alpha/1;
-      dy = data->alpha/1;
-
-      double APEXABS, APEYABS;
-      APEXABS = 1;//ABS(Pex)/(exp(ABS(Pex)-1));
-      APEYABS = 2;//ABS(Pey)/(exp(ABS(Pey)-1));
-
-      double deltaX = 0.1;
-      double deltaY = 0.1;
-      ae = dx*deltaY*APEXABS+MAX(-f*deltaY,0);
-      aw = dx*deltaY*APEXABS+MAX(f*deltaY,0);
-      an = dy*deltaX*APEYABS+MAX(-g*deltaX,0);
-      as = dy*deltaX*APEYABS+MAX(g*deltaX,0);
-      ap = ae+aw+an+as;
-
-
-      for (int i = 0; i < data->cellNo; i++)
+      if (t % 1000 == 0)
+        cout << "i= " << t << endl;
+      for (int k = 0; k < 10; k++)
         {
 
-          curCell = &data->cells[i];
+          /*
+           double Pex = data->rho * data->uv[0] * 1 / data->alpha; // ersetze 1 durch dimX
+           double Pey = data->rho * data->uv[1] * 1 / data->alpha;
+           double ap, ae, aw, an, as;
+           double f, g, dx, dy;
+           f = data->rho * data->uv[0];
+           g = data->rho * data->uv[1];
+           dx = data->alpha / 1;
+           dy = data->alpha / 1;
 
-          if (curCell->bType == 1)
+           double APEXABS, APEYABS;
+           APEXABS = ABS(Pex) / (exp(ABS(Pex) - 1));
+           APEYABS = ABS(Pey) / (exp(ABS(Pey) - 1));
+
+           double deltaX = 0.1;
+           double deltaY = 0.1;
+           ae = dx * deltaY * APEXABS + MAX(-f*deltaY,0);
+           aw = dx * deltaY * APEXABS + MAX(f*deltaY,0);
+           an = dy * deltaX * APEYABS + MAX(-g*deltaX,0);
+           as = dy * deltaX * APEYABS + MAX(g*deltaX,0);
+           ap = ae + aw + an + as;
+           *
+           // all cells?
+           for (int i = 0; i < data->cellNo; i++)
+           {
+
+           curCell = &data->cells[i];
+
+           if (curCell->bType == 1)
+           {
+           }
+           else if (curCell->cFaces[NORTH]->bType == 2
+           || curCell->cFaces[SOUTH]->bType == 2)
+           {
+           }
+           else
+           {
+
+           double b = 0;
+           curCell->phi[0] = b
+           + (ae * curCell->nCells[EAST]->phi[0]
+           + aw * curCell->nCells[WEST]->phi[0]
+           + an * curCell->nCells[NORTH]->phi[0]
+           + as * curCell->nCells[SOUTH]->phi[0]);
+           curCell->phi[0] /= ap;
+
+           }
+
+           }
+           */
+          // pressure
+          for (int i = 0; i < data->cellNo; i++)
             {
+              //      cout << "p i = " << i << endl;
+
+              curCell = &data->cells[i];
+
+              if (curCell->bType == 1)
+                {
+                }
+              else if (curCell->cFaces[NORTH]->bType == 2
+                  || curCell->cFaces[SOUTH]->bType == 2)
+                {
+                }
+              else
+                {
+                  double aep, awp, anp, asp, atildep;
+                  double A = curCell->cFaces[EAST]->deltaxy[1]
+                      * curCell->cFaces[NORTH]->deltaxy[0]; // TODO ?
+                  double atilde = 1.0f;
+                  aep = (A * data->rho * curCell->cFaces[EAST]->deltaxy[1])
+                      / atilde;
+                  anp = (A * data->rho * curCell->cFaces[NORTH]->deltaxy[0])
+                      / atilde;
+                  awp = (A * data->rho * curCell->cFaces[WEST]->deltaxy[1])
+                      / atilde;
+                  asp = (A * data->rho * curCell->cFaces[SOUTH]->deltaxy[0])
+                      / atilde;
+                  atildep = aep + awp + anp + asp;
+
+                  double b = data->rho * A
+                      * (curCell->cFaces[WEST]->uv[0]
+                          - curCell->cFaces[EAST]->uv[0]
+                          + curCell->cFaces[SOUTH]->uv[1]
+                          - curCell->cFaces[NORTH]->uv[1]);
+
+                  double pbar;
+                  pbar = (awp * curCell->nCells[WEST]->p
+                      + aep * curCell->nCells[EAST]->p
+                      + anp * curCell->nCells[NORTH]->p
+                      + asp * curCell->nCells[SOUTH]->p + b) / atildep;
+                  curCell->p = pbar + curCell->p; // new = correction + old; 7-11.4
+
+                }
+
             }
-          else if (curCell->cFaces[NORTH]->bType==2 || curCell->cFaces[SOUTH]->bType ==2)
+
+          // all faces
+          for (int i = 0; i < data->faceNo; i++)
             {
+              //   cout << "f i = " << i << endl << flush;
+
+              curFace = &data->faces[i];
+
+              double asuv, awuv, aeuv, anuv, aetilde;
+              double b;
+              double deltaPbar;
+              double deltaP;
+              double deltaX = data->deltaX;
+              double deltaY = data->deltaY;
+              double Pex, Pey, f, g, dx, dy;
+              double APEXABS, APEYABS;
+
+              if (curFace->bType != 1 && curFace->bType != 2)
+                {
+                  double uvbar;
+
+                  Pex = data->rho * curFace->uv[0] * 1 / data->alpha; // ersetze 1 durch dimX
+                  Pey = data->rho * curFace->uv[1] * 1 / data->alpha;
+
+                  f = data->rho * curFace->uv[0];
+                  g = data->rho * curFace->uv[1];
+                  dx = data->alpha / 1;
+                  dy = data->alpha / 1;
+
+                  APEXABS = ABS(Pex) / (exp(ABS(Pex) - 1));
+                  APEYABS = ABS(Pey) / (exp(ABS(Pey) - 1));
+
+                  aeuv = dx * deltaY * APEXABS + MAX(-f*deltaY,0);
+                  awuv = dx * deltaY * APEXABS + MAX(f*deltaY,0);
+                  anuv = dy * deltaX * APEYABS + MAX(-g*deltaX,0);
+                  asuv = dy * deltaX * APEYABS + MAX(g*deltaX,0);
+                  aetilde = aeuv + awuv + anuv + asuv;
+                  aetilde = aeuv + awuv + anuv + asuv;
+
+                  deltaP = 0;
+                  deltaPbar = 0;
+
+                  if (curFace->deltaxy[1] == 0)
+                    {
+
+                      //
+                      //  ----- face
+                      //
+                      b = aetilde * curFace->uv[1];
+                      deltaP = 0;
+                      deltaPbar = 0;
+
+                      curFace->uv[0] = 0;
+
+                      uvbar = (asuv * curFace->nCells[0]->cFaces[SOUTH]->uv[1]
+                          + anuv * curFace->nCells[1]->cFaces[NORTH]->uv[1] + b
+                          + deltaP * curFace->deltaxy[1]) / aetilde;
+
+                      curFace->uv[1] = curFace->uv[1] + uvbar
+                          + (deltaPbar * curFace->deltaxy[1] / aetilde);
+                    }
+                  else
+                    {
+
+                      //   |
+                      //   | face
+                      //   |
+                      b = aetilde * curFace->uv[0];
+                      deltaP = 0;
+                      deltaPbar = 0;
+
+                      curFace->uv[1] = 0;
+                      uvbar = (awuv * curFace->nCells[0]->cFaces[WEST]->uv[0]
+                          + aeuv * curFace->nCells[1]->cFaces[EAST]->uv[0] + b
+                          + deltaP * curFace->deltaxy[1]) / aetilde;
+
+                      curFace->uv[0] = curFace->uv[0] + uvbar
+                          + (deltaPbar * curFace->deltaxy[0] / aetilde);
+                    }
+                }
+
             }
-          else
-            {
-
-
-              curCell->phi[0] = (ae*curCell->nCells[EAST]->phi[0]
-                                    +aw*curCell->nCells[WEST]->phi[0]
-                                    +an*curCell->nCells[NORTH]->phi[0]
-                                    +as*curCell->nCells[SOUTH]->phi[0]);
-              curCell->phi[0]/=ap;
-
-            }
-
         }
     }
 

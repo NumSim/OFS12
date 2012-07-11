@@ -23,8 +23,9 @@
 #include "data.h"
 #include "input.h"
 #include "setup.h"
-#include "solve.h"
+//#include "solve.h"
 #include "output.h"
+#include "simple.h"
 
 //------------------------------------------------------
 int main(int, char**)
@@ -52,7 +53,8 @@ int main(int, char**)
     }
 
     // iterativ solver
-    if(!solve2(data)) {
+   std::cout << "simple"<<std::endl;
+    if(!simple(data)) {
         std::cout << "ERROR while solving...exiting";
         getchar();
         return 1;

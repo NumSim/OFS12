@@ -61,11 +61,13 @@ struct sFace {
 
         int     id;
 
+        double aEast,aWest,aNorth,aSouth;
 	// grid settings
 
 	double	xy[2];			// x,y-coordinate
 	double	deltaxy[2];		// dx,dy relative to x,y
 	sCell*	nCells[2];		// two neighbour cells
+
 
 	// boundary settings
         int	bType;			// boundary type
@@ -77,6 +79,7 @@ struct sFace {
 
 	// physical settings
 	double	uv[2];			// velocity
+	double  uvStar[2];
 };
 
 //------------------------------------------------------
@@ -100,6 +103,9 @@ struct sCell {
 
 	// numerical settings
 	double p; // pressure
+	double pStar;
+	double pPrime; // remove the one below
+	double pbar; // correction term
 	double	volume;			// cell volume
 	double	fluxBalance;	// flux balance of cell
 	double	phi[2];			// phi at cell center
@@ -122,6 +128,7 @@ struct sData {
 	// numerical settings
 	double	maxTime;
 	int		numberTimeSteps;
+	double deltaT;
 
 	double	overrelax;
 	double	residuum;

@@ -30,7 +30,6 @@ bool
 solve(sData* data)
 {
   sCell* curCell = 0;
-  sFace* curFace = 0;
 
   cout << "\nCalculation:\n------------\n";
 
@@ -188,7 +187,7 @@ solve2(sData* data)
     {
       if (t % 1000 == 0)
         cout << "i= " << t << endl;
-      for (int k = 0; k < 10; k++)
+      for (int k = 0; k < 1000; k++) //todo till converged
         {
 
           /*
@@ -278,11 +277,13 @@ solve2(sData* data)
                           - curCell->cFaces[NORTH]->uv[1]);
 
                   double pbar;
+
                   pbar = (awp * curCell->nCells[WEST]->p
                       + aep * curCell->nCells[EAST]->p
                       + anp * curCell->nCells[NORTH]->p
                       + asp * curCell->nCells[SOUTH]->p + b) / atildep;
                   curCell->p = pbar + curCell->p; // new = correction + old; 7-11.4
+                  curCell->pbar = pbar;
 
                 }
 
@@ -324,10 +325,9 @@ solve2(sData* data)
                   anuv = dy * deltaX * APEYABS + MAX(-g*deltaX,0);
                   asuv = dy * deltaX * APEYABS + MAX(g*deltaX,0);
                   aetilde = aeuv + awuv + anuv + asuv;
-                  aetilde = aeuv + awuv + anuv + asuv;
 
-                  deltaP = 0;
-                  deltaPbar = 0;
+
+
 
                   if (curFace->deltaxy[1] == 0)
                     {
@@ -336,14 +336,16 @@ solve2(sData* data)
                       //  ----- face
                       //
                       b = aetilde * curFace->uv[1];
-                      deltaP = 0;
-                      deltaPbar = 0;
+                      deltaP =  curFace->nCells[1]->p- curFace->nCells[0]->p;//7-12 7.1-3 //TODO is this correct ? neighbours left right
+
 
                       curFace->uv[0] = 0;
 
                       uvbar = (asuv * curFace->nCells[0]->cFaces[SOUTH]->uv[1]
                           + anuv * curFace->nCells[1]->cFaces[NORTH]->uv[1] + b
                           + deltaP * curFace->deltaxy[1]) / aetilde;
+
+                      deltaPbar =  curFace->nCells[1]->pbar- curFace->nCells[0]->pbar;//7-12 7.3-1 //TODO is this correct ? neighbours left right ?
 
                       curFace->uv[1] = curFace->uv[1] + uvbar
                           + (deltaPbar * curFace->deltaxy[1] / aetilde);
@@ -355,14 +357,14 @@ solve2(sData* data)
                       //   | face
                       //   |
                       b = aetilde * curFace->uv[0];
-                      deltaP = 0;
-                      deltaPbar = 0;
+                      deltaP =  curFace->nCells[1]->p- curFace->nCells[0]->p;//7-12 7.1-3 //TODO is this correct ? neighbours left right
+
 
                       curFace->uv[1] = 0;
                       uvbar = (awuv * curFace->nCells[0]->cFaces[WEST]->uv[0]
                           + aeuv * curFace->nCells[1]->cFaces[EAST]->uv[0] + b
                           + deltaP * curFace->deltaxy[1]) / aetilde;
-
+                      deltaPbar =  curFace->nCells[1]->pbar- curFace->nCells[0]->pbar;
                       curFace->uv[0] = curFace->uv[0] + uvbar
                           + (deltaPbar * curFace->deltaxy[0] / aetilde);
                     }

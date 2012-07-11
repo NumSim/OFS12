@@ -30,10 +30,12 @@ using namespace std;
 //------------------------------------------------------
 bool setup(sData* data)
 {
+	data->deltaT =data->maxTime/data->numberTimeSteps;
+	cout << data->deltaT<< endl;
   sCell* curCell=0;
   sFace* curFace=0;
-  data->deltaX =0.1;
-  data->deltaY = 0.1; // TODO change this
+  data->deltaX =0.33333333;
+  data->deltaY = 0.33333333; // TODO change this
 
   ////////////////////////
   // SET FACE VELOCITY  //
@@ -41,11 +43,11 @@ bool setup(sData* data)
   for(int fId=0; fId<data->faceNo; fId++) {
       curFace=&data->faces[fId];
       if (curFace->bType == 1 ){
-      curFace->uv[0] = data->uv[0];
-      curFace->uv[1] = data->uv[1];
+      curFace->uv[0] = 0;//data->uv[0];
+      curFace->uv[1] = 0;//data->uv[1];
       }else{
-          curFace->uv[0] = 0.4567;
-          curFace->uv[1] = 0.789;
+          curFace->uv[0] = 0;//0.4567;
+          curFace->uv[1] = 0;//0.789;
       }
   }
 
@@ -66,9 +68,9 @@ bool setup(sData* data)
   for(int cId=0; cId<data->cellNo; cId++) {
       curCell=&data->cells[cId];
 
-      curCell->phi[0] = SOMENUMBER;
-      curCell->phi[1] = ANOTHERNUMBER;
-      curCell->p = 0.1234;
+     // curCell->phi[0] = SOMENUMBER;
+     // curCell->phi[1] = ANOTHERNUMBER;
+      curCell->p = 1;
   }
 
   //////////////////////////////

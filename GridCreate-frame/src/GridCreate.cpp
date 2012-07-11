@@ -29,7 +29,7 @@
 int main(int, char**)
 {
 	sData* data = new sData;
-        const char* cfgFilePath  = "/home/thomas/workspace/OFS12/ConvDiff/run/grid.txt";
+        const char* cfgFilePath  = "/home/tc497585/programming/workspace/OFS12/ConvDiff/run/grid.txt";
 
 
 	std::cout << "\t Simulationstechnik V\n"

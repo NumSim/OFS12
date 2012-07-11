@@ -11,6 +11,7 @@
 
 void preprocessing (sData * data)
 {
+	/*
   data->deltaXiAdaptive       = allocGrid1Mem(data, MAXDOUBLE);
   data->deltaEtaAdaptive      = allocGrid1Mem(data, MAXDOUBLE);
 
@@ -27,6 +28,7 @@ void preprocessing (sData * data)
 
       }
   }
+  */
 
 
 

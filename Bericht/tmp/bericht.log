@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2012/dev/Chakra Linux) (format=pdflatex 2012.7.5)  6 AUG 2012 11:02
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2012/dev/Chakra Linux) (format=pdflatex 2012.7.5)  6 AUG 2012 12:05
 entering extended mode
  restricted \write18 enabled.
  Source specials enabled.
@@ -244,18 +244,18 @@ Package: gauss 2003/01/14
 ) (./bericht.aux)
 \openout1 = `bericht.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 24.
+LaTeX Font Info:    ... okay on input line 24.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 24.
+LaTeX Font Info:    ... okay on input line 24.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 24.
+LaTeX Font Info:    ... okay on input line 24.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 24.
+LaTeX Font Info:    ... okay on input line 24.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 24.
+LaTeX Font Info:    ... okay on input line 24.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 24.
+LaTeX Font Info:    ... okay on input line 24.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: wrapfig package is loaded.
 Package caption Info: End \AtBeginDocument code.
@@ -320,134 +320,50 @@ G,.JBIG2,.JB2,.eps]
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-LaTeX Font Info:    Try loading font information for U+msa on input line 45.
+LaTeX Font Info:    Try loading font information for U+msa on input line 29.
 
 (/usr/share/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2009/06/22 v3.00 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 45.
+LaTeX Font Info:    Try loading font information for U+msb on input line 29.
 
 (/usr/share/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2009/06/22 v3.00 AMS symbols B
 ) [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-Runaway argument?
- 
-! Paragraph ended before \align was complete.
-<to be read again> 
-                   \par 
-l.110 
-      
-I suspect you've forgotten a `}', causing me to apply this
-control sequence to too much text. How can we recover?
-My plan is to forget the whole thing and hope for the best.
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] (./bericht.toc)
+\tf@toc=\write3
+\openout3 = `bericht.toc'.
 
-! Missing $ inserted.
-<inserted text> 
-                $
-l.110 
-      
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
+ [2] [3]
+Overfull \hbox (4.33125pt too wide) in paragraph at lines 131--134
+\OT1/cmr/m/n/10 Auf dem Rand folgt die Str[]omung der Kon-tur, da die Po-ten-ti
+-al-str[]omung ei-ne rei-bungs-freie Str[]omung
+ []
 
-! Missing \endgroup inserted.
-<inserted text> 
-                \endgroup 
-l.110 
-      
-I've inserted something that you may have forgotten.
-(See the <inserted text> above.)
-With luck, this will get me unwedged. But if you
-really didn't forget anything, try typing `2' now; then
-my insertion and my current dilemma will both disappear.
-
-! Display math should end with $$.
-<to be read again> 
-                   \par 
-l.110 
-      
-The `$' that I just saw supposedly matches a previous `$$'.
-So I shall assume that you typed `$$' both times.
-
-! Misplaced \cr.
-\math@cr@@@ ->\cr 
-                  
-l.111 \end{align}
-                 
-I can't figure out why you would want to use a tab mark
-or \cr or \span just now. If something like a right brace
-up above has ended a previous alignment prematurely,
-you're probably due for more error messages, and you
-might try typing `S' now just to see what is salvageable.
-
-! Misplaced \noalign.
-\math@cr@@ ... \iffalse }\fi \math@cr@@@ \noalign 
-                                                  {\vskip #1\relax }
-l.111 \end{align}
-                 
-I expect to see \noalign only after the \cr of
-an alignment. Proceed, and I'll ignore this case.
-
-! Misplaced \noalign.
-\black@ #1->\noalign 
-                     {\ifdim #1>\displaywidth \dimen@ \prevdepth \nointerlin...
-l.111 \end{align}
-                 
-I expect to see \noalign only after the \cr of
-an alignment. Proceed, and I'll ignore this case.
-
-! Extra }, or forgotten \endgroup.
-\endalign ->\math@cr \black@ \totwidth@ \egroup 
-                                                \ifingather@ \restorealignst...
-l.111 \end{align}
-                 
-I've deleted a group-closing symbol because it seems to be
-spurious, as in `$x}$'. But perhaps the } is legitimate and
-you forgot something else, as in `\hbox{$x}'. In such cases
-the way to recover is to insert both the forgotten and the
-deleted material, e.g., by typing `I$}'.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.111 \end{align}
-                 
-I've inserted something that you may have forgotten.
-(See the <inserted text> above.)
-With luck, this will get me unwedged. But if you
-really didn't forget anything, try typing `2' now; then
-my insertion and my current dilemma will both disappear.
-
-! Display math should end with $$.
-<to be read again> 
-                   \endgroup 
-l.111 \end{align}
-                 
-The `$' that I just saw supposedly matches a previous `$$'.
-So I shall assume that you typed `$$' both times.
-
-[2] (./bericht.aux) ) 
+[4] [5] (./bericht.aux) ) 
 Here is how much of TeX's memory you used:
- 3903 strings out of 493629
- 54706 string characters out of 3148777
- 115123 words of memory out of 3000000
- 7144 multiletter control sequences out of 15000+200000
- 7582 words of font info for 30 fonts, out of 3000000 for 9000
+ 3938 strings out of 493629
+ 55036 string characters out of 3148777
+ 117115 words of memory out of 3000000
+ 7167 multiletter control sequences out of 15000+200000
+ 12228 words of font info for 48 fonts, out of 3000000 for 9000
  831 hyphenation exceptions out of 8191
- 37i,12n,38p,237b,147s stack positions out of 5000i,500n,10000p,200000b,50000s
-</usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx
-10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/s
-hare/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texmf-dis
-t/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texmf-dist/fonts/type1/
-public/amsfonts/cm/cmmi7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts
-/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></
-usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texm
-f-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
-Output written on bericht.pdf (2 pages, 103478 bytes).
+ 37i,12n,38p,237b,201s stack positions out of 5000i,500n,10000p,200000b,50000s
+</usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/
+cmbx10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></u
+sr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texmf
+-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texmf-dist/fonts/ty
+pe1/public/amsfonts/cm/cmmi7.pfb></usr/share/texmf-dist/fonts/type1/public/amsf
+onts/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.p
+fb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-dist/fonts/type1/public/
+amsfonts/cm/cmsy7.pfb>
+Output written on bericht.pdf (5 pages, 135068 bytes).
 PDF statistics:
- 47 PDF objects out of 1000 (max. 8388607)
- 33 compressed objects within 1 object stream
+ 64 PDF objects out of 1000 (max. 8388607)
+ 45 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

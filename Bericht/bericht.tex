@@ -9,24 +9,26 @@
 \usepackage[latin1]{inputenc}
 \usepackage{caption,graphicx,wrapfig}
 \usepackage{gauss}
-\newcommand{\Z}{\mathbb Z}
-\newcommand{\N}{\mathbb N}
-\newcommand{\Q}{\mathbb Q}
-\newcommand{\R}{\mathbb R}
-\newcommand{\C}{\mathbb C}
-\newcommand{\F}{\mathbb F}
-\newcommand{\K}{\mathbb K}
+\setcounter{tocdepth}{4}   %= Aufnahme in das Inhaltsverzeichnis *
+\setcounter{secnumdepth}{4}  % = Nummerierung vertiefen *
 
 
-
-% TITLE
-% INHALTSV
+\newcommand{\dpP}{\partial \Phi}
+\newcommand{\dpXi}{\partial \xi}
+\newcommand{\dpEta}{\partial \eta}
+\newcommand{\dpX}{\partial x}
+\newcommand{\dpY}{\partial y}
 % ä ö includen
 % TODO am ende \mathbf vor jedes Phi
 
 \begin{document}
 
+\title{Pratkikumsbericht zur Vorlesung \\Numerische Strömungssimulation}
+\author{Thomas Camminaidy (297538), Peter Collienne (296711)}
+\date{\today}
+\maketitle \newpage
 
+\tableofcontents \newpage
 
 
 \section{Einleitung}
@@ -84,7 +86,7 @@ wirbel unten links in der ecke
 
 % TODO vllt noch meinen code auf nicht äquidist orthogonal 
 
-\subsection{Diskretisierung auf einem äquidisten krummlinigen Gitter}
+\subsection{Diskretisierung auf einem äquidistanten krummlinigen Gitter}
 Da in der Realität die Geometrie der Objekte wesentlich komplexer ist, kommt es fast immer zu krummlinigen Integrationsgebieten.
 Um die Laplacegleichung aber weiter wie gewohnt lösen zu können, versucht man, die physikalische Ebene auf ein rechteckiges Rechengebiet
 zu transformieren. Dabei transformieren wir die Koordinaten von der $x-y-$Ebene in die $\xi-\eta-$Ebene des Rechengebietes. Wodurch sich folgende
@@ -103,10 +105,50 @@ Somit transformiert man die Laplacegleichung zu
 +\alpha_4 \frac{\partial}{\partial \xi} 
 +\alpha_5 \frac{\partial}{\partial \eta} +\alpha_6 \Bigr ) \Phi=0
 \end{align}
-wobei $\alpha_{1},\ldots,\alpha_{6}$ aus den Ableitungen der Beziehungen in (7) und (8) resultieren.
+wobei $\alpha_{1},\ldots,\alpha_{6}$ aus den Ableitungen der Beziehungen in (7) und (8) und der gegebenen Geometrie
+resultieren.
 Dabei wird einfacheitshalber auf ein Rechengebiet transformiert für das $\Delta \xi=\Delta \eta=1$ gilt.
 Somit ergibt sich analog zu (6) die Iterationsvorschrift für $\Phi_{i,j}$ auf einem krummlinigen Gitter zu
 \begin{align}
-
+8(\alpha_1+\alpha_2)\Phi_{i,j}  
+&= \Phi_{i-1,j-1} \alpha_3 \\
+&+\Phi_{i,j-1}(4\alpha_2-2\alpha_5) \notag \\
+&-\Phi_{i+1,j-1} \alpha_3 \notag \\
+&+\Phi_{i-1,j} (4\alpha_1-2\alpha_4)\notag  \\
+&+\Phi_{i+1,j} (4\alpha_1+2\alpha_4)\notag  \\
+&-\Phi_{i-1,j+1} \alpha_3\notag  \\
+&+\Phi_{i,j+1} (4\alpha_2+2\alpha_5)\notag \\
+&+\Phi_{i+1,j+1}\alpha_3 \notag 
 \end{align}
+\subsubsection{Randbedingungen}
+\paragraph{Einström- und Ausströmränder}
+$~~$\\
+Als Randbedingungen für Ein- und Austrittsrand genügt ein einfaches Geschwindigkeitsprofil, dass durch Integration
+in eine passende Randbedingung für die Potentialgleichung überführt werden kann.
+In unseren Testfällen beschreiben wir das parallele Einströmen des Fluids in unsere Geometrie,
+weshalb das Potential an Ein- und Austrittsrand jeweils konstant gesetzt wird.
+\paragraph{Undurchlässige Wände}
+$~~$\\
+Auf dem Rand folgt die Strömung der Kontur, da die Potentialströmung eine reibungsfreie Strömung beschreibt.
+Deshalb gilt auf dem Rand 
+\begin{align}
+\frac{dh}{dx} = \frac{v}{u} = \frac{\partial \Phi}{\partial y}\Bigl(\frac{\partial \Phi}{\partial x}\Bigr)^{-1}
+\end{align}
+Somit folgt für den transformierten Raum
+\begin{align}
+\frac{dh}{dx} = \Bigl(\frac{\dpP}{\dpEta}\frac{\dpEta}{\dpY}+ \frac{\dpP}{\dpEta}\frac{\dpEta}{\dpY}\Bigr)
+\Bigl(\frac{\dpP}{\dpEta}\frac{\dpEta}{\dpX}+ \frac{\dpP}{\dpEta}\frac{\dpEta}{\dpX}\Bigr)^{-1}
+\end{align}
+Statt der Anwendung von zentralen finiten Differenzen muss am $\eta-$Rand auf die Formulierung mittels einseitiger finiter Differenzen
+zurückgegriffen werden. Einsetzen der einseitigen Differenzen in $\eta-$Richtung in Gleichung (12) liefert eine Vorschrift zur Berechnung von
+$\Phi_{0,j}$ bzw $\Phi_{N,j}$.
+Die notwendige Ableitung $\frac{dh}{dx}$ wird auch mittels finiter Differenzen aus der vorgegebenen Kontur berechnet.
+In der Implementierung wird dann in jedem Iterationsschritt zuerst $\Phi_{0,j}$ und $\Phi_{N,j}$ bestimmt und im Folgenden
+die Potentialgleichung für das innere des Gebietes berechnet. 
+\subsubsection{Testfall 1}
+sage wie man an die alphas kommt
+plot
+schön bunt
+error
+\subsubsection{Testfall 2}
 \end{document}

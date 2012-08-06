@@ -1,0 +1,86 @@
+%%This is a very basic article template.
+%%There is just one section and two subsections.
+
+
+\documentclass{article}
+\usepackage{a4wide}
+\usepackage{german, amsfonts, amssymb, amsmath, ulem, amsthm, amstext}
+\usepackage{enumerate}
+\usepackage[latin1]{inputenc}
+\usepackage{caption,graphicx,wrapfig}
+\usepackage{gauss}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\F}{\mathbb F}
+\newcommand{\K}{\mathbb K}
+
+
+
+% TITLE
+% INHALTSV
+% ä ö includen
+% TODO am ende \mathbf vor jedes Phi
+
+\begin{document}
+
+
+
+
+\section{Einleitung}
+Der Vorliegende Bericht fasst die Inhalte des Programmierpraktikums zur Vorlesung Numerische Strömungssimulation 
+im Sommersemester 2012 bei Dr.-Ing. Bernd Binninger und Dipl.-Ing. Jens Henrik Göbbert zusammen.
+Die Programmieraufgaben lassen sich in vier Themen unterteilen die in diesem Bericht enthalten sind. Ziel des Praktikums
+war es einen eigenen Strömungslöser mit Gittergenierirung zu implementieren und anhand verschiedener Testfälle zu validieren.
+Zuerst befassten wir uns mit der Potentialströmung und einem passenden Lösungsverfahren. Anschließend fertigten wir einen 
+Gittergenerator an, den wir im nächsten Schritt als Grundlage für die Lösung der Konvektions-Diffusions-Gleichung 
+und anschließend der Impulsgleichung verwendet haben.
+
+
+\section{Potentialströmung}
+Potentialströmungen beschreiben das Strömungsfeld unter der Annahme einer inkompressiblen, reibungsfreien, wirbelfreien, zweidimensionalen
+Strömung. Die Geschwindigkeiten des Fluids ergeben sich dann als Ableitung der Potential- bzw. Stromfunktion.
+\begin{align} u =\frac{ \partial \Phi} {\partial x} \text{ und } v =\frac{ \partial \Phi} {\partial y}\end{align}
+Mit Hilfe dieser Beschreibung der Geschwindigkeiten und unter Anwendung der Kontinuitätsgleichung 
+lässt sich dann die 
+2D-Laplace Gleichung für die Potentialfunktion $\Phi$ beschreiben.
+Ausgangspunkt für die Beschreibung der Strömung ist die Kontinuitätsgleichung, welche unter Berücksichtigung von (1) eine 2D-Laplace Gleichung für die 
+Potentialfunktion $\Phi$ darstellt.
+\begin{align} &\nabla \cdot \mathbf{v} =0 \\ \Leftrightarrow &\frac{ \partial u} {\partial x}+ \frac{ \partial v} {\partial y}=0
+\\ \Leftrightarrow &\Delta \Phi = 0 \end{align}
+Neben der Potentialfunktion erfüllt ebenfalls die Stromfunktion $\Psi$ eine Laplacegleichung. Charakteristisch für Potentialströmungen
+ist, dass die Isolinien der Potentialfunktion und Stromfunktion Senkrecht aufeinander stehen. Dies wird im folgenden auch als Kriterium für die
+Bewertung unserers Programms benutzt. Zusätzlich zu der Laplacegleichung benötigt eine PDE auch noch Randbedingungen die durch die gegebene Geometrie
+und z.B. Haftbedingungen vorgegeben sind.
+
+
+\subsection{Diskretisierung auf einem äquidistanten Gitter}
+Um die Laplacegleichung (2) zu lösen müssen die Ableitungen numerisch mittels finite Differenzen Approximiert werden.
+Auf einem äquidistanten lassen sich die Laplacegleichung $\Delta \Phi = 0$ schreiben als
+\begin{align}
+\frac{\Phi_{i+1,j}-2\Phi_{i,j}+\Phi_{i-1,j}}{\Delta x^2}+\frac{\Phi_{i,j+1}-2\Phi_{i,j}+\Phi_{i,j-1}}{\Delta y^2}=0
+\end{align}
+Dabei bezeichnet $i$ den Laufindex in x-Richtung, also $x_i = \Delta x \cdot i$ und $j$ analog den Laufindex in y-Richtung.
+Um eine Iterationsvorschrift für $\Phi_{i,j}$ zu erhalten, wird Gleichung (5) umgeformt.
+\begin{align}
+\Phi_{i,j} =\frac{\Delta x^2(\Phi_{i,j+1}+\Phi_{i,j-1})+\Delta y ^2(\Phi_{i+1,j}+\Phi_{i-1,j}) }{2(\Delta x^2 + \Delta y^2)}
+\end{align}
+Um für die Potentialfunktion zu lösen, iterieren wir mit Vorschrift (6) solange über unser Rechengebiet, bis $\Phi$ auskonvergiert ist.
+Das Jacobi- und das Gauß-Seidel-Verfahren sind zwei mögliche Implementierungen. Der Unterschied zwischen den beiden Methoden liegt 
+in der Verwendung der benachbarten Gitterpunkte $\Phi_{i\pm1, j\pm1}$. Das Jacobi-Verfahren verwendet dabei die Punkte aus dem Letzten Iterationsschritt,
+während das Gauß-Seidel-Verfahren schon im momentanen Zeitschritt aktualisierte Punkte berücksichtigt. Das Gauß-Seidel-Verfahren konvergiert dabei in 
+unseren Testfällen deutlich schneller als das Jacobi-Verfahren. Als weitere Option der Konvergenzbeschleunigung lässt sich das Gauß-Seidel-Verfahren 
+noch mit einem Relaxationsfaktor versehen, bei dem entweder eine Über- oder eine Unterrelaxation verwendet werden kann.
+
+\subsubsection{Testfall Parallelströmung}
+von links, von unten
+fehler über zeit
+u, v, phi
+
+\subsubsection{Testfall Wirbel}
+wirbel unten links in der ecke
+
+
+\end{document}

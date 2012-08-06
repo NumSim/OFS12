@@ -56,7 +56,7 @@ Bewertung unserers Programms benutzt. Zusätzlich zu der Laplacegleichung benötig
 und z.B. Haftbedingungen vorgegeben sind.
 
 
-\subsection{Diskretisierung auf einem äquidistanten Gitter}
+\subsection{Diskretisierung auf einem äquidistanten orthogonalen Gitter}
 Um die Laplacegleichung (2) zu lösen müssen die Ableitungen numerisch mittels finite Differenzen Approximiert werden.
 Auf einem äquidistanten lassen sich die Laplacegleichung $\Delta \Phi = 0$ schreiben als
 \begin{align}
@@ -82,5 +82,31 @@ u, v, phi
 \subsubsection{Testfall Wirbel}
 wirbel unten links in der ecke
 
+% TODO vllt noch meinen code auf nicht äquidist orthogonal 
 
+\subsection{Diskretisierung auf einem äquidisten krummlinigen Gitter}
+Da in der Realität die Geometrie der Objekte wesentlich komplexer ist, kommt es fast immer zu krummlinigen Integrationsgebieten.
+Um die Laplacegleichung aber weiter wie gewohnt lösen zu können, versucht man, die physikalische Ebene auf ein rechteckiges Rechengebiet
+zu transformieren. Dabei transformieren wir die Koordinaten von der $x-y-$Ebene in die $\xi-\eta-$Ebene des Rechengebietes. Wodurch sich folgende
+Beziehungen ergeben
+\begin{align}
+&x = x(\xi,\eta) \ &y = y(\xi,\eta)\\
+&\xi=\xi(x,y) \  &\eta=\eta(x,y)  
+\end{align}
+Durch diese Abhängigkeiten, ergeben sich beim Berechnen der 2. Ableitungen für die Laplacegleichung zusätzliche Terme,
+resultierend aus der Kettenregel.
+Somit transformiert man die Laplacegleichung zu
+\begin{align}
+\Bigl( \alpha_1 \frac{\partial^2}{\partial \xi^2} 
++\alpha_2 \frac{\partial^2}{\partial \eta^2} 
++\alpha_3\frac{\partial^2}{\partial \xi \partial \eta}
++\alpha_4 \frac{\partial}{\partial \xi} 
++\alpha_5 \frac{\partial}{\partial \eta} +\alpha_6 \Bigr ) \Phi=0
+\end{align}
+wobei $\alpha_{1},\ldots,\alpha_{6}$ aus den Ableitungen der Beziehungen in (7) und (8) resultieren.
+Dabei wird einfacheitshalber auf ein Rechengebiet transformiert für das $\Delta \xi=\Delta \eta=1$ gilt.
+Somit ergibt sich analog zu (6) die Iterationsvorschrift für $\Phi_{i,j}$ auf einem krummlinigen Gitter zu
+\begin{align}
+
+\end{align}
 \end{document}

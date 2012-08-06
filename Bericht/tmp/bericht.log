@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2012/dev/Chakra Linux) (format=pdflatex 2012.7.5)  6 AUG 2012 12:05
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2012/dev/Chakra Linux) (format=latex 2012.7.5)  6 AUG 2012 16:20
 entering extended mode
  restricted \write18 enabled.
  Source specials enabled.
@@ -181,18 +181,10 @@ Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
 (/usr/share/texmf-dist/tex/latex/latexconfig/graphics.cfg
 File: graphics.cfg 2010/04/23 v1.9 graphics configuration of TeX Live
 )
-Package graphics Info: Driver file: pdftex.def on input line 91.
+Package graphics Info: Driver file: dvips.def on input line 91.
 
-(/usr/share/texmf-dist/tex/latex/pdftex-def/pdftex.def
-File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
-
-(/usr/share/texmf-dist/tex/generic/oberdiek/infwarerr.sty
-Package: infwarerr 2010/04/08 v1.3 Providing info/warning/message (HO)
-)
-(/usr/share/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
-Package: ltxcmds 2011/04/18 v1.20 LaTeX kernel commands for general use (HO)
-)
-\Gread@gobject=\count101
+(/usr/share/texmf-dist/tex/latex/graphics/dvips.def
+File: dvips.def 1999/02/16 v3.0i Driver-dependant file (DPC,SPQR)
 ))
 \Gin@req@height=\dimen122
 \Gin@req@width=\dimen123
@@ -200,7 +192,7 @@ Package: ltxcmds 2011/04/18 v1.20 LaTeX kernel commands for general use (HO)
 (/usr/share/texmf-dist/tex/latex/wrapfig/wrapfig.sty
 \wrapoverhang=\dimen124
 \WF@size=\dimen125
-\c@WF@wrappedlines=\count102
+\c@WF@wrappedlines=\count101
 \WF@box=\box31
 \WF@everypar=\toks31
 Package: wrapfig 2003/01/31  v 3.6
@@ -215,12 +207,12 @@ Package: gauss 2003/01/14
 \g@b@tmp=\box37
 \g@b@tmpa=\box38
 \g@b@tmpb=\box39
-\g@maxrow=\count103
-\g@maxcol=\count104
-\g@maxrow@old=\count105
-\g@maxcol@old=\count106
-\g@c@tmp=\count107
-\g@c@tmpa=\count108
+\g@maxrow=\count102
+\g@maxcol=\count103
+\g@maxrow@old=\count104
+\g@maxcol@old=\count105
+\g@c@tmp=\count106
+\g@c@tmpa=\count107
 \g@axisHeight=\dimen126
 \g@linethickness=\dimen127
 \g@tab=\dimen128
@@ -232,9 +224,9 @@ Package: gauss 2003/01/14
 \g@d@tmpc=\dimen134
 \g@d@tmpd=\dimen135
 \g@d@tmpe=\dimen136
-\g@loopCount=\count109
-\g@loopEnd=\count110
-\g@loopStep=\count111
+\g@loopCount=\count108
+\g@loopEnd=\count109
+\g@loopStep=\count110
 \colarrowsep=\dimen137
 \rowarrowsep=\dimen138
 \opskip=\dimen139
@@ -259,67 +251,6 @@ LaTeX Font Info:    ... okay on input line 24.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: wrapfig package is loaded.
 Package caption Info: End \AtBeginDocument code.
-
-(/usr/share/texmf-dist/tex/context/base/supp-pdf.mkii
-[Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count112
-\scratchdimen=\dimen143
-\scratchbox=\box40
-\nofMPsegments=\count113
-\nofMParguments=\count114
-\everyMPshowfont=\toks32
-\MPscratchCnt=\count115
-\MPscratchDim=\dimen144
-\MPnumerator=\count116
-\makeMPintoPDFobject=\count117
-\everyMPtoPDFconversion=\toks33
-) (/usr/share/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
-Package: pdftexcmds 2011/04/22 v0.16 Utilities of pdfTeX for LuaTeX (HO)
-
-(/usr/share/texmf-dist/tex/generic/oberdiek/ifluatex.sty
-Package: ifluatex 2010/03/01 v1.3 Provides the ifluatex switch (HO)
-Package ifluatex Info: LuaTeX not detected.
-)
-(/usr/share/texmf-dist/tex/generic/oberdiek/ifpdf.sty
-Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
-Package ifpdf Info: pdfTeX in PDF mode is detected.
-)
-Package pdftexcmds Info: LuaTeX not detected.
-Package pdftexcmds Info: \pdf@primitive is available.
-Package pdftexcmds Info: \pdf@ifprimitive is available.
-Package pdftexcmds Info: \pdfdraftmode found.
-)
-(/usr/share/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
-Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
-
-(/usr/share/texmf-dist/tex/latex/oberdiek/grfext.sty
-Package: grfext 2010/08/19 v1.1 Managing graphics extensions (HO)
-
-(/usr/share/texmf-dist/tex/generic/oberdiek/kvdefinekeys.sty
-Package: kvdefinekeys 2011/04/07 v1.3 Defining keys (HO)
-))
-(/usr/share/texmf-dist/tex/latex/oberdiek/kvoptions.sty
-Package: kvoptions 2010/12/23 v3.10 Keyval support for LaTeX options (HO)
-
-(/usr/share/texmf-dist/tex/generic/oberdiek/kvsetkeys.sty
-Package: kvsetkeys 2011/04/07 v1.13 Key value parser (HO)
-
-(/usr/share/texmf-dist/tex/generic/oberdiek/etexcmds.sty
-Package: etexcmds 2011/02/16 v1.5 Prefix for e-TeX command names (HO)
-Package etexcmds Info: Could not find \expanded.
-(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
-(etexcmds)             that some package has redefined \expanded.
-(etexcmds)             In the latter case, load this package earlier.
-)))
-Package grfext Info: Graphics extension search list:
-(grfext)             [.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPE
-G,.JBIG2,.JB2,.eps]
-(grfext)             \AppendGraphicsExtensions on input line 452.
-
-(/usr/share/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
-File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
-e
-))
 LaTeX Font Info:    Try loading font information for U+msa on input line 29.
 
 (/usr/share/texmf-dist/tex/latex/amsfonts/umsa.fd
@@ -331,39 +262,44 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 29.
 File: umsb.fd 2009/06/22 v3.00 AMS symbols B
 ) [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] (./bericht.toc)
+] (./bericht.toc)
 \tf@toc=\write3
 \openout3 = `bericht.toc'.
 
- [2] [3]
-Overfull \hbox (4.33125pt too wide) in paragraph at lines 131--134
+ [2]
+[3]
+File: test/1parallel/phi.eps Graphic file (type eps)
+ <test/1parallel/phi.eps>
+File: test/1parallel/psi.eps Graphic file (type eps)
+ <test/1parallel/psi.eps>
+File: test/1parallel/both.eps Graphic file (type eps)
+
+<test/1parallel/both.eps>
+File: test/1parallel/error.eps Graphic file (type eps)
+ <test/1parallel/error.eps> [4] [5]
+File: test/2vortex/phi.eps Graphic file (type eps)
+
+<test/2vortex/phi.eps>
+File: test/2vortex/psi.eps Graphic file (type eps)
+ <test/2vortex/psi.eps>
+File: test/2vortex/both.eps Graphic file (type eps)
+ <test/2vortex/both.eps>
+File: test/2vortex/allerror.eps Graphic file (type eps)
+
+<test/2vortex/allerror.eps> [6]
+Overfull \hbox (4.33125pt too wide) in paragraph at lines 171--174
 \OT1/cmr/m/n/10 Auf dem Rand folgt die Str[]omung der Kon-tur, da die Po-ten-ti
 -al-str[]omung ei-ne rei-bungs-freie Str[]omung
  []
 
-[4] [5] (./bericht.aux) ) 
+[7] [8] (./bericht.aux) ) 
 Here is how much of TeX's memory you used:
- 3938 strings out of 493629
- 55036 string characters out of 3148777
- 117115 words of memory out of 3000000
- 7167 multiletter control sequences out of 15000+200000
+ 3037 strings out of 493630
+ 41292 string characters out of 3148800
+ 107029 words of memory out of 3000000
+ 6306 multiletter control sequences out of 15000+200000
  12228 words of font info for 48 fonts, out of 3000000 for 9000
  831 hyphenation exceptions out of 8191
- 37i,12n,38p,237b,201s stack positions out of 5000i,500n,10000p,200000b,50000s
-</usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/
-cmbx10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></u
-sr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texmf
--dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texmf-dist/fonts/ty
-pe1/public/amsfonts/cm/cmmi7.pfb></usr/share/texmf-dist/fonts/type1/public/amsf
-onts/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.p
-fb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/
-texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texmf-dist/fonts
-/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-dist/fonts/type1/public/
-amsfonts/cm/cmsy7.pfb>
-Output written on bericht.pdf (5 pages, 135068 bytes).
-PDF statistics:
- 64 PDF objects out of 1000 (max. 8388607)
- 45 compressed objects within 1 object stream
- 0 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 36i,12n,38p,228b,201s stack positions out of 5000i,500n,10000p,200000b,50000s
 
+Output written on bericht.dvi (8 pages, 20824 bytes).

@@ -30,20 +30,21 @@ double yof(double xi, double eta){
 }
 
 double xleftof(double xi, double eta){
-  return 0;
+  return 1;
 }
 double xrightof(double xi, double eta){
-  return 20;//+10*eta;//+sin(5*eta);//+5*eta+sin(10*eta);;//+cos(eta);
+  return 2;//+10*eta;//+sin(5*eta);//+5*eta+sin(10*eta);;//+cos(eta);
 }
 double ytopof(double xi, double eta){
-
-  if (xi<10){
-      return 5;
-  }else if (xi<15){
-      return 5+(xi-10);
-  }else{
-      return 10;
-  }
+//return 10;
+//  if (xi<10){
+//      return 5;
+//  }else if (xi<15){
+//      return 5+(xi-10);
+//  }else{
+//      return 10;
+//  }
+	return 2;
 /*
   if (xi<3){
       return 5;
@@ -81,11 +82,12 @@ double ytopof(double xi, double eta){
 double ybottomof(double xi, double eta){
 //  return cos(xi);
   //return 10*xi;//sin(xi);//-0.05*xi
-  if(xi<10) {
-      return 0;
-  }else{
-      return -5;
-  }
+//  if(xi<10) {
+//      return 0;
+//  }else{
+//      return -5;
+//  }
+	return 1;
 //return 0;// -xi*xi/50;
 /*
   if (xi<3){

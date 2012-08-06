@@ -157,7 +157,7 @@ bool gaussseidel(sData* data, double** phi,double** psi)
         {
 
           phi[i][0] = (   beta[i][0]*(phi[i+1][0]-phi[i-1][0]) - phi[i][2] + 4*phi[i][1]     )/3;
-          phi[i][data->dimJ-1] = (   - beta[i][1]*(phi[i+1][data->dimJ-1]-phi[i-1][data->dimJ-1]) - phi[i][data->dimJ-1-2] + 4*phi[i][data->dimJ-1-1] )/3;
+        phi[i][data->dimJ-1] = (   - beta[i][1]*(phi[i+1][data->dimJ-1]-phi[i-1][data->dimJ-1]) - phi[i][data->dimJ-1-2] + 4*phi[i][data->dimJ-1-1] )/3;
 
 
           for(int j = 1 ; j < data->dimJ-1; j++)
@@ -179,7 +179,7 @@ bool gaussseidel(sData* data, double** phi,double** psi)
 
               tmp /=(2.0*(a1+a2));
               errorPhi += fAbs(tmp-phi[i][j]);
-              phi[i][j] = tmp;
+              phi[i][j] = phi[i][j]+1*(tmp-phi[i][j]);
               tmp =        psi[i+1][j+1]   * (a3/4.0)
                                                              + psi[i+1][j]     * (a1+a4/2.0)
                                                              + psi[i+1][j-1]   * (-a3/4.0)
@@ -191,11 +191,11 @@ bool gaussseidel(sData* data, double** phi,double** psi)
 
               tmp /=(2.0*(a1+a2));
               errorPsi += fAbs(tmp-psi[i][j]);
-              psi[i][j] = tmp;
+              psi[i][j] = psi[i][j]+1*(tmp-psi[i][j]);
 
 
               error = (errorPsi>errorPhi)? errorPsi : errorPhi;
-
+              data->errorLog[curIter-1] = error;
             }
 
 

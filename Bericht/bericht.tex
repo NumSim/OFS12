@@ -11,7 +11,7 @@
 \usepackage{gauss}
 \setcounter{tocdepth}{4}   %= Aufnahme in das Inhaltsverzeichnis *
 \setcounter{secnumdepth}{4}  % = Nummerierung vertiefen *
-
+\usepackage{graphicx}
 
 \newcommand{\dpP}{\partial \Phi}
 \newcommand{\dpXi}{\partial \xi}
@@ -76,15 +76,55 @@ während das Gauß-Seidel-Verfahren schon im momentanen Zeitschritt aktualisierte 
 unseren Testfällen deutlich schneller als das Jacobi-Verfahren. Als weitere Option der Konvergenzbeschleunigung lässt sich das Gauß-Seidel-Verfahren 
 noch mit einem Relaxationsfaktor versehen, bei dem entweder eine Über- oder eine Unterrelaxation verwendet werden kann.
 
-\subsubsection{Testfall Parallelströmung}
-von links, von unten
-fehler über zeit
-u, v, phi
+\subsubsection{Testfall Parallelströmung} 
+Zu Beginn wählen wir uns einen möglichst einfachen Testfall. Dazu setzen wir $\Omega =[0,1]^2$ als Einheitsquadrat welches 
+wir in 20 Punkte in X-Richtung und 20 Punkte in Y-Richtung aufteilen. Als Fehlertoleranz setzen wir $\epsilon= 1e-6$.
+und setzen das Potential am linken Rand fest auf $\Phi = 2$ und für den rechten Rand $\Phi = 0$.
+Die beiden Grafiken Zeigen die Isolinien der Potential- und Stromfunktion.\\
+\includegraphics[scale=0.5]{test/1parallel/phi.eps} 
+\includegraphics[scale=0.5]{test/1parallel/psi.eps}  \\
+Die folgende Grafik legt die Isolinien von Psi und Phi übereinander. Es zeigt sich, dass diese wie
+gefordert senkrecht aufeinander stehen.\\ 
+\includegraphics[scale=0.6]{test/1parallel/both.eps}\\
+Das Gauß-Seidel-Verfahren konvergiert nach 1079 Schritten. Im nachstehenden Plot ist zu sehen, dass die Konvergenzgeschwindigkeit
+mit zunehmender Iterationsanzahl zunimmt. Dieses Phänomen lässt sich an mehreren Testefällen vorfinden.\\
+\includegraphics[scale=0.7]{test/1parallel/error.eps}
 
 \subsubsection{Testfall Wirbel}
-wirbel unten links in der ecke
+Als zweiten Testfall haben wir die Potentialfunktion für einen Wirbel gewählt.
+Das Gebiet für diesen Fall ist $\Omega =[1,2]^2$ mit erneut 20 Punkten pro Dimension. 
+Der Wirbelmittelpunkt befindet sich im Punkt
+$(0,0)$. Das Potential für einen Wirbel ergibt sich zu
+\begin{align}
+\Phi = \frac{E}{2\pi}\arctan\Bigl(\frac{y}{x}\Bigr)
+\end{align}
+Analog ergibt sich die Stromfunktion zu
+\begin{align}
+\Psi = -\frac{E}{2\pi}\sqrt{{y}^2+{x}^2}
+\end{align}
+Der Wirbelmittelpunkt wurde bewusst außerhalb des Gebietes gewählt, da 
+mit der obigen Iterationsorschrift für $\Phi$ nur endliche Werte erzeugt werden;
+im Wirbelmittelpunkt hat das Potential allerdings eine Singularität. In unserem Fall
+haben wir $\frac{E}{2\pi}=1$ gewählt.
+Zu sehen sind erneut die Isolinien der Potential- und Stromfunktion.\newpage
+\includegraphics[scale=0.4]{test/2vortex/phi.eps}
+\includegraphics[scale=0.4]{test/2vortex/psi.eps}\\
+Im folgenden sind die Isolinien überlagert. Es wird auch hier deutlich,
+dass diese senkrecht aufeinander stehen.\\
+\includegraphics[scale=0.6]{test/2vortex/both.eps}\\
+Die Relaxation erstellt in jedem Iterationsschritte die Lösung im Folgeschritt als Linearkombination aus der Lösung im letzten Schritt
+und dem aktuellen Schritt.
+\begin{align}
+\Phi^{k} = \Phi^{k-1} + \beta (\Phi^{\tilde{k}}-\Phi^{k-1})
+\end{align}
+Für Die Iteration wurden unterschiedliche Werte für den Relaxationsfaktor gewählt. Dabei sieht man signifikante
+Unterschiede in der Anzahl der benötigten Iterationsschritte.
+So benötigt das Gauß-Seidel-Verfahren ohne Relaxation 601 Iterationsschritte um die Toleranz von $\epsilon 1e-6$ 
+zu erreichen. Wesentlich schneller konvergiert das Verfahren für $\beta = 1.8$. Zusätzlich sind noch die Fehlerplots
+für $\beta = 0.9$, $\beta = 1.3$, $\beta = 1.9$ beigefügt.
 
-% TODO vllt noch meinen code auf nicht äquidist orthogonal 
+\includegraphics[scale=0.5]{test/2vortex/allerror.eps}
+
 
 \subsection{Diskretisierung auf einem äquidistanten krummlinigen Gitter}
 Da in der Realität die Geometrie der Objekte wesentlich komplexer ist, kommt es fast immer zu krummlinigen Integrationsgebieten.

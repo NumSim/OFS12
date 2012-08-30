@@ -63,7 +63,7 @@ struct sData {
   double overrelax;
   double finiteDiffDx;
   double finiteDiffDy;
-  double *errorLog = new double[200000];
+  double *errorLog ;
 };
 
 double**  allocGrid1Mem(const sData* const data, const double preset);

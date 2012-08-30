@@ -1,11 +1,11 @@
 \contentsline {section}{\numberline {1}Einleitung}{3}
-\contentsline {section}{\numberline {2}Potentialstr\"omung}{3}
-\contentsline {subsection}{\numberline {2.1}Diskretisierung auf einem \"aquidistanten orthogonalen Gitter}{3}
-\contentsline {subsubsection}{\numberline {2.1.1}Testfall Parallelstr\"omung}{4}
+\contentsline {section}{\numberline {2}Potentialstr\IeC {\"o}mung}{3}
+\contentsline {subsection}{\numberline {2.1}Diskretisierung auf einem \IeC {\"a}quidistanten orthogonalen Gitter}{3}
+\contentsline {subsubsection}{\numberline {2.1.1}Testfall Parallelstr\IeC {\"o}mung}{4}
 \contentsline {subsubsection}{\numberline {2.1.2}Testfall Wirbel}{5}
-\contentsline {subsection}{\numberline {2.2}Diskretisierung auf einem \"aquidistanten krummlinigen Gitter}{7}
+\contentsline {subsection}{\numberline {2.2}Diskretisierung auf einem \IeC {\"a}quidistanten krummlinigen Gitter}{7}
 \contentsline {subsubsection}{\numberline {2.2.1}Randbedingungen}{7}
-\contentsline {paragraph}{\numberline {2.2.1.1}Einstr\"om- und Ausstr\"omr\"ander}{7}
-\contentsline {paragraph}{\numberline {2.2.1.2}Undurchl\"assige W\"ande}{7}
-\contentsline {subsubsection}{\numberline {2.2.2}Testfall 1}{8}
+\contentsline {paragraph}{\numberline {2.2.1.1}Einstr\IeC {\"o}m- und Ausstr\IeC {\"o}mr\IeC {\"a}nder}{7}
+\contentsline {paragraph}{\numberline {2.2.1.2}Undurchl\IeC {\"a}ssige W\IeC {\"a}nde}{7}
+\contentsline {subsubsection}{\numberline {2.2.2}Testfall Diffusor}{8}
 \contentsline {subsubsection}{\numberline {2.2.3}Testfall 2}{8}

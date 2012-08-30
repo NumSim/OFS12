@@ -28,6 +28,7 @@
 bool setup(sData* data) {
 	std::cout << "\nSetup:\t------->\t";
 
+	data->errorLog = new double[200000];
 	///////////////////
 	// SETUP U V     //
 	///////////////////

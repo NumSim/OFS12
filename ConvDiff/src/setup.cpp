@@ -46,8 +46,8 @@ bool setup(sData* data)
       curFace->uv[0] = 0;//data->uv[0];
       curFace->uv[1] = 0;//data->uv[1];
       }else{
-          curFace->uv[0] = 0;//0.4567;
-          curFace->uv[1] = 0;//0.789;
+          curFace->uv[0] = 1;//0.4567;
+          curFace->uv[1] = 1;//0.789;
       }
   }
 

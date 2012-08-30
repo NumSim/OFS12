@@ -243,7 +243,7 @@ f_{\text{West}} = \rho u \phi_{\text{West}}- \lambda \ddx \phi_{\text{West}} \\
 f_{\text{Nord}} = -(\rho v \phi_{\text{Nord}}- \lambda \ddy \phi_{\text{Nord}}),\ \ 
 f_{\text{Süd}} = \rho v \phi_{\text{Süd}}- \lambda \ddy \phi_{\text{Süd}}
 \end{align} 
-Da unser vorgegebener Fluss aus Richtung Süd-Ost einströmt, verwenden wir für $\ddx \phi$ und $\ddy \phi$ das Upwind-Schema,
+Da unser vorgegebener Fluss aus Richtung Süd-West einströmt, verwenden wir für $\ddx \phi$ und $\ddy \phi$ das Upwind-Schema,
 also $\ddx \phi \approx \frac{1}{\Delta x}(\phi_{i,j}-\phi_{i-1,j})$ und  $\ddy \phi \approx \frac{1}{\Delta y}(\phi_{i,j}-\phi_{i,j-1})$.
  
 \subsubsection{Testfall nur Diffusion}
@@ -251,17 +251,32 @@ Die folgenden Testfälle sind alle auf dem selben Gitter der Dimension 20x10 ger
 Zuerst setzten wir  $u=0$ und $v=0$ um ausschließlich Diffusion zu simulieren. Wir wählen $\lambda=0.1$ und so stellt
 sich in der Theore ein lineares Profil für $\phi$ zwischen dem linken und rechten Rand ein.
 Dies zeigt sich auch in unserer Berechnung. \\
-\includegraphics[scale=0.5]{test/5conv/diffusiononly.eps}
+\includegraphics[scale=0.4]{test/5conv/diffusiononly.eps}
  
 
 \subsubsection{Testfall nur Konvektion}
 Um zu testen, ob auch die Konvektion korrekt simuliert wird, setzen wir im folgenden $u=1$, $v=0$ und $\lambda=0$
 Es ist zu erwarten, dass der Potentialwert von links über das Gitter getragen wird und sich ein nicht lineares Gefälle hin 
-zum rechten Rand einstellt.\\
-\includegraphics[scale=0.5]{test/5conv/convonly.eps}
+zum rechten Rand einstellt. Bei kurzer Simulationsdauer wird der Wert des linken Randes weniger weit in das Gebiet hineingetragen.
+Lässt man $t \rightarrow \infty$, so würde sich im ganzen Gebiet der Wert des linken Randes einstellen. 
+\includegraphics[scale=0.4]{test/5conv/convonly.eps}
 
 
-\subsubsection{Testfall Diffusion und Konvektion}
+\subsubsection{Testfall Diffusion und Konvektion a)}
+Führt man nun beide Effekte zusammen so wirken die beiden Phänomen einander entgegen. So trägt die Konvektion das Potential des
+Einströmrandes in das Rechengebiet, die Diffusion wirkt dem entgegen, indem sie für einen Ausgleich der Potentiale
+zwischen Ein- und Auströmrand sorgt. Bei gleicher Geschwindigkeit bewirkt ein größeres $\lambda$, dass die Lösung des linken Randes weniger weit
+in das Rechengebiet eindringt. Die beiden Grafiken zeigen dieses Phänomen für $\lambda=0.2$ und $\lambda = 0.9$.\\
+\includegraphics[scale=0.4]{test/5conv/alpha0.2.eps}
+\includegraphics[scale=0.4]{test/5conv/alpha0.9.eps}
+
+\subsubsection{Testfall Diffusion und Konvektion b)}
+Zuletzt wollen wir den Fall simulieren, dass $u=v=1$ und $\lambda>0$ gilt. Das heißt, dass unsere Strömung aus Richtung Süd-West in das Rechengebiet
+einströmt. Da oberer und unterer Rand eine undurchlässige Wand darstellen, bewirkt die Konvektion, dass sich am oberen linken Rand das höchste Potential einstellt, da sich 
+an dieser Stelle ein Staupunkt der Strömung befindet. Somit steigt das Potential an diesem Staupunkt für längere Simulationsdauer immer weiter an, bis sich ein
+stationärer Wert einstellt, in dem die Diffusion das Ansteigen des Potentials durch die Konvektion kompensiert. Das Rechengbiet
+wurde in diesem Fall in 30x30 Zellen aufgeteilt.\\
+\includegraphics[scale=0.6]{test/5conv/uvl.eps}
 
 
 

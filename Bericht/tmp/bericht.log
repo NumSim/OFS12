@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=latex 2012.8.24)  30 AUG 2012 12:19
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=latex 2012.8.24)  30 AUG 2012 12:48
 entering extended mode
  Source specials enabled.
  %&-line parsing enabled.
@@ -516,15 +516,22 @@ LaTeX Warning: Command \l invalid in math mode on input line 238.
 File: test/5conv/diffusiononly.eps Graphic file (type eps)
 <test/5conv/diffusiononly.eps>
 File: test/5conv/convonly.eps Graphic file (type eps)
- <test/5conv/convonly.eps> [10] [11]
-(./bericht.aux) ) 
+ <test/5conv/convonly.eps>
+File: test/5conv/alpha0.2.eps Graphic file (type eps)
+
+<test/5conv/alpha0.2.eps>
+File: test/5conv/alpha0.9.eps Graphic file (type eps)
+ <test/5conv/alpha0.9.eps> [10]
+File: test/5conv/uvl.eps Graphic file (type eps)
+ <test/5conv/uvl.eps>
+[11] (./bericht.aux) ) 
 Here is how much of TeX's memory you used:
- 3147 strings out of 493849
- 41432 string characters out of 1152846
+ 3155 strings out of 493849
+ 41557 string characters out of 1152846
  113602 words of memory out of 3000000
- 6373 multiletter control sequences out of 15000+50000
+ 6378 multiletter control sequences out of 15000+50000
  12228 words of font info for 48 fonts, out of 3000000 for 9000
  714 hyphenation exceptions out of 8191
  36i,12n,38p,268b,201s stack positions out of 5000i,500n,10000p,200000b,50000s
 
-Output written on bericht.dvi (11 pages, 29636 bytes).
+Output written on bericht.dvi (11 pages, 32220 bytes).

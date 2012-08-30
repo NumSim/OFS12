@@ -184,10 +184,10 @@ bool solve2(sData* data) {
 			as = dy * deltaX * APEYABS + MAX(g*deltaX,0);
 			ap = ae + aw + an + as;
 
-			// all cells?
+			// all faces?
 			for (int i = 0; i < data->faceNo; i++) {
 
-				curCell = &data->cells[i];
+				curFace = &data->cells[i];
 
 				if (curCell->bType == 1) {
 				} else if (curCell->cFaces[NORTH]->bType == 2

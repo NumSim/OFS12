@@ -117,7 +117,7 @@ und dem aktuellen Schritt.
 \end{align}
 Für Die Iteration wurden unterschiedliche Werte für den Relaxationsfaktor gewählt. Dabei sieht man signifikante
 Unterschiede in der Anzahl der benötigten Iterationsschritte.
-So benötigt das Gauß-Seidel-Verfahren ohne Relaxation 601 Iterationsschritte um die Toleranz von $\epsilon 1e-6$ 
+So benötigt das Gauß-Seidel-Verfahren ohne Relaxation 601 Iterationsschritte um die Toleranz von $\epsilon= 1e-6$ 
 zu erreichen. Wesentlich schneller konvergiert das Verfahren für $\beta = 1.8$. Zusätzlich sind noch die Fehlerplots
 für $\beta = 0.9$, $\beta = 1.3$, $\beta = 1.9$ beigefügt.
 
@@ -184,9 +184,17 @@ Die notwendige Ableitung $\frac{dh}{dx}$ wird auch mittels finiter Differenzen a
 In der Implementierung wird dann in jedem Iterationsschritt zuerst $\Phi_{0,j}$ und $\Phi_{N,j}$ bestimmt und im Folgenden
 die Potentialgleichung für das innere des Gebietes berechnet. 
 \subsubsection{Testfall Diffusor}
-sage wie man an die alphas kommt
-plot
-schön bunt
-error
-\subsubsection{Testfall 2}
+Im folgenden Testfall lösen wir die Potentialgleichung für einen Diffusor. Die Kontur des Diffusors approximieren
+wir mittels der Funktion $\tan^{-1}(x)$ bzw. $-\tan^{-1}(x)$ für Ober- und Unterkante. So erreichen wir ein paralleles 
+Ein- und Ausströmen in unsere Kontur. Die in (12) benötigten Koeffizienten $\alpha_1,\ldots,\alpha_6$ werden mittels finiter
+Differenzen berechnet. Als linke und rechte Randbedingung wird jeweils ein festes Potential vorgegeben.
+Die beiden folgenden Grafiken zeigen die Isolinien für jeweils die Potential- und Stromlinien.\\
+\includegraphics[scale=0.4]{test/3diffusor/phi.eps}
+\includegraphics[scale=0.4]{test/3diffusor/psi.eps}\\
+Hier noch einmal übereinander gelegt, so dass man erkennen kann, dass die Isolinien senkrecht aufeinander stehen. Zudem
+ist auch eine Übersicht über die gegebenen Konvergenzgeschwindigkeiten bei unterschiedlichen Relaxationsfaktoren gegeben.\\
+\includegraphics[scale=0.4]{test/3diffusor/both.eps}
+\includegraphics[scale=0.4]{test/3diffusor/error.eps}
+
+
 \end{document}

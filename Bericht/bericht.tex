@@ -238,15 +238,13 @@ Die Änderung von $\phi$ lässt sich dann wie folgt ausdrücken:
 Wobei $\l_i = \Delta y$ für $i=$Westen, Osten und $\l_i = \Delta x$ für $i=$Norden, Süden.
 Mit dem Fluss
 \begin{align}
-f_{\text{Ost}} = \rho u \phi_{\text{Ost}}- \lambda \ddx \phi_{\text{Ost}} \\
+f_{\text{Ost}} = -(\rho u \phi_{\text{Ost}}- \lambda \ddx \phi_{\text{Ost}}), \ \ 
 f_{\text{West}} = \rho u \phi_{\text{West}}- \lambda \ddx \phi_{\text{West}} \\
-f_{\text{Nord}} = \rho v \phi_{\text{Nord}}- \lambda \ddy \phi_{\text{Nord}}\\
+f_{\text{Nord}} = -(\rho v \phi_{\text{Nord}}- \lambda \ddy \phi_{\text{Nord}}),\ \ 
 f_{\text{Süd}} = \rho v \phi_{\text{Süd}}- \lambda \ddy \phi_{\text{Süd}}
 \end{align} 
-
-
-
-
+Da unser vorgegebener Fluss aus Richtung Süd-Ost einströmt, verwenden wir für $\ddx \phi$ und $\ddy \phi$ das Upwind-Schema,
+also $\ddx \phi \approx \frac{1}{\Delta x}(\phi_{i,j}-\phi_{i-1,j})$ und  $\ddy \phi \approx \frac{1}{\Delta y}(\phi_{i,j}-\phi_{i,j-1})$.
 
 
 

@@ -318,16 +318,25 @@ das Geschwindigkeitsfeld mit einem ähnlichen Ansatz lösen.
 \end{align}
 Mit den gleichen Koeffizienten wie in (22).
 Wir setzen den Druck als gesuchten Wert in der Zelle an und betrachten die Geschwindigkeiten
-auf den Zellrändern. Ein Problem welches bei der Diskretisierung mittels finiter DIfferenzen entsteht
+auf den Zellrändern. Ein Problem welches bei der Diskretisierung mittels finiter Differenzen entsteht
 ist eine Entkopplung benachbarter Drücke. Somit kann es zu einem hohen Druckgradienten zwischen den Stellen
 $(i,j)$ und $(i+1,j)$ kommen, dieser würde aber unberücksichtigt bleiben, da der Druckgradient
 zwischen $(i,j)$ und $(i+2,j)$  gleich null ist. Das Resultat wäre eine Zick-Zack-Verteilung des Druckes. Deshalb werden im folgenden versetzte Gitter benutzt, welche das Problem
 der Entkopplung vermeiden.\\
 
-\subsection{Testfälle der Impulsgleichung}
-Wir testen den Ansatz mit Hilfe der Couette Strömung.
-//Le Bilder
-
+\subsection{Testfall Couette Strömung}
+Wir betrachten im folgenden die Couette Strömung. Diese beschreibt den Fluss zwischen zwei Blatten unendlicher Ausdehnung.
+Dabei bleibt die untere Platte fest und die obere Platte wird ruckartig auf eine vorgegebene Geschwindigkeit $u_{\infty}$ beschleunigt.
+Beschreiben lässt sich das Problem über folgende Gleichungen
+\begin{align}
+\frac{ \partial^2 u}{\partial y^2} &= -\ddx p \\
+u(x,y=0) &= 0 \\
+u(x,y=H) &= u_{\infty}
+\end{align}
+Die Gleichung (32) und (33) sind dabei das Resultat der Haftbedingung.\newpage
+Lässt man die Lösung auskonvergieren, so stellt sich ein lineares Geschwindigkeitsprofil zwischen oberer und unterer Platte ein.
+In unserer Rechnung ist $u_{\infty}=1$ und unser Gebiet in der Höhe 10 Einheiten und in der Länge 32 Einheiten lang.\\
+\includegraphics[scale=0.6]{test/6cou/couette.eps}
 
 
 

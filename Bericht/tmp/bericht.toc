@@ -17,4 +17,4 @@
 \contentsline {subsubsection}{\numberline {4.1.4}Testfall Diffusion und Konvektion b)}{11}
 \contentsline {subsection}{\numberline {4.2}Analytische L\IeC {\"o}sung }{11}
 \contentsline {subsection}{\numberline {4.3}L\IeC {\"o}sung der Impulsgleichung}{12}
-\contentsline {subsection}{\numberline {4.4}Testf\IeC {\"a}lle der Impulsgleichung}{12}
+\contentsline {subsection}{\numberline {4.4}Testfall Couette Str\IeC {\"o}mung}{12}

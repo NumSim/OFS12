@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=latex 2012.8.24)  30 AUG 2012 15:43
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=latex 2012.8.24)  30 AUG 2012 16:08
 entering extended mode
  Source specials enabled.
  %&-line parsing enabled.
@@ -529,14 +529,16 @@ Underfull \hbox (badness 10000) in paragraph at lines 318--326
 
  []
 
-[12] (./bericht.aux) ) 
+[12]
+File: test/6cou/couette.eps Graphic file (type eps)
+ <test/6cou/couette.eps> [13] (./bericht.aux) ) 
 Here is how much of TeX's memory you used:
- 3155 strings out of 493849
- 41557 string characters out of 1152846
+ 3158 strings out of 493849
+ 41599 string characters out of 1152846
  111602 words of memory out of 3000000
- 6378 multiletter control sequences out of 15000+50000
+ 6379 multiletter control sequences out of 15000+50000
  12228 words of font info for 48 fonts, out of 3000000 for 9000
  714 hyphenation exceptions out of 8191
  36i,12n,38p,268b,201s stack positions out of 5000i,500n,10000p,200000b,50000s
 
-Output written on bericht.dvi (12 pages, 38792 bytes).
+Output written on bericht.dvi (13 pages, 40156 bytes).

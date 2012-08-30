@@ -8,3 +8,6 @@
 \contentsline {paragraph}{\numberline {2.2.1.1}Einstr\IeC {\"o}m- und Ausstr\IeC {\"o}mr\IeC {\"a}nder}{7}
 \contentsline {paragraph}{\numberline {2.2.1.2}Undurchl\IeC {\"a}ssige W\IeC {\"a}nde}{7}
 \contentsline {subsubsection}{\numberline {2.2.2}Testfall Diffusor}{8}
+\contentsline {section}{\numberline {3}Gittergenerierung}{9}
+\contentsline {section}{\numberline {4}Konvektions-Diffusions Str\IeC {\"o}mung}{9}
+\contentsline {subsection}{\numberline {4.1}Diskretisierung}{9}

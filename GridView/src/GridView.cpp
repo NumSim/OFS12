@@ -31,8 +31,8 @@ int main(int argc, char **argv)
     QApplication app(argc, argv);
 
     sData* data = new sData;
-    const char* faceFilePath = "/home/thomas/workspace/OFS12/GridCreate-frame/run/faces2.cfg";
-    const char* cellFilePath = "/home/thomas/workspace/OFS12/GridCreate-frame/run/cells2.cfg";
+    const char* faceFilePath = "/home/tc497585/programming/workspace/OFS12/GridCreate-frame/run/faces2.cfg";
+    const char* cellFilePath = "/home/tc497585/programming/workspace/OFS12/GridCreate-frame/run/cells2.cfg";
 
   //  QDir::setCurrent(
   //         QFileDialog::getExistingDirectory( 0, QString("Set Grid-Files Directory"), QString()) );

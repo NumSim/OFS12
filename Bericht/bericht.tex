@@ -17,6 +17,9 @@
 \newcommand{\dpEta}{\partial \eta}
 \newcommand{\dpX}{\partial x}
 \newcommand{\dpY}{\partial y}
+\newcommand{\ddt}{\frac{\partial }{\partial t}}
+\newcommand{\ddx}{\frac{\partial }{\partial x}}
+\newcommand{\ddy}{\frac{\partial }{\partial y}}
 % ä ö includen
 % TODO am ende \mathbf vor jedes Phi
   
@@ -195,6 +198,63 @@ Hier noch einmal übereinander gelegt, so dass man erkennen kann, dass die Isoli
 ist auch eine Übersicht über die gegebenen Konvergenzgeschwindigkeiten bei unterschiedlichen Relaxationsfaktoren gegeben.\\
 \includegraphics[scale=0.4]{test/3diffusor/both.eps}
 \includegraphics[scale=0.4]{test/3diffusor/error.eps}
+
+\newpage
+\section{Gittergenerierung}
+Die folgende Konvektions-Diffusions Strömung benötigt zur Berechnung eine Aufteilung des Gebietes in Finite Elemente.
+Unser Gittergenerator unterteilt das rechteckige Gebiet in eine wählbare Anzahl an Zellen. Jede Zelle hat eine ID und ist 
+umrandet von vier Kanten; Norden, Süden, Osten und Westen, welche auch nummeriert sind. So lässt sich der Fluss über den Rand
+einer Zelle durch den Fluss über diese vier Kanten beschreiben.
+Im folgenden ist ein Beispiele eines Gitters zu sehen. Im diesem Fall wurde das Gebiet in 3x3 Teilgebiete unterteilt.\\
+\includegraphics[scale=0.6]{test/4grid/1.eps}
+%\includegraphics[scale=0.4]{test/4grid/2.eps}
+
+\section{Konvektions-Diffusions Strömung}
+Im Gegensatz zur Potentialströmung wird nun eine Strömung mittels der Finite-Elemente Methode (FEM) beschrieben. Ausgangspunkt
+für die Beschreibung der Strömung ist die integrierte Kontinuitätsgleichung
+\begin{align}
+\ddt \int_{\Omega} \rho dV + \int_{\Omega} div(\rho v) dV = 0
+\end{align}
+Welche unter Anwendung des Gaußschen Integralsatzes auf folgende Form führt:
+\begin{align}
+\ddt \int_{\Omega} \rho dV + \oint_{\partial \Omega} (\rho v)\cdot dA = 0
+\end{align}	
+Zur Lösung wird im folgenden konstante Dichte $\rho$ angenommen. 
+Soll auch noch Konvektion beschrieben werden, lässt sich die Erhaltungsgleichung formulieren als:
+\begin{align}
+\rho \int_{\Omega}\ddt \phi dV + \int_{\partial \Omega}\rho u \phi -\lambda \ddx \phi + \rho v \phi - \lambda \ddy \phi \ dA =0 
+\end{align}
+Diese Gleichung wird dann als Ausgangspunkt für die Diskretisierung genommen, 
+da sie die Änderung des Skalars $\phi$ in abhängigkeit des Flusses über die Grenzen beschreibt.
+
+\subsection{Diskretisierung}
+Die naive Herangehensweise zur Approximierung der Strömung führt zu der Vormu
+Wir approximieren das Integrationsgebiet durch rechteckige Finite Elemente, so dass der Rand des Gebietes aufgeteilt wird in vier Kanten
+die im folgenden mit Norden, Osten, Süden und Westen bezeichnet werden. 
+Die Änderung von $\phi$ lässt sich dann wie folgt ausdrücken:
+\begin{align}
+\frac{\phi^{k+1}-\phi^k}{\Delta t} = \sum_{i} f_i\cdot l_i
+\end{align}
+Wobei $\l_i = \Delta y$ für $i=$Westen, Osten und $\l_i = \Delta x$ für $i=$Norden, Süden.
+Mit dem Fluss
+\begin{align}
+f_{\text{Ost}} = \rho u \phi_{\text{Ost}}- \lambda \ddx \phi_{\text{Ost}} \\
+f_{\text{West}} = \rho u \phi_{\text{West}}- \lambda \ddx \phi_{\text{West}} \\
+f_{\text{Nord}} = \rho v \phi_{\text{Nord}}- \lambda \ddy \phi_{\text{Nord}}\\
+f_{\text{Süd}} = \rho v \phi_{\text{Süd}}- \lambda \ddy \phi_{\text{Süd}}
+\end{align} 
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 \end{document}

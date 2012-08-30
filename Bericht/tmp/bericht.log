@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=latex 2012.8.24)  30 AUG 2012 10:12
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=latex 2012.8.24)  30 AUG 2012 11:19
 entering extended mode
  Source specials enabled.
  %&-line parsing enabled.
@@ -440,27 +440,27 @@ Package: gauss 2002/10/11
 ) (./bericht.aux)
 \openout1 = `bericht.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 23.
-LaTeX Font Info:    ... okay on input line 23.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 23.
-LaTeX Font Info:    ... okay on input line 23.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 23.
-LaTeX Font Info:    ... okay on input line 23.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 23.
-LaTeX Font Info:    ... okay on input line 23.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 23.
-LaTeX Font Info:    ... okay on input line 23.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 23.
-LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: wrapfig package is loaded.
 Package caption Info: End \AtBeginDocument code.
-LaTeX Font Info:    Try loading font information for U+msa on input line 28.
+LaTeX Font Info:    Try loading font information for U+msa on input line 31.
 
 (/usr/share/texmf-texlive/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2009/06/22 v3.00 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 28.
+LaTeX Font Info:    Try loading font information for U+msb on input line 31.
 
 (/usr/share/texmf-texlive/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2009/06/22 v3.00 AMS symbols B
@@ -491,7 +491,7 @@ File: test/2vortex/both.eps Graphic file (type eps)
 File: test/2vortex/allerror.eps Graphic file (type eps)
 
 <test/2vortex/allerror.eps> [6]
-Overfull \hbox (4.33125pt too wide) in paragraph at lines 169--172
+Overfull \hbox (4.33125pt too wide) in paragraph at lines 172--175
 \OT1/cmr/m/n/10 Auf dem Rand folgt die Str[]omung der Kon-tur, da die Po-ten-ti
 -al-str[]omung ei-ne rei-bungs-freie Str[]omung
  []
@@ -504,14 +504,23 @@ File: test/3diffusor/both.eps Graphic file (type eps)
  <test/3diffusor/both.eps>
 File: test/3diffusor/error.eps Graphic file (type eps)
 
-<test/3diffusor/error.eps> [7] [8] (./bericht.aux) ) 
+<test/3diffusor/error.eps> [7] [8]
+File: test/4grid/1.eps Graphic file (type eps)
+ <test/4grid/1.eps> [9]
+
+LaTeX Warning: Command \l invalid in math mode on input line 238.
+
+
+LaTeX Warning: Command \l invalid in math mode on input line 238.
+
+[10] (./bericht.aux) ) 
 Here is how much of TeX's memory you used:
- 3136 strings out of 493849
- 41300 string characters out of 1152846
+ 3142 strings out of 493849
+ 41341 string characters out of 1152846
  113602 words of memory out of 3000000
- 6367 multiletter control sequences out of 15000+50000
+ 6371 multiletter control sequences out of 15000+50000
  12228 words of font info for 48 fonts, out of 3000000 for 9000
  714 hyphenation exceptions out of 8191
  36i,12n,38p,268b,201s stack positions out of 5000i,500n,10000p,200000b,50000s
 
-Output written on bericht.dvi (8 pages, 22172 bytes).
+Output written on bericht.dvi (10 pages, 26652 bytes).

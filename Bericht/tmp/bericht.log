@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=latex 2012.8.24)  30 AUG 2012 12:48
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=latex 2012.8.24)  30 AUG 2012 15:43
 entering extended mode
  Source specials enabled.
  %&-line parsing enabled.
@@ -480,12 +480,12 @@ File: test/1parallel/both.eps Graphic file (type eps)
 
 <test/1parallel/both.eps>
 File: test/1parallel/error.eps Graphic file (type eps)
- <test/1parallel/error.eps> [4] [5]
+ <test/1parallel/error.eps> [4]
 File: test/2vortex/phi.eps Graphic file (type eps)
 
 <test/2vortex/phi.eps>
 File: test/2vortex/psi.eps Graphic file (type eps)
- <test/2vortex/psi.eps>
+ <test/2vortex/psi.eps> [5]
 File: test/2vortex/both.eps Graphic file (type eps)
  <test/2vortex/both.eps>
 File: test/2vortex/allerror.eps Graphic file (type eps)
@@ -504,34 +504,39 @@ File: test/3diffusor/both.eps Graphic file (type eps)
  <test/3diffusor/both.eps>
 File: test/3diffusor/error.eps Graphic file (type eps)
 
-<test/3diffusor/error.eps> [7] [8]
+<test/3diffusor/error.eps> [7]
 File: test/4grid/1.eps Graphic file (type eps)
- <test/4grid/1.eps> [9]
+ <test/4grid/1.eps> [8]
 
-LaTeX Warning: Command \l invalid in math mode on input line 238.
+LaTeX Warning: Command \l invalid in math mode on input line 237.
 
 
-LaTeX Warning: Command \l invalid in math mode on input line 238.
+LaTeX Warning: Command \l invalid in math mode on input line 237.
 
 File: test/5conv/diffusiononly.eps Graphic file (type eps)
-<test/5conv/diffusiononly.eps>
+<test/5conv/diffusiononly.eps> [9]
 File: test/5conv/convonly.eps Graphic file (type eps)
  <test/5conv/convonly.eps>
 File: test/5conv/alpha0.2.eps Graphic file (type eps)
 
 <test/5conv/alpha0.2.eps>
 File: test/5conv/alpha0.9.eps Graphic file (type eps)
- <test/5conv/alpha0.9.eps> [10]
+ <test/5conv/alpha0.9.eps>
 File: test/5conv/uvl.eps Graphic file (type eps)
  <test/5conv/uvl.eps>
-[11] (./bericht.aux) ) 
+[10] [11]
+Underfull \hbox (badness 10000) in paragraph at lines 318--326
+
+ []
+
+[12] (./bericht.aux) ) 
 Here is how much of TeX's memory you used:
  3155 strings out of 493849
  41557 string characters out of 1152846
- 113602 words of memory out of 3000000
+ 111602 words of memory out of 3000000
  6378 multiletter control sequences out of 15000+50000
  12228 words of font info for 48 fonts, out of 3000000 for 9000
  714 hyphenation exceptions out of 8191
  36i,12n,38p,268b,201s stack positions out of 5000i,500n,10000p,200000b,50000s
 
-Output written on bericht.dvi (11 pages, 32220 bytes).
+Output written on bericht.dvi (12 pages, 38792 bytes).

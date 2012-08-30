@@ -34,8 +34,8 @@ bool setup(sData* data)
 	cout << data->deltaT<< endl;
   sCell* curCell=0;
   sFace* curFace=0;
-  data->deltaX =0.33333333;
-  data->deltaY = 0.33333333; // TODO change this
+  data->deltaX =0.2;
+  data->deltaY = 0.2; // TODO change this
 
   ////////////////////////
   // SET FACE VELOCITY  //
@@ -47,7 +47,7 @@ bool setup(sData* data)
       curFace->uv[1] = 0;//data->uv[1];
       }else{
           curFace->uv[0] = 1;//0.4567;
-          curFace->uv[1] = 1;//0.789;
+          curFace->uv[1] = 0;//0.789;
       }
   }
 

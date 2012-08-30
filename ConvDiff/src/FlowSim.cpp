@@ -54,7 +54,7 @@ int main(int, char**)
 
     // iterativ solver
    std::cout << "simple"<<std::endl;
-    if(!solve(data)) {
+    if(!solve2(data)) {
         std::cout << "ERROR while solving...exiting";
         getchar();
         return 1;

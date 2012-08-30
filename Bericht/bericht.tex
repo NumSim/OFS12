@@ -107,9 +107,9 @@ Der Wirbelmittelpunkt wurde bewusst außerhalb des Gebietes gewählt, da
 mit der obigen Iterationsorschrift für $\Phi$ nur endliche Werte erzeugt werden;
 im Wirbelmittelpunkt hat das Potential allerdings eine Singularität. In unserem Fall
 haben wir $\frac{E}{2\pi}=1$ gewählt.
-Zu sehen sind erneut die Isolinien der Potential- und Stromfunktion.\newpage
+Zu sehen sind erneut die Isolinien der Potential- und Stromfunktion.\\
 \includegraphics[scale=0.4]{test/2vortex/phi.eps}
-\includegraphics[scale=0.4]{test/2vortex/psi.eps}\\
+\includegraphics[scale=0.4]{test/2vortex/psi.eps}\newpage
 Im folgenden sind die Isolinien überlagert. Es wird auch hier deutlich,
 dass diese senkrecht aufeinander stehen.\\
 \includegraphics[scale=0.6]{test/2vortex/both.eps}\\
@@ -199,14 +199,13 @@ ist auch eine Übersicht über die gegebenen Konvergenzgeschwindigkeiten bei unt
 \includegraphics[scale=0.4]{test/3diffusor/both.eps}
 \includegraphics[scale=0.4]{test/3diffusor/error.eps}
 
-\newpage
 \section{Gittergenerierung}
 Die folgende Konvektions-Diffusions Strömung benötigt zur Berechnung eine Aufteilung des Gebietes in Finite Elemente.
 Unser Gittergenerator unterteilt das rechteckige Gebiet in eine wählbare Anzahl an Zellen. Jede Zelle hat eine ID und ist 
 umrandet von vier Kanten; Norden, Süden, Osten und Westen, welche auch nummeriert sind. So lässt sich der Fluss über den Rand
 einer Zelle durch den Fluss über diese vier Kanten beschreiben.
 Im folgenden ist ein Beispiele eines Gitters zu sehen. Im diesem Fall wurde das Gebiet in 3x3 Teilgebiete unterteilt.\\
-\includegraphics[scale=0.6]{test/4grid/1.eps}
+\includegraphics[scale=0.5]{test/4grid/1.eps}
 %\includegraphics[scale=0.4]{test/4grid/2.eps}
 
 \section{Konvektions-Diffusions Strömung}
@@ -277,6 +276,57 @@ an dieser Stelle ein Staupunkt der Strömung befindet. Somit steigt das Potentia
 stationärer Wert einstellt, in dem die Diffusion das Ansteigen des Potentials durch die Konvektion kompensiert. Das Rechengbiet
 wurde in diesem Fall in 30x30 Zellen aufgeteilt.\\
 \includegraphics[scale=0.6]{test/5conv/uvl.eps}
+
+\subsection{Analytische Lösung }
+Für den Fall einer eindimensionalen Strömung lässt sich
+ mittels der Peclet Zahl $Pe = \frac{\rho u l }{\lambda}$ eine analytische Lösung angeben
+ Man kann eine  Iterationsvorschrift für $\phi_{i,j}$ in Abhängigkeit der Peclet Zahl aufstellen. 
+ Das Verfahren ist damit für den instationären Fall gegeben als:
+ \begin{align}
+ \tilde{a}_p \phi^{\nu+1} &= a_o \phi_o+a_w \phi_w+ + a_n \phi_n+a_s\phi_s + b \\
+ b &= \rho \frac{\Delta x \Delta y}{  \Delta t}\phi_p^{\nu} \\
+ \tilde{a}_p &= a_o + a_w+a_n+a_s + \rho \frac{\Delta x \Delta y}{  \Delta t}
+ \end{align}
+wobei sich die Koeffizienten $a_{o,n,w,s}$ in Abhängigkeit der Peclet Zahl schreiben lassen.
+\begin{align*}
+a_{o} &= D_{o} \Delta y A(|Pe_{o}|) + \max (-f_{o} \Delta y , 0)\\
+a_{o} &= D_{w} \Delta y A(|Pe_{w}|) + \max (f_{w} \Delta y , 0)\\
+a_{s} &= D_{s} \Delta x A(|Pe_{s}|) + \max (f_{s} \Delta x , 0)\\
+a_{n} &= D_{n} \Delta x A(|Pe_{n}|) + \max (-f_{n} \Delta x , 0)
+\end{align*}
+Die Koeffizienten $D_{o,w,s,n}$ liefern eine Reihe von Verfahren. Hier seien nur kurz das Exponentialgesetzt
+Zentral Differenzen und das Upwind Verfahren 1. Ordnung erwähnt.
+
+\subsection{Lösung der Impulsgleichung}
+Setzt man nun nicht mehr das Geschwindigkeitsfeld als gegeben vorraus, lässt sich dieses
+mit Hilfe der Impulsgleichungen aus dem Druckfeld bestimmen:
+\begin{align}
+\ddt(\rho u) +\ddx\phi_x = -\ddx p \\
+\ddt(\rho v) +\ddy\phi_y = -\ddy p 
+\end{align}
+mit 
+\begin{align}
+\phi_x = \rho u u - \eta \ddx u\\
+\phi_y = \rho v v - \eta \ddy v
+\end{align}
+Aus diesen Gleichungen lässt sich das Geschwindigkeitsfeld in direkter Abhängigkeit zum Druckfeld lösen.
+Da die Impulsgleichungen die selbe Struktur haben wie die Konvektions-Diffusions Gleichungen lässt sich
+das Geschwindigkeitsfeld mit einem ähnlichen Ansatz lösen.
+\begin{align}
+\tilde{a}_p u_e^{\nu+1}= a_o u^{\nu}_o+a_w u^{\nu}_w +a_n u^{\nu}_n +a_s u^{\nu}_s +b +(p_p-p_E)\Delta y_P\\
+\tilde{a}_p v_e^{\nu+1}= a_o v^{\nu}_o+a_w v^{\nu}_w +a_n v^{\nu}_n +a_s v^{\nu}_s +b +(p_p-p_E)\Delta x_p
+\end{align}
+Mit den gleichen Koeffizienten wie in (22).
+Wir setzen den Druck als gesuchten Wert in der Zelle an und betrachten die Geschwindigkeiten
+auf den Zellrändern. Ein Problem welches bei der Diskretisierung mittels finiter DIfferenzen entsteht
+ist eine Entkopplung benachbarter Drücke. Somit kann es zu einem hohen Druckgradienten zwischen den Stellen
+$(i,j)$ und $(i+1,j)$ kommen, dieser würde aber unberücksichtigt bleiben, da der Druckgradient
+zwischen $(i,j)$ und $(i+2,j)$  gleich null ist. Das Resultat wäre eine Zick-Zack-Verteilung des Druckes. Deshalb werden im folgenden versetzte Gitter benutzt, welche das Problem
+der Entkopplung vermeiden.\\
+
+\subsection{Testfälle der Impulsgleichung}
+Wir testen den Ansatz mit Hilfe der Couette Strömung.
+//Le Bilder
 
 
 

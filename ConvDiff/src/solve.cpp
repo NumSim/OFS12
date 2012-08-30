@@ -185,12 +185,12 @@ solve2(sData* data)
 
   for (int t = 0; t < data->numberTimeSteps; t++)
     {
-      if (t % 1000 == 0)
+      if (t % 100 == 0)
         cout << "i= " << t << endl;
-      for (int k = 0; k < 1000; k++) //todo till converged
+      for (int k = 0; k < 10; k++) //todo till converged
         {
 
-          /*
+
            double Pex = data->rho * data->uv[0] * 1 / data->alpha; // ersetze 1 durch dimX
            double Pey = data->rho * data->uv[1] * 1 / data->alpha;
            double ap, ae, aw, an, as;
@@ -211,7 +211,7 @@ solve2(sData* data)
            an = dy * deltaX * APEYABS + MAX(-g*deltaX,0);
            as = dy * deltaX * APEYABS + MAX(g*deltaX,0);
            ap = ae + aw + an + as;
-           *
+
            // all cells?
            for (int i = 0; i < data->cellNo; i++)
            {
@@ -239,7 +239,7 @@ solve2(sData* data)
            }
 
            }
-           */
+
           // pressure
           for (int i = 0; i < data->cellNo; i++)
             {
@@ -258,7 +258,7 @@ solve2(sData* data)
                 {
                   double aep, awp, anp, asp, atildep;
                   double A = curCell->cFaces[EAST]->deltaxy[1]
-                      * curCell->cFaces[NORTH]->deltaxy[0]; // TODO ?
+                      * curCell->cFaces[NORTH]->deltaxy[0];
                   double atilde = 1.0f;
                   aep = (A * data->rho * curCell->cFaces[EAST]->deltaxy[1])
                       / atilde;
@@ -270,13 +270,17 @@ solve2(sData* data)
                       / atilde;
                   atildep = aep + awp + anp + asp;
 
+
+
                   double b = data->rho * A
                       * (curCell->cFaces[WEST]->uv[0]
                           - curCell->cFaces[EAST]->uv[0]
                           + curCell->cFaces[SOUTH]->uv[1]
                           - curCell->cFaces[NORTH]->uv[1]);
 
+
                   double pbar;
+
 
                   pbar = (awp * curCell->nCells[WEST]->p
                       + aep * curCell->nCells[EAST]->p
@@ -284,6 +288,7 @@ solve2(sData* data)
                       + asp * curCell->nCells[SOUTH]->p + b) / atildep;
                   curCell->p = pbar + curCell->p; // new = correction + old; 7-11.4
                   curCell->pbar = pbar;
+
 
                 }
 

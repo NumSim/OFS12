@@ -246,8 +246,22 @@ f_{\text{Süd}} = \rho v \phi_{\text{Süd}}- \lambda \ddy \phi_{\text{Süd}}
 Da unser vorgegebener Fluss aus Richtung Süd-Ost einströmt, verwenden wir für $\ddx \phi$ und $\ddy \phi$ das Upwind-Schema,
 also $\ddx \phi \approx \frac{1}{\Delta x}(\phi_{i,j}-\phi_{i-1,j})$ und  $\ddy \phi \approx \frac{1}{\Delta y}(\phi_{i,j}-\phi_{i,j-1})$.
 
+\subsubsection{Testfall nur Diffusion}
+Die folgenden Testfälle sind alle auf dem selben Gitter der Dimension 20x10 gerechnet worden.
+Zuerst setzten wir  $u=0$ und $v=0$ um ausschließlich Diffusion zu simulieren. Wir wählen $\lambda=0.1$ und so stellt
+sich in der Theore ein lineares Profil für $\phi$ zwischen dem linken und rechten Rand ein.
+Dies zeigt sich auch in unserer Berechnung. \\
+\includegraphics[scale=0.5]{test/5conv/diffusiononly.eps}
 
 
+\subsubsection{Testfall nur Konvektion}
+Um zu testen, ob auch die Konvektion korrekt simuliert wird, setzen wir im folgenden $u=1$, $v=0$ und $\lambda=0$
+Es ist zu erwarten, dass der Potentialwert von links über das Gitter getragen wird und sich ein nicht lineares Gefälle hin 
+zum rechten Rand einstellt.\\
+\includegraphics[scale=0.5]{test/5conv/convonly.eps}
+
+
+\subsubsection{Testfall Diffusion und Konvektion}
 
 
 

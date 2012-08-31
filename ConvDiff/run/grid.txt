@@ -1,4 +1,4 @@
-dimX	20
-dimY	20
+dimX	4
+dimY	4
 sizeX	1
 sizeY	1

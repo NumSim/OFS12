@@ -326,17 +326,19 @@ der Entkopplung vermeiden.\\
 
 \subsection{Testfall Couette Strömung}
 Wir betrachten im folgenden die Couette Strömung. Diese beschreibt den Fluss zwischen zwei Blatten unendlicher Ausdehnung.
-Dabei bleibt die untere Platte fest und die obere Platte wird ruckartig auf eine vorgegebene Geschwindigkeit $u_{\infty}$ beschleunigt.
+Dabei bleibt die obere Platte fest und die untere Platte wird ruckartig auf eine vorgegebene Geschwindigkeit $u_{\infty}$ beschleunigt.
 Beschreiben lässt sich das Problem über folgende Gleichungen
 \begin{align}
 \frac{ \partial^2 u}{\partial y^2} &= -\ddx p \\
-u(x,y=0) &= 0 \\
-u(x,y=H) &= u_{\infty}
+u(x,y=H) &= 0 \\
+u(x,y=0) &= u_{\infty}
 \end{align}
 Die Gleichung (32) und (33) sind dabei das Resultat der Haftbedingung.\newpage
 Lässt man die Lösung auskonvergieren, so stellt sich ein lineares Geschwindigkeitsprofil zwischen oberer und unterer Platte ein.
 In unserer Rechnung ist $u_{\infty}=1$ und unser Gebiet in der Höhe 10 Einheiten und in der Länge 32 Einheiten lang.\\
 \includegraphics[scale=0.6]{test/6cou/couette.eps}
+
+
 
 
 

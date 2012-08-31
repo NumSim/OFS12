@@ -1,27 +1,27 @@
-\contentsline {section}{\numberline {1}Einleitung}{4}
-\contentsline {section}{\numberline {2}Potentialstr\IeC {\"o}mung}{4}
-\contentsline {subsection}{\numberline {2.1}Diskretisierung auf einem \IeC {\"a}quidistanten orthogonalen Gitter}{4}
-\contentsline {subsubsection}{\numberline {2.1.1}Testfall Parallelstr\IeC {\"o}mung}{5}
-\contentsline {subsubsection}{\numberline {2.1.2}Testfall Wirbel}{6}
-\contentsline {subsection}{\numberline {2.2}Diskretisierung auf einem \IeC {\"a}quidistanten krummlinigen Gitter}{7}
-\contentsline {subsubsection}{\numberline {2.2.1}Randbedingungen}{8}
-\contentsline {paragraph}{\numberline {2.2.1.1}Einstr\IeC {\"o}m- und Ausstr\IeC {\"o}mr\IeC {\"a}nder}{8}
-\contentsline {paragraph}{\numberline {2.2.1.2}Undurchl\IeC {\"a}ssige W\IeC {\"a}nde}{8}
-\contentsline {subsubsection}{\numberline {2.2.2}Testfall Diffusor}{8}
-\contentsline {section}{\numberline {3}Gittergenerierung}{9}
-\contentsline {section}{\numberline {4}Konvektions-Diffusions Str\IeC {\"o}mung}{10}
-\contentsline {subsection}{\numberline {4.1}Diskretisierung}{10}
-\contentsline {subsubsection}{\numberline {4.1.1}Testfall nur Diffusion}{10}
-\contentsline {subsubsection}{\numberline {4.1.2}Testfall nur Konvektion}{11}
-\contentsline {subsubsection}{\numberline {4.1.3}Testfall Diffusion und Konvektion a)}{11}
-\contentsline {subsubsection}{\numberline {4.1.4}Testfall Diffusion und Konvektion b)}{12}
-\contentsline {subsection}{\numberline {4.2}Analytische L\IeC {\"o}sung }{12}
-\contentsline {subsection}{\numberline {4.3}L\IeC {\"o}sung der Impulsgleichung}{13}
-\contentsline {subsubsection}{\numberline {4.3.1}Testfall Couette Str\IeC {\"o}mung}{13}
-\contentsline {section}{\numberline {5}Konvektions-Diffusions Str\IeC {\"o}mung \\ mit Berechnung des Druckfeldes}{14}
-\contentsline {subsection}{\numberline {5.1}SIMPLE}{14}
-\contentsline {subsubsection}{\numberline {5.1.1}Vorgehen}{14}
-\contentsline {subsubsection}{\numberline {5.1.2}Testfall Simple}{15}
-\contentsline {subsection}{\numberline {5.2}SIMPLER}{15}
-\contentsline {subsubsection}{\numberline {5.2.1}Testfall Simpler}{15}
-\contentsline {section}{\numberline {6}Zusammenfassung}{15}
+\contentsline {section}{\numberline {1}Einleitung}{3}
+\contentsline {section}{\numberline {2}Potentialstr\IeC {\"o}mung}{3}
+\contentsline {subsection}{\numberline {2.1}Diskretisierung auf einem \IeC {\"a}quidistanten orthogonalen Gitter}{3}
+\contentsline {subsubsection}{\numberline {2.1.1}Testfall Parallelstr\IeC {\"o}mung}{4}
+\contentsline {subsubsection}{\numberline {2.1.2}Testfall Wirbel}{5}
+\contentsline {subsection}{\numberline {2.2}Diskretisierung auf einem \IeC {\"a}quidistanten krummlinigen Gitter}{6}
+\contentsline {subsubsection}{\numberline {2.2.1}Randbedingungen}{7}
+\contentsline {paragraph}{\numberline {2.2.1.1}Einstr\IeC {\"o}m- und Ausstr\IeC {\"o}mr\IeC {\"a}nder}{7}
+\contentsline {paragraph}{\numberline {2.2.1.2}Undurchl\IeC {\"a}ssige W\IeC {\"a}nde}{7}
+\contentsline {subsubsection}{\numberline {2.2.2}Testfall Diffusor}{7}
+\contentsline {section}{\numberline {3}Gittergenerierung}{8}
+\contentsline {section}{\numberline {4}Konvektions-Diffusions Str\IeC {\"o}mung}{9}
+\contentsline {subsection}{\numberline {4.1}Diskretisierung}{9}
+\contentsline {subsubsection}{\numberline {4.1.1}Testfall nur Diffusion}{9}
+\contentsline {subsubsection}{\numberline {4.1.2}Testfall nur Konvektion}{10}
+\contentsline {subsubsection}{\numberline {4.1.3}Testfall Diffusion und Konvektion a)}{10}
+\contentsline {subsubsection}{\numberline {4.1.4}Testfall Diffusion und Konvektion b)}{11}
+\contentsline {subsection}{\numberline {4.2}Analytische L\IeC {\"o}sung }{11}
+\contentsline {subsection}{\numberline {4.3}L\IeC {\"o}sung der Impulsgleichung}{12}
+\contentsline {subsubsection}{\numberline {4.3.1}Testfall Couette Str\IeC {\"o}mung}{12}
+\contentsline {section}{\numberline {5}Konvektions-Diffusions Str\IeC {\"o}mung \\ mit Berechnung des Druckfeldes}{13}
+\contentsline {subsection}{\numberline {5.1}SIMPLE}{13}
+\contentsline {subsubsection}{\numberline {5.1.1}Vorgehen}{13}
+\contentsline {subsubsection}{\numberline {5.1.2}Testfall Simple}{14}
+\contentsline {subsection}{\numberline {5.2}SIMPLER}{14}
+\contentsline {subsubsection}{\numberline {5.2.1}Testfall Simpler}{14}
+\contentsline {section}{\numberline {6}Zusammenfassung}{14}

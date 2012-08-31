@@ -202,8 +202,8 @@ bool solve2(sData* data) {
 						// |
 						curFace->uv[1] = 0;
 						curFace->uv[0] = ae
-								* curFace->nCells[0]->cFaces[EAST]->uv[0]
-								+ aw * curFace->nCells[1]->cFaces[WEST]->uv[0]
+								* curFace->nCells[1]->cFaces[EAST]->uv[0]
+								+ aw * curFace->nCells[0]->cFaces[WEST]->uv[0]
 								+ b + deltap * deltaY;
 						curFace->uv[0] /= ap;
 

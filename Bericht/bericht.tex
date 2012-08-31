@@ -5,7 +5,7 @@
 \usepackage{a4wide}
 \usepackage{german, amsfonts, amssymb, amsmath, ulem, amsthm, amstext}
 \usepackage{enumerate}
-%\usepackage[latin1]{inputenc}
+\usepackage{url}
 \usepackage{caption,graphicx,wrapfig}
 \usepackage{gauss}
 \setcounter{tocdepth}{4}   %= Aufnahme in das Inhaltsverzeichnis *
@@ -20,8 +20,7 @@
 \newcommand{\ddt}{\frac{\partial }{\partial t}}
 \newcommand{\ddx}{\frac{\partial }{\partial x}}
 \newcommand{\ddy}{\frac{\partial }{\partial y}}
-% ä ö includen
-% TODO am ende \mathbf vor jedes Phi
+
   
 \begin{document}
 
@@ -324,7 +323,7 @@ $(i,j)$ und $(i+1,j)$ kommen, dieser würde aber unberücksichtigt bleiben, da d
 zwischen $(i,j)$ und $(i+2,j)$  gleich null ist. Das Resultat wäre eine Zick-Zack-Verteilung des Druckes. Deshalb werden im folgenden versetzte Gitter benutzt, welche das Problem
 der Entkopplung vermeiden.\\
 
-\subsection{Testfall Couette Strömung}
+\subsubsection{Testfall Couette Strömung}
 Wir betrachten im folgenden die Couette Strömung. Diese beschreibt den Fluss zwischen zwei Blatten unendlicher Ausdehnung.
 Dabei bleibt die obere Platte fest und die untere Platte wird ruckartig auf eine vorgegebene Geschwindigkeit $u_{\infty}$ beschleunigt.
 Beschreiben lässt sich das Problem über folgende Gleichungen
@@ -341,8 +340,102 @@ In unserer Rechnung ist $u_{\infty}=1$ und unser Gebiet in der Höhe 10 Einheite
 
 
 
+\section{Konvektions-Diffusions Strömung \\ mit Berechnung des Druckfeldes}
+\subsection{SIMPLE}
+Im letzten Schritt möchten wir den Druck nun nicht mehr vorgeben, sondern auch von dem Löser berechnen lassen.
+Dafür verwenden wir den SIMPLE (Semi Implicit Method for Pressure Linked Equation) Algorithmus:
+Wir schätzen zunächst ein Druckfeld und berechnen auf Basis dessen ein vorläufiges Geschwindigkeitsfeld.
+Mit Anwendung der Kontinuitätsgleichung auf Finiten Volumen erhalten wir einen Korrekturterm für den Druck.
+\subsubsection{Vorgehen}
+Zuerst wird das Druckfeld $p^*$ geschätzt. Auf dieser Basis wird mit den Gleichungen (22)-(24) ein
+geschätztes Geschwindigkeitsfeld $u^*,\ v^*$ berechnet. \\
+Da $p^*$ eine Schätzung des tatsächlichen Druckes ist,
+muss der Korrekturterm $p^`$ mittels 
+\begin{align}
+\tilde{a}_p p^`= a_o  p^`_o + a_w p^`_w +a_n  p^`_n +a_s  p^`_s +b
+\end{align}
+berechnet werden.
+Nun kann man ein Update für den Druck durchführen mittels der sich als $p = p^* +p^`$, oder bei gegebenem Relaxationsfaktor
+als $p = p^* +\omega p^`$,zusammensetzt.
+Anschließend wird auch das Geschwindigkeitsfeld korrigiert über die Gleichungen:
+\begin{align}
+u = u^*+\Delta p^`_u \frac{A_u}{\tilde{a_u}}\\
+v = v^*+\Delta p^`_v \frac{A_v}{\tilde{a_v}}
+\end{align}
+Nun geht man zurück zur Berechnung des geschätzten Geschwindigkeitfeldes und wiederholt dieses Verfahren bis es auskonvergiert ist.
+Dies äußert sich dadurch, dass $b=0$ mit 
+\begin{align}
+b = (\rho^{\nu+1}-\rho^{\nu}) \frac{\Delta x \Delta y \Delta z}{\Delta t} 
++((\rho u^* A)_w-(\rho u^* A)_o)+((\rho v^* A)_s-(\rho v^* A)_n)
+\end{align}
+Bei einem recheckigen Rechengebiet und unter Annahme einer inkompressiblen Strömung lässt sich (37) vereinfachen zu
+\begin{align}
+b = \rho A_w (u^*_w-u^*_o) +\rho A_n (v^*_s-v^*_n)
+\end{align}
+
+\subsubsection{Testfall Simple}
+Der von uns angefertigte Code kann eine Strömung mittels des Simples Algorithmus nicht simulieren. Es kommt zu dem Problem,
+dass der Druckkorrekturterm auch bei belibiger Wahl von $\Delta x,\ \Delta y,\ \Delta t$ nicht konvergiert sondern in
+einigen Fällen divergiert und somit keine brauchbaren Ergebnisse für das Geschwindigkeitsfeld liefern kann.
+
+\subsection{SIMPLER}
+Der Simpler Algorithmus stellt eine Verbessrung des Simple Algorithmus dar. Nöherung in der Herleitung der Druckkorrektur Gleichung im
+Simple Algorithmus führen zu einer überschätzung der Druckkorrektur, was oft kleine Werte für $\omega$ als Relaxationsfaktor 
+notwendig macht.
+Um eine erhöhte Konvergenzrade zu erhalten wird der Druckkorrektur nun auf einen anderen Weg berechnet.
+Zudem wird das Update in der Geschwindigkeit nicht weiter in Relation zur Druckkorrektur gesetzt.
+\begin{align}
+u_o &= \hat{u}_e + (p_P-p_E)A_e/\tilde{a}_e \text{ mit}\\
+\hat{u}_e &= \frac{1}{\tilde{a}_e}(\sum_{nb}a_{nb}u_{nb}+b)
+\end{align}
+Man erhält als Gleichung für das Druckfeld
+\begin{align}
+\tilde{a}_p p= a_o  p_o + a_w p_w +a_n  p_n +a_s  p_s +b
+\end{align}
+wobei $b$ nun in Abhängigkeit von $\hat{u}$ und $\hat{v}$ gesetzt wird.
+Im Gegensatz zum Simple Algorithmus hat dieses Verfahren den Vorteil, dass bei einer guten Näherung des Geschwindigkeitfeldes
+keine signifikante Druckkorrektur vorhanden ist. Da $b$ als Maß für die Konvergenz genommen wird, ist der Simpler Algorithmus damit
+schneller.
+\subsubsection{Testfall Simpler}
+Da der Simpler Algorithmus auf dem Simple Algorithmus aufbaut, erhielten wir den selben Fehler wie bei der Simple Implementierung.
+
+\section{Zusammenfassung}
+Im folgenden wollen wir kurz einen selbstkritischen Blick auf die von uns angefertigten Milestones liefern.
+Der von uns angefertigte Löser für die Potentialströmung liefert durchweg gute Ergebnisse, unabhängig von der vorgegebenen Strömung
+und bei beliebigen krummen aber differenzierbaren Gebieten. Besitzt das Gebiet einen Knick so kommt durch die Approximation der
+Ableitungen mittels Finiter Differenzen zu größeren Fehlern basierend auf dem Abbruchfehler der Taylorreihe nach der ersten Ordnung.
+Diese pflanzen sich allerdings nicht weiter in das Gebiet fort sondern treten lokal auf. Auch der für die Lösung der Konvektions-Diffusions
+Gleichung benötigte Gittergenerator erzeugt eine richtig nummerierte Aufteilung des Gebietes in Finite Elemente.
+Unser Konvektions-Diffusions Löser liefert bei freier Wahl von $\lambda$ physikalisch sinnvolle Ergebnisse. Es lässt sich
+ein quantitativer Unterschied im Strömungsfeld bei verschiedenen Werten for $\lambda$ feststellen und es ist zu erkennen,
+dass die Phänomene Konvektion und Diffusion einander entgegene wirken. Der Algorithmus bleibtauch bei einem nicht-parallelel Einströmen 
+in das Rechengebiet stabil, wie sich in Abschnitt 4.1.4 erkennen lässt.\\
+Auch der schwierigere Fall der Couette Strömun mit vorgegebenem Druckfeld wird von uns gelöst und zeigt das analytisch vorhergesagte
+Strömungsmuster.\\
+Probleme treten bei uns auf, wenn das Druckfeld nicht mehr als vorgegebene angenommen wird sondern im Falle des Simple(r) Algorithmus
+berechnet werden muss. Die Tatsache, dass das Druckfeld divergiert lässt sich dadurch begründen, dass auch der Druckkorrekturwert nicht 
+gegen null konvergiert.
 
 
+\begin{thebibliography}{9}
+
+\bibitem{Dahmen & Reusken} W. Dahmen und A. Reusken, Numerik
+ für Ingenieure und Naturwissenschaftler, Springer-Lehrbuch 2., korr. Aufl. 2008
+
+\bibitem{Wolfgang Schröder}
+Wolfgang Schröder, Fluidmechanik, Wissenschaftsverlag Mainz 3., korr. Aufl. 2010
+
+\bibitem{Binniger} B. Binniger und D. Mayer, Vorlesungsunterlagen zur Numerischen Strömungssimulation,\\
+\url{http://www.itv.rwth-aachen.de/index.php?id=50}
+
+\bibitem{Meinke} M. Meinke, Computational Fluid Dynamics I+II,\\
+\url{http://www.aia.rwth-aachen.de/vlueb/vl/numerische_stroemungsmechanik_i/material/cfd%20I+II_1.pdf}
+
+\bibitem{Gauger} N. Gauger, handschriftliches Vorlesungsskript Mathematische Grundlagen 5, Wintersemester 2011/2012
+
+
+
+\end{thebibliography}
 
 
 \end{document}

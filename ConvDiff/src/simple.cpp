@@ -12,7 +12,7 @@ bool simple(sData* data) {
 	cout << "\nCalculation:\n------------\n";
 	initPressureField(data);
 
-	for (int i = 0; i < 80; i++) {
+	for (int i = 0; i < 800; i++) {
 		cout << "i= "<<i << endl;
 		initCoefficient(data);
 		//cout << " 1 "<<flush;
@@ -48,8 +48,8 @@ void initCoefficient(sData* data) {
 
 	double aSouth, aNorth, aEast, aWest, aTildeE, aTildeN;
 	double b;
-	double deltaX = data->deltaX;
-	double deltaY = data->deltaY;
+	double deltaX = 0.1;//data->deltaX;
+	double deltaY = 0.1;//data->deltaY;
 	double Pex, Pey, f, g, dx, dy;
 	double APEXABS, APEYABS;
 	double Ae, An;
@@ -65,8 +65,8 @@ void initCoefficient(sData* data) {
 
 		f = data->rho * curFace->uv[0];
 		g = data->rho * curFace->uv[1];
-		dx = data->alpha / 1;
-		dy = data->alpha / 1;
+		dx = data->alpha / deltaX;
+		dy = data->alpha / deltaY;
 
 		APEXABS = ABS(Pex) / (exp(ABS(Pex) - 1));
 		APEYABS = ABS(Pey) / (exp(ABS(Pey) - 1));
@@ -126,7 +126,7 @@ void solveImpulseForVelocity(sData* data) {
 				aTildeN = curFace->nCells[1]->cFaces[NORTH]->aEast
 						+ curFace->nCells[1]->cFaces[NORTH]->aWest
 						+ curFace->nCells[1]->cFaces[NORTH]->aSouth
-						+ curFace->nCells[1]->cFaces[NORTH]->aEast + amue;
+						+ curFace->nCells[1]->cFaces[NORTH]->aNorth + amue;
 				b = amue * curFace->uvStar[1];
 
 
@@ -135,7 +135,7 @@ void solveImpulseForVelocity(sData* data) {
 
 				curFace->uvStar[1] =
 						(aSouth * curFace->nCells[0]->cFaces[SOUTH]->uvStar[1]
-								+ aNorth
+								- aNorth
 										* curFace->nCells[1]->cFaces[NORTH]->uvStar[1]
 								+ b
 								-(curFace->nCells[1]->pStar
@@ -152,16 +152,11 @@ void solveImpulseForVelocity(sData* data) {
 				aTildeE = curFace->nCells[1]->cFaces[EAST]->aEast
 						+ curFace->nCells[1]->cFaces[EAST]->aWest
 						+ curFace->nCells[1]->cFaces[EAST]->aSouth
-						+ curFace->nCells[1]->cFaces[EAST]->aEast + amue;
+						+ curFace->nCells[1]->cFaces[EAST]->aNorth + amue;
 				b = amue * curFace->uvStar[0];
-				cout << "| faceNo=" << i <<endl;
-				cout << "b=" << b << endl;
-				cout << "ae aw " << (aEast * curFace->nCells[0]->cFaces[EAST]->uvStar[1]
-				                                      								+ aWest
-				                                      										* curFace->nCells[1]->cFaces[WEST]->uvStar[1])<<endl;
-				cout << 	"dp "<<	(curFace->nCells[1]->pStar- curFace->nCells[0]->pStar) * An<< endl;
+
 				curFace->uvStar[0] =
-						(aEast * curFace->nCells[0]->cFaces[EAST]->uvStar[1]
+						(-aEast * curFace->nCells[0]->cFaces[EAST]->uvStar[1]
 								+ aWest
 										* curFace->nCells[1]->cFaces[WEST]->uvStar[1]
 								+ b
@@ -204,9 +199,9 @@ void solvePressureCorrection(sData* data) {
 */
 			b = data->rho * A
 					* (curCell->cFaces[WEST]->uvStar[0]
-							+ curCell->cFaces[EAST]->uvStar[0]
+							- curCell->cFaces[EAST]->uvStar[0]
 							+ curCell->cFaces[SOUTH]->uvStar[1]
-							+ curCell->cFaces[NORTH]->uvStar[1]);
+							- curCell->cFaces[NORTH]->uvStar[1]);
 
 			cout << "press b " <<b << endl;
 			// is atilde = ap tilde ? asssuming this in the following
@@ -218,25 +213,25 @@ void solvePressureCorrection(sData* data) {
 			aTildeN = curFace->nCells[1]->cFaces[NORTH]->aEast
 					+ curFace->nCells[1]->cFaces[NORTH]->aWest
 					+ curFace->nCells[1]->cFaces[NORTH]->aSouth
-					+ curFace->nCells[1]->cFaces[NORTH]->aEast + amue;
+					+ curFace->nCells[1]->cFaces[NORTH]->aNorth + amue;
 			curFace = curCell->cFaces[EAST];
 
 			aTildeE = curFace->nCells[1]->cFaces[EAST]->aEast
 					+ curFace->nCells[1]->cFaces[EAST]->aWest
 					+ curFace->nCells[1]->cFaces[EAST]->aSouth
-					+ curFace->nCells[1]->cFaces[EAST]->aEast + amue;
+					+ curFace->nCells[1]->cFaces[EAST]->aNorth + amue;
 
 			curFace = curCell->cFaces[WEST];
 			aTildeW = curFace->nCells[0]->cFaces[WEST]->aEast
 					+ curFace->nCells[0]->cFaces[WEST]->aWest
 					+ curFace->nCells[0]->cFaces[WEST]->aSouth
-					+ curFace->nCells[0]->cFaces[WEST]->aEast + amue;
+					+ curFace->nCells[0]->cFaces[WEST]->aNorth + amue;
 			curFace = curCell->cFaces[EAST];
 
 			aTildeS = curFace->nCells[0]->cFaces[SOUTH]->aEast
 					+ curFace->nCells[0]->cFaces[SOUTH]->aWest
 					+ curFace->nCells[0]->cFaces[SOUTH]->aSouth
-					+ curFace->nCells[0]->cFaces[SOUTH]->aEast + amue;
+					+ curFace->nCells[0]->cFaces[SOUTH]->aNorth + amue;
 
 			aEast = (A * data->rho * curCell->cFaces[EAST]->deltaxy[1])
 					/ aTildeE;
@@ -273,7 +268,7 @@ void updatePressure(sData* data) {
 
 		} else {
 			cout << "pStar= " << curCell->pStar << "\tpPrime= "<<curCell->pPrime<<endl;
-			curCell->pStar = curCell->pStar + 0.5*curCell->pPrime;
+			curCell->pStar = curCell->pStar + curCell->pPrime;
 		}
 	}
 }
@@ -297,11 +292,11 @@ void updateVelocity(sData* data) {
 			aTildeN = curFace->nCells[1]->cFaces[NORTH]->aEast
 					+ curFace->nCells[1]->cFaces[NORTH]->aWest
 					+ curFace->nCells[1]->cFaces[NORTH]->aSouth
-					+ curFace->nCells[1]->cFaces[NORTH]->aEast + amue;
+					+ curFace->nCells[1]->cFaces[NORTH]->aNorth + amue;
 			aTildeE = curFace->nCells[1]->cFaces[EAST]->aEast
 					+ curFace->nCells[1]->cFaces[EAST]->aWest
 					+ curFace->nCells[1]->cFaces[EAST]->aSouth
-					+ curFace->nCells[1]->cFaces[EAST]->aEast + amue;
+					+ curFace->nCells[1]->cFaces[EAST]->aNorth + amue;
 			if (curFace->deltaxy[1] == 0) {
 				curFace->uvStar[0] = curFace->uvStar[0]
 						+ (curFace->nCells[1]->pPrime
